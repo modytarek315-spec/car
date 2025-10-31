@@ -1,0 +1,1423 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Parts Store</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="/_sdk/element_sdk.js"></script>
+    <script src="/_sdk/data_sdk.js"></script>
+    <style>
+        @view-transition {
+            navigation: auto;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-top">
+            <div class="logo-section">
+                <h1 id="store-name">Auto Parts Pro</h1>
+                <p id="store-tagline">Quality Parts for Your Vehicle</p>
+            </div>
+            <div class="header-actions">
+                <div class="contact-info">
+                    <div>
+                        Phone: <span id="contact-phone">+1 (555) 123-4567</span>
+                    </div>
+                    <div>
+                        Email: <span id="contact-email">info@autoparts.com</span>
+                    </div>
+                </div><button class="cart-btn" onclick="showCart()"> Cart <span class="cart-count"
+                        id="cart-count">0</span> </button>
+            </div>
+        </div>
+        <div class="search-bar">
+            <div class="search-input-wrapper"><input type="text" class="search-input" id="search-input"
+                    placeholder="Search for parts, brands, or categories..."> <button class="search-btn"
+                    onclick="performSearch()">Search</button>
+            </div>
+        </div>
+    </header>
+    <nav class="nav">
+        <ul class="nav-links">
+            <li><button onclick="showCategory('home')" class="active" id="nav-home">Home</button></li>
+            <li><button onclick="showCategory('engine')" id="nav-engine">Engine Parts</button></li>
+            <li><button onclick="showCategory('brakes')" id="nav-brakes">Brakes</button></li>
+            <li><button onclick="showCategory('tires')" id="nav-tires">Tires &amp; Wheels</button></li>
+            <li><button onclick="showCategory('lights')" id="nav-lights">Lights &amp; Electrical</button></li>
+            <li><button onclick="showCategory('fluids')" id="nav-fluids">Maintenance Fluids</button></li>
+            <li><button onclick="showCategory('service')" id="nav-service">Service Booking</button></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div id="main-content"></div>
+    </div>
+    <script>
+        const defaultConfig = {
+            store_name: "Auto Parts Pro",
+            store_tagline: "Quality Parts for Your Vehicle",
+            contact_phone: "+1 (555) 123-4567",
+            contact_email: "info@autoparts.com",
+            primary_color: "#2c3e50",
+            secondary_color: "#3498db",
+            accent_color: "#e74c3c",
+            success_color: "#27ae60",
+            background_color: "#f8f9fa",
+            font_family: "Segoe UI",
+            font_size: 16
+        };
+
+        let config = { ...defaultConfig };
+        let cart = [];
+        let currentCategory = 'home';
+        let currentSearchTerm = '';
+        let currentSortBy = 'name';
+        let currentFilterBrand = 'all';
+
+        const products = {
+            engine: [
+                { id: 'e1', name: 'Oil Filter', brand: 'Bosch', price: 12.99, icon: 'https://direct.toyota-indus.com/media/catalog/product/i/m/img_1026_1_8.png?quality=80&bg-color=255,255,255&fit=bounds&height=700&width=700&canvas=700:700', category: 'engine', description: 'High-quality oil filter for optimal engine protection', compatibility: 'Toyota Corolla 2009-2023', warranty: '12 months', partNumber: 'BOF-1234' },
+                { id: 'e2', name: 'Air Filter', brand: 'K&N', price: 45.99, icon: 'https://i0.wp.com/www.toyotaravi.com/wp-content/uploads/2015/12/916048da9d6d53b0434371ff6f83438d.jpg?fit=2000%2C1500', category: 'engine', description: 'Performance air filter for improved airflow and engine efficiency', compatibility: 'Toyota Corolla 2014-2023', warranty: '24 months', partNumber: 'KN-33-2435' },
+                { id: 'e3', name: 'Spark Plugs Set', brand: 'NGK', price: 32.99, icon: 'https://partsdirect.pk/cdn/shop/products/y4muUMQTv3zoxcr6mYiGyI5y9BSGZnpKdNN2b-xDY_r2FKf4J-CWsWIAUXeOJBKcxyqo-IVSneqyi5e4-wXLtICXTTvQrbrC16M9PSAMdzg5qJQnmdDfT6ZKgzOtlT7XTS0GDpoUCtZ6iX1wD9NEhIftOEhzJem1wfqWfKJtgEICSLFHrv-d0e9_600x.jpg?v=1697545929', category: 'engine', description: 'Premium iridium spark plugs for better ignition and fuel economy', compatibility: 'Toyota Corolla 2009-2023', warranty: '18 months', partNumber: 'NGK-7090' },
+                { id: 'e4', name: 'V Belt', brand: 'Gates', price: 89.99, icon: 'https://cdn.revolutionparts.io/images/f9be311e65d81a9ad8150a60844bb94c/83c5ac5c7d5b66c22b3bdb8591cb9026.jpg', category: 'engine', description: 'Durable timing belt for precise engine timing', compatibility: 'Toyota Corolla 2009-2018', warranty: '36 months', partNumber: 'GAT-T295' },
+                { id: 'e5', name: 'Water Pump', brand: 'ACDelco', price: 125.99, icon: 'https://i.ebayimg.com/images/g/RdMAAOSwozhhVEAE/s-l400.jpg', category: 'engine', description: 'OEM quality water pump for efficient cooling system', compatibility: 'Toyota Corolla 2009-2023', warranty: '24 months', partNumber: 'ACD-251-712' },
+                { id: 'e6', name: 'Fuel Filter', brand: 'Delphi', price: 156.99, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTGHrSiyCHG20j9unDfbuxrNjHLpjMEgaO8Q&s', category: 'engine', description: 'Electric fuel pump for reliable fuel delivery', compatibility: 'Toyota Corolla 2014-2023', warranty: '24 months', partNumber: 'DEL-FE0442' },
+                { id: 'e7', name: 'Alternator', brand: 'Denso', price: 245.99, icon: 'https://gbdirect.co.za/cdn/shop/products/ALT6191_A_580x.png?v=1667551585', category: 'engine', description: 'High-output alternator for reliable electrical power', compatibility: 'Toyota Corolla 2009-2023', warranty: '36 months', partNumber: 'DEN-210-4317' },
+                { id: 'e8', name: 'Starter Motor', brand: 'Valeo', price: 189.99, icon: 'starter-motor.jpg', category: 'engine', description: 'Heavy-duty starter motor for reliable engine starting', compatibility: 'Toyota Corolla 2009-2023', warranty: '24 months', partNumber: 'VAL-458178' },
+                { id: 'e9', name: 'Radiator', brand: 'Mishimoto', price: 299.99, icon: 'radiator.jpg', category: 'engine', description: 'Performance aluminum radiator for superior cooling', compatibility: 'Toyota Corolla 2009-2023', warranty: '60 months', partNumber: 'MSH-R2363' },
+                { id: 'e10', name: 'Thermostat', brand: 'Stant', price: 24.99, icon: 'thermostat.jpg', category: 'engine', description: 'OEM replacement thermostat for optimal engine temperature', compatibility: 'Toyota Corolla 2009-2023', warranty: '12 months', partNumber: 'STN-14538' }
+            ],
+            brakes: [
+                { id: 'b1', name: 'Brake Pads Front', brand: 'Brembo', price: 79.99, icon: 'brake-pads-front.jpg', category: 'brakes' },
+                { id: 'b2', name: 'Brake Pads Rear', brand: 'Brembo', price: 69.99, icon: 'brake-pads-rear.jpg', category: 'brakes' },
+                { id: 'b3', name: 'Brake Rotors Front', brand: 'EBC', price: 145.99, icon: 'brake-rotors-front.jpg', category: 'brakes' },
+                { id: 'b4', name: 'Brake Rotors Rear', brand: 'EBC', price: 135.99, icon: 'brake-rotors-rear.jpg', category: 'brakes' },
+                { id: 'b5', name: 'Brake Fluid DOT 4', brand: 'Castrol', price: 15.99, icon: 'brake-fluid.jpg', category: 'brakes' },
+                { id: 'b6', name: 'Brake Caliper Front', brand: 'Cardone', price: 189.99, icon: 'brake-caliper-front.jpg', category: 'brakes' },
+                { id: 'b7', name: 'Brake Caliper Rear', brand: 'Cardone', price: 179.99, icon: 'brake-caliper-rear.jpg', category: 'brakes' },
+                { id: 'b8', name: 'Brake Lines Kit', brand: 'Russell', price: 89.99, icon: 'brake-lines.jpg', category: 'brakes' },
+                { id: 'b9', name: 'Master Cylinder', brand: 'ATE', price: 156.99, icon: 'master-cylinder.jpg', category: 'brakes' },
+                { id: 'b10', name: 'Brake Shoes', brand: 'Wagner', price: 54.99, icon: 'brake-shoes.jpg', category: 'brakes' }
+            ],
+            tires: [
+                { id: 't1', name: 'All-Season Tire 205/55R16', brand: 'Michelin', price: 129.99, icon: 'tire-all-season.jpg', category: 'tires' },
+                { id: 't2', name: 'Performance Tire 225/45R17', brand: 'Pirelli', price: 189.99, icon: 'tire-performance.jpg', category: 'tires' },
+                { id: 't3', name: 'Winter Tire 195/65R15', brand: 'Bridgestone', price: 145.99, icon: 'tire-winter.jpg', category: 'tires' },
+                { id: 't4', name: 'Alloy Wheel 17"', brand: 'Enkei', price: 245.99, icon: 'wheel-alloy.jpg', category: 'tires' },
+                { id: 't5', name: 'Steel Wheel 16"', brand: 'OEM', price: 89.99, icon: 'wheel-steel.jpg', category: 'tires' },
+                { id: 't6', name: 'Wheel Lug Nuts Set', brand: 'Gorilla', price: 34.99, icon: 'lug-nuts.jpg', category: 'tires' },
+                { id: 't7', name: 'Tire Pressure Sensor', brand: 'Schrader', price: 45.99, icon: 'pressure-sensor.jpg', category: 'tires' },
+                { id: 't8', name: 'Wheel Spacers Kit', brand: 'Eibach', price: 79.99, icon: 'wheel-spacers.jpg', category: 'tires' },
+                { id: 't9', name: 'Center Caps Set', brand: 'OEM', price: 29.99, icon: 'center-caps.jpg', category: 'tires' },
+                { id: 't10', name: 'Tire Valve Stems', brand: 'Slime', price: 12.99, icon: 'valve-stems.jpg', category: 'tires' }
+            ],
+            lights: [
+                { id: 'l1', name: 'LED Headlight Bulbs', brand: 'Philips', price: 89.99, icon: 'led-headlight.jpg', category: 'lights' },
+                { id: 'l2', name: 'Tail Light Assembly', brand: 'TYC', price: 125.99, icon: 'tail-light.jpg', category: 'lights' },
+                { id: 'l3', name: 'Fog Light Kit', brand: 'Hella', price: 156.99, icon: 'fog-light.jpg', category: 'lights' },
+                { id: 'l4', name: 'Turn Signal Bulbs', brand: 'Sylvania', price: 15.99, icon: 'turn-signal.jpg', category: 'lights' },
+                { id: 'l5', name: 'Battery 12V', brand: 'Optima', price: 189.99, icon: 'battery-12v.jpg', category: 'lights' },
+                { id: 'l6', name: 'Alternator Belt', brand: 'Continental', price: 34.99, icon: 'alternator-belt.jpg', category: 'lights' },
+                { id: 'l7', name: 'Fuse Box Kit', brand: 'Littelfuse', price: 45.99, icon: 'fuse-box.jpg', category: 'lights' },
+                { id: 'l8', name: 'Wiring Harness', brand: 'Painless', price: 245.99, icon: 'wiring-harness.jpg', category: 'lights' },
+                { id: 'l9', name: 'Headlight Assembly', brand: 'Depo', price: 189.99, icon: 'headlight-assembly.jpg', category: 'lights' },
+                { id: 'l10', name: 'Interior LED Kit', brand: 'Auxbeam', price: 39.99, icon: 'interior-led.jpg', category: 'lights' }
+            ],
+            fluids: [
+                { id: 'f1', name: 'Engine Oil 5W-30 (5L)', brand: 'Mobil 1', price: 34.99, icon: 'engine-oil.jpg', category: 'fluids' },
+                { id: 'f2', name: 'Transmission Fluid (4L)', brand: 'Valvoline', price: 45.99, icon: 'transmission-fluid.jpg', category: 'fluids' },
+                { id: 'f3', name: 'Coolant/Antifreeze (4L)', brand: 'Prestone', price: 24.99, icon: 'coolant.jpg', category: 'fluids' },
+                { id: 'f4', name: 'Power Steering Fluid', brand: 'Lucas', price: 12.99, icon: 'power-steering-fluid.jpg', category: 'fluids' },
+                { id: 'f5', name: 'Brake Fluid DOT 3', brand: 'Motul', price: 18.99, icon: 'brake-fluid-dot3.jpg', category: 'fluids' },
+                { id: 'f6', name: 'Windshield Washer Fluid', brand: 'Rain-X', price: 8.99, icon: 'washer-fluid.jpg', category: 'fluids' },
+                { id: 'f7', name: 'Differential Oil', brand: 'Red Line', price: 29.99, icon: 'differential-oil.jpg', category: 'fluids' },
+                { id: 'f8', name: 'Fuel System Cleaner', brand: 'Techron', price: 15.99, icon: 'fuel-cleaner.jpg', category: 'fluids' },
+                { id: 'f9', name: 'Engine Degreaser', brand: 'Gunk', price: 11.99, icon: 'engine-degreaser.jpg', category: 'fluids' },
+                { id: 'f10', name: 'Penetrating Oil', brand: 'WD-40', price: 9.99, icon: 'penetrating-oil.jpg', category: 'fluids' }
+            ]
+        };
+
+        const servicePackages = [
+            {
+                km: '10,000',
+                title: 'Basic Service',
+                price: 149.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Inspection', part: null, required: false },
+                    { name: 'Tire Rotation', part: null, required: false },
+                    { name: 'Brake Inspection', part: null, required: false },
+                    { name: 'Fluid Level Check', part: null, required: false }
+                ]
+            },
+            {
+                km: '20,000',
+                title: 'Standard Service',
+                price: 249.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Replacement', part: 'e2', required: true },
+                    { name: 'Cabin Air Filter', part: null, required: false },
+                    { name: 'Tire Rotation & Balance', part: null, required: false },
+                    { name: 'Brake Fluid Check', part: 'b5', required: false },
+                    { name: 'Battery Test', part: null, required: false }
+                ]
+            },
+            {
+                km: '30,000',
+                title: 'Major Service',
+                price: 399.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Replacement', part: 'e2', required: true },
+                    { name: 'Spark Plugs Replacement', part: 'e3', required: true },
+                    { name: 'Transmission Fluid Change', part: 'f2', required: true },
+                    { name: 'Coolant Flush', part: 'f3', required: true },
+                    { name: 'Brake Pads Inspection', part: null, required: false },
+                    { name: 'Tire Rotation', part: null, required: false }
+                ]
+            },
+            {
+                km: '40,000',
+                title: 'Standard Service Plus',
+                price: 279.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Replacement', part: 'e2', required: true },
+                    { name: 'Brake Fluid Replacement', part: 'b5', required: true },
+                    { name: 'Power Steering Fluid', part: 'f4', required: false },
+                    { name: 'Tire Rotation', part: null, required: false },
+                    { name: 'Suspension Check', part: null, required: false }
+                ]
+            },
+            {
+                km: '50,000',
+                title: 'Comprehensive Service',
+                price: 499.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Replacement', part: 'e2', required: true },
+                    { name: 'Spark Plugs Replacement', part: 'e3', required: true },
+                    { name: 'Timing Belt Inspection', part: 'e4', required: false },
+                    { name: 'Water Pump Check', part: 'e5', required: false },
+                    { name: 'Brake Pads Front', part: 'b1', required: true },
+                    { name: 'Brake Fluid Flush', part: 'b5', required: true },
+                    { name: 'Coolant Replacement', part: 'f3', required: true }
+                ]
+            },
+            {
+                km: '60,000',
+                title: 'Major Service',
+                price: 449.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Replacement', part: 'e2', required: true },
+                    { name: 'Transmission Fluid Change', part: 'f2', required: true },
+                    { name: 'Differential Oil Change', part: 'f7', required: true },
+                    { name: 'Spark Plugs Check', part: null, required: false },
+                    { name: 'Tire Rotation', part: null, required: false },
+                    { name: 'Brake Inspection', part: null, required: false }
+                ]
+            },
+            {
+                km: '70,000',
+                title: 'Standard Service',
+                price: 269.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Replacement', part: 'e2', required: true },
+                    { name: 'Coolant Check', part: 'f3', required: false },
+                    { name: 'Brake Fluid Check', part: 'b5', required: false },
+                    { name: 'Battery Test', part: null, required: false },
+                    { name: 'Tire Rotation', part: null, required: false }
+                ]
+            },
+            {
+                km: '80,000',
+                title: 'Major Service Plus',
+                price: 549.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Replacement', part: 'e2', required: true },
+                    { name: 'Spark Plugs Replacement', part: 'e3', required: true },
+                    { name: 'Timing Belt Replacement', part: 'e4', required: true },
+                    { name: 'Water Pump Replacement', part: 'e5', required: true },
+                    { name: 'Fuel Filter Replacement', part: 'e6', required: true },
+                    { name: 'Coolant Flush', part: 'f3', required: true },
+                    { name: 'Brake Pads All Around', part: 'b1', required: true }
+                ]
+            },
+            {
+                km: '90,000',
+                title: 'Standard Service',
+                price: 289.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Replacement', part: 'e2', required: true },
+                    { name: 'Transmission Fluid Check', part: 'f2', required: false },
+                    { name: 'Brake Fluid Replacement', part: 'b5', required: true },
+                    { name: 'Power Steering Fluid', part: 'f4', required: false },
+                    { name: 'Tire Rotation', part: null, required: false }
+                ]
+            },
+            {
+                km: '100,000',
+                title: 'Major Milestone Service',
+                price: 699.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Replacement', part: 'e2', required: true },
+                    { name: 'Spark Plugs Replacement', part: 'e3', required: true },
+                    { name: 'Transmission Fluid Change', part: 'f2', required: true },
+                    { name: 'Coolant Flush', part: 'f3', required: true },
+                    { name: 'Brake Pads & Rotors Front', part: 'b1', required: true },
+                    { name: 'Brake Pads & Rotors Rear', part: 'b2', required: true },
+                    { name: 'Fuel System Cleaning', part: 'f8', required: true },
+                    { name: 'Complete Inspection', part: null, required: false }
+                ]
+            },
+            {
+                km: '110,000',
+                title: 'Standard Service',
+                price: 269.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Replacement', part: 'e2', required: true },
+                    { name: 'Brake Inspection', part: null, required: false },
+                    { name: 'Tire Rotation', part: null, required: false },
+                    { name: 'Fluid Level Check', part: null, required: false }
+                ]
+            },
+            {
+                km: '120,000',
+                title: 'Major Service',
+                price: 479.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Replacement', part: 'e2', required: true },
+                    { name: 'Transmission Fluid Change', part: 'f2', required: true },
+                    { name: 'Differential Oil Change', part: 'f7', required: true },
+                    { name: 'Coolant Replacement', part: 'f3', required: true },
+                    { name: 'Brake Fluid Flush', part: 'b5', required: true },
+                    { name: 'Spark Plugs Check', part: null, required: false }
+                ]
+            },
+            {
+                km: '130,000',
+                title: 'Standard Service',
+                price: 289.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Replacement', part: 'e2', required: true },
+                    { name: 'Power Steering Fluid', part: 'f4', required: false },
+                    { name: 'Battery Test', part: null, required: false },
+                    { name: 'Tire Rotation', part: null, required: false }
+                ]
+            },
+            {
+                km: '140,000',
+                title: 'Comprehensive Service',
+                price: 529.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Replacement', part: 'e2', required: true },
+                    { name: 'Spark Plugs Replacement', part: 'e3', required: true },
+                    { name: 'Timing Belt Check', part: 'e4', required: false },
+                    { name: 'Water Pump Inspection', part: 'e5', required: false },
+                    { name: 'Brake Pads Replacement', part: 'b1', required: true },
+                    { name: 'Coolant Flush', part: 'f3', required: true }
+                ]
+            },
+            {
+                km: '150,000',
+                title: 'Major Milestone Service',
+                price: 749.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Replacement', part: 'e2', required: true },
+                    { name: 'Spark Plugs Replacement', part: 'e3', required: true },
+                    { name: 'Transmission Fluid Change', part: 'f2', required: true },
+                    { name: 'Differential Oil Change', part: 'f7', required: true },
+                    { name: 'Coolant Flush', part: 'f3', required: true },
+                    { name: 'Brake System Overhaul', part: 'b1', required: true },
+                    { name: 'Fuel System Cleaning', part: 'f8', required: true },
+                    { name: 'Complete Vehicle Inspection', part: null, required: false }
+                ]
+            },
+            {
+                km: '160,000',
+                title: 'Extended Service',
+                price: 599.99,
+                items: [
+                    { name: 'Engine Oil Change', part: 'f1', required: true },
+                    { name: 'Oil Filter Replacement', part: 'e1', required: true },
+                    { name: 'Air Filter Replacement', part: 'e2', required: true },
+                    { name: 'Timing Belt Replacement', part: 'e4', required: true },
+                    { name: 'Water Pump Replacement', part: 'e5', required: true },
+                    { name: 'Thermostat Check', part: 'e10', required: false },
+                    { name: 'Coolant Replacement', part: 'f3', required: true },
+                    { name: 'Brake Fluid Flush', part: 'b5', required: true },
+                    { name: 'Comprehensive Inspection', part: null, required: false }
+                ]
+            }
+        ];
+
+        let selectedService = null;
+        let includeParts = false;
+        let selectedParts = [];
+
+        const dataHandler = {
+            onDataChanged(data) {
+                cart = data.filter(item => item.type === 'cart');
+                updateCartCount();
+
+                if (currentCategory === 'cart') {
+                    renderCartPage();
+                }
+            }
+        };
+
+        async function initApp() {
+            const initResult = await window.dataSdk.init(dataHandler);
+            if (!initResult.isOk) {
+                console.error('Failed to initialize data SDK');
+                return;
+            }
+
+            if (window.elementSdk) {
+                window.elementSdk.init({
+                    defaultConfig,
+                    onConfigChange: async (newConfig) => {
+                        config = { ...newConfig };
+
+                        const storeName = document.getElementById('store-name');
+                        const storeTagline = document.getElementById('store-tagline');
+                        const contactPhone = document.getElementById('contact-phone');
+                        const contactEmail = document.getElementById('contact-email');
+
+                        if (storeName) storeName.textContent = config.store_name || defaultConfig.store_name;
+                        if (storeTagline) storeTagline.textContent = config.store_tagline || defaultConfig.store_tagline;
+                        if (contactPhone) contactPhone.textContent = config.contact_phone || defaultConfig.contact_phone;
+                        if (contactEmail) contactEmail.textContent = config.contact_email || defaultConfig.contact_email;
+
+                        const header = document.querySelector('.header');
+                        if (header) {
+                            header.style.background = `linear-gradient(135deg, ${config.primary_color || defaultConfig.primary_color} 0%, ${adjustColor(config.primary_color || defaultConfig.primary_color, 20)} 100%)`;
+                        }
+
+                        const cartBtn = document.querySelector('.cart-btn');
+                        if (cartBtn) {
+                            cartBtn.style.background = config.accent_color || defaultConfig.accent_color;
+                        }
+
+                        const searchBtn = document.querySelector('.search-btn');
+                        if (searchBtn) {
+                            searchBtn.style.background = config.secondary_color || defaultConfig.secondary_color;
+                        }
+
+                        const addToCartBtns = document.querySelectorAll('.add-to-cart-btn');
+                        addToCartBtns.forEach(btn => {
+                            btn.style.background = config.success_color || defaultConfig.success_color;
+                        });
+
+                        const checkoutBtns = document.querySelectorAll('.checkout-btn');
+                        checkoutBtns.forEach(btn => {
+                            btn.style.background = config.accent_color || defaultConfig.accent_color;
+                        });
+
+                        document.body.style.background = config.background_color || defaultConfig.background_color;
+
+                        const customFont = config.font_family || defaultConfig.font_family;
+                        const baseFontStack = 'Tahoma, Geneva, Verdana, sans-serif';
+                        document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+
+                        const baseSize = config.font_size || defaultConfig.font_size;
+                        document.body.style.fontSize = `${baseSize}px`;
+
+                        const pageTitles = document.querySelectorAll('.page-title');
+                        pageTitles.forEach(title => {
+                            title.style.fontSize = `${baseSize * 2}px`;
+                        });
+
+                        const pageSubtitles = document.querySelectorAll('.page-subtitle');
+                        pageSubtitles.forEach(subtitle => {
+                            subtitle.style.fontSize = `${baseSize}px`;
+                        });
+
+                        const productNames = document.querySelectorAll('.product-name');
+                        productNames.forEach(name => {
+                            name.style.fontSize = `${baseSize * 1.125}px`;
+                        });
+
+                        const productPrices = document.querySelectorAll('.product-price');
+                        productPrices.forEach(price => {
+                            price.style.fontSize = `${baseSize * 1.5}px`;
+                        });
+                    },
+                    mapToCapabilities: (cfg) => ({
+                        recolorables: [
+                            {
+                                get: () => cfg.primary_color || defaultConfig.primary_color,
+                                set: (value) => {
+                                    cfg.primary_color = value;
+                                    if (window.elementSdk) window.elementSdk.setConfig({ primary_color: value });
+                                }
+                            },
+                            {
+                                get: () => cfg.secondary_color || defaultConfig.secondary_color,
+                                set: (value) => {
+                                    cfg.secondary_color = value;
+                                    if (window.elementSdk) window.elementSdk.setConfig({ secondary_color: value });
+                                }
+                            },
+                            {
+                                get: () => cfg.accent_color || defaultConfig.accent_color,
+                                set: (value) => {
+                                    cfg.accent_color = value;
+                                    if (window.elementSdk) window.elementSdk.setConfig({ accent_color: value });
+                                }
+                            },
+                            {
+                                get: () => cfg.success_color || defaultConfig.success_color,
+                                set: (value) => {
+                                    cfg.success_color = value;
+                                    if (window.elementSdk) window.elementSdk.setConfig({ success_color: value });
+                                }
+                            },
+                            {
+                                get: () => cfg.background_color || defaultConfig.background_color,
+                                set: (value) => {
+                                    cfg.background_color = value;
+                                    if (window.elementSdk) window.elementSdk.setConfig({ background_color: value });
+                                }
+                            }
+                        ],
+                        borderables: [],
+                        fontEditable: {
+                            get: () => cfg.font_family || defaultConfig.font_family,
+                            set: (value) => {
+                                cfg.font_family = value;
+                                if (window.elementSdk) window.elementSdk.setConfig({ font_family: value });
+                            }
+                        },
+                        fontSizeable: {
+                            get: () => cfg.font_size || defaultConfig.font_size,
+                            set: (value) => {
+                                cfg.font_size = value;
+                                if (window.elementSdk) window.elementSdk.setConfig({ font_size: value });
+                            }
+                        }
+                    }),
+                    mapToEditPanelValues: (cfg) => new Map([
+                        ['store_name', cfg.store_name || defaultConfig.store_name],
+                        ['store_tagline', cfg.store_tagline || defaultConfig.store_tagline],
+                        ['contact_phone', cfg.contact_phone || defaultConfig.contact_phone],
+                        ['contact_email', cfg.contact_email || defaultConfig.contact_email]
+                    ])
+                });
+            }
+
+            showCategory('home');
+        }
+
+        function adjustColor(color, percent) {
+            const num = parseInt(color.replace('#', ''), 16);
+            const amt = Math.round(2.55 * percent);
+            const R = (num >> 16) + amt;
+            const G = (num >> 8 & 0x00FF) + amt;
+            const B = (num & 0x0000FF) + amt;
+            return '#' + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+                (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+                (B < 255 ? B < 1 ? 0 : B : 255))
+                .toString(16).slice(1);
+        }
+
+        function updateCartCount() {
+            const cartCount = document.getElementById('cart-count');
+            if (cartCount) {
+                const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+                cartCount.textContent = totalItems;
+            }
+        }
+
+        function showCategory(category) {
+            currentCategory = category;
+            currentSearchTerm = '';
+            document.getElementById('search-input').value = '';
+
+            document.querySelectorAll('.nav-links button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`nav-${category}`).classList.add('active');
+
+            const mainContent = document.getElementById('main-content');
+
+            if (category === 'home') {
+                renderHomePage();
+            } else if (category === 'cart') {
+                renderCartPage();
+            } else if (category === 'checkout') {
+                renderCheckoutPage();
+            } else if (category === 'service') {
+                renderServicePage();
+            } else {
+                renderCategoryPage(category);
+            }
+        }
+
+        function renderHomePage() {
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = `
+        <h1 class="page-title">Welcome to ${config.store_name || defaultConfig.store_name}</h1>
+        <p class="page-subtitle">Browse our extensive collection of quality auto parts</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px;">
+          <div style="background: white; padding: 30px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05);" onclick="showCategory('engine')">
+            <div style="width: 80px; height: 80px; margin: 0 auto 15px auto; border-radius: 8px; overflow: hidden;">
+              <img src="engine-category.jpg" alt="Engine Parts" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Engine Parts'; this.style.display='none';">
+            </div>
+            <h3 style="margin: 0 0 10px 0; color: #2c3e50;">Engine Parts</h3>
+            <p style="color: #7f8c8d; margin: 0;">Essential engine components</p>
+          </div>
+          
+          <div style="background: white; padding: 30px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05);" onclick="showCategory('brakes')">
+            <div style="width: 80px; height: 80px; margin: 0 auto 15px auto; border-radius: 8px; overflow: hidden;">
+              <img src="brakes-category.jpg" alt="Brakes" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Brakes'; this.style.display='none';">
+            </div>
+            <h3 style="margin: 0 0 10px 0; color: #2c3e50;">Brakes</h3>
+            <p style="color: #7f8c8d; margin: 0;">Brake pads, rotors & more</p>
+          </div>
+          
+          <div style="background: white; padding: 30px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05);" onclick="showCategory('tires')">
+            <div style="width: 80px; height: 80px; margin: 0 auto 15px auto; border-radius: 8px; overflow: hidden;">
+              <img src="tires-category.jpg" alt="Tires & Wheels" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Tires & Wheels'; this.style.display='none';">
+            </div>
+            <h3 style="margin: 0 0 10px 0; color: #2c3e50;">Tires & Wheels</h3>
+            <p style="color: #7f8c8d; margin: 0;">Tires, wheels & accessories</p>
+          </div>
+          
+          <div style="background: white; padding: 30px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05);" onclick="showCategory('lights')">
+            <div style="width: 80px; height: 80px; margin: 0 auto 15px auto; border-radius: 8px; overflow: hidden;">
+              <img src="lights-category.jpg" alt="Lights & Electrical" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Lights & Electrical'; this.style.display='none';">
+            </div>
+            <h3 style="margin: 0 0 10px 0; color: #2c3e50;">Lights & Electrical</h3>
+            <p style="color: #7f8c8d; margin: 0;">Lighting & electrical parts</p>
+          </div>
+          
+          <div style="background: white; padding: 30px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05);" onclick="showCategory('fluids')">
+            <div style="width: 80px; height: 80px; margin: 0 auto 15px auto; border-radius: 8px; overflow: hidden;">
+              <img src="fluids-category.jpg" alt="Maintenance Fluids" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Maintenance Fluids'; this.style.display='none';">
+            </div>
+            <h3 style="margin: 0 0 10px 0; color: #2c3e50;">Maintenance Fluids</h3>
+            <p style="color: #7f8c8d; margin: 0;">Oils, coolants & fluids</p>
+          </div>
+          
+          <div style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); padding: 30px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: white;" onclick="showCategory('service')">
+            <div style="width: 80px; height: 80px; margin: 0 auto 15px auto; border-radius: 8px; overflow: hidden;">
+              <img src="service-category.jpg" alt="Service Booking" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Service Booking'; this.style.display='none';">
+            </div>
+            <h3 style="margin: 0 0 10px 0;">Service Booking</h3>
+            <p style="margin: 0; opacity: 0.9;">Book your Toyota Corolla service</p>
+          </div>
+        </div>
+      `;
+        }
+
+        function renderCategoryPage(category) {
+            const categoryNames = {
+                engine: 'Engine Parts',
+                brakes: 'Brakes',
+                tires: 'Tires & Wheels',
+                lights: 'Lights & Electrical',
+                fluids: 'Maintenance Fluids'
+            };
+
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = `
+        <h1 class="page-title">${categoryNames[category]}</h1>
+        <p class="page-subtitle">High-quality parts for your vehicle</p>
+        
+        <div class="filters">
+          <div class="filter-group">
+            <label>Sort By:</label>
+            <select id="sort-select" onchange="updateSort(this.value)">
+              <option value="name">Name</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="brand">Brand</option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label>Filter by Brand:</label>
+            <select id="brand-select" onchange="updateBrandFilter(this.value)">
+              <option value="all">All Brands</option>
+              ${getUniqueBrands(category).map(brand => `<option value="${brand}">${brand}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        
+        <div class="products-grid" id="products-grid"></div>
+      `;
+
+            renderProducts(category);
+        }
+
+        function getUniqueBrands(category) {
+            const brands = [...new Set(products[category].map(p => p.brand))];
+            return brands.sort();
+        }
+
+        function updateSort(sortBy) {
+            currentSortBy = sortBy;
+            renderProducts(currentCategory);
+        }
+
+        function updateBrandFilter(brand) {
+            currentFilterBrand = brand;
+            renderProducts(currentCategory);
+        }
+
+        function renderProducts(category) {
+            let productList = [...products[category]];
+
+            if (currentSearchTerm) {
+                productList = productList.filter(p =>
+                    p.name.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
+                    p.brand.toLowerCase().includes(currentSearchTerm.toLowerCase())
+                );
+            }
+
+            if (currentFilterBrand !== 'all') {
+                productList = productList.filter(p => p.brand === currentFilterBrand);
+            }
+
+            switch (currentSortBy) {
+                case 'price-low':
+                    productList.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    productList.sort((a, b) => b.price - a.price);
+                    break;
+                case 'brand':
+                    productList.sort((a, b) => a.brand.localeCompare(b.brand));
+                    break;
+                default:
+                    productList.sort((a, b) => a.name.localeCompare(b.name));
+            }
+
+            const grid = document.getElementById('products-grid');
+            if (productList.length === 0) {
+                grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+            <div style="width: 80px; height: 80px; margin: 0 auto 20px auto; border-radius: 8px; overflow: hidden; opacity: 0.5;">
+              <img src="no-results.jpg" alt="No Results" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='No Results'; this.style.display='none';">
+            </div>
+            <h3 style="font-size: 24px; color: #2c3e50; margin: 0 0 10px 0;">No products found</h3>
+            <p style="font-size: 16px; color: #7f8c8d;">Try adjusting your filters or search term</p>
+          </div>
+        `;
+                return;
+            }
+
+            grid.innerHTML = productList.map(product => `
+        <div class="product-card" onclick="showProductDetails('${product.id}')">
+          <div class="product-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
+          <div class="product-brand">${product.brand}</div>
+          <h3 class="product-name">${product.name}</h3>
+          <div class="product-price">$${product.price.toFixed(2)}</div>
+          <button class="view-details-btn" onclick="event.stopPropagation(); showProductDetails('${product.id}')">View Details</button>
+          <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${product.id}')">Add to Cart</button>
+        </div>
+      `).join('');
+        }
+
+        function performSearch() {
+            const searchInput = document.getElementById('search-input');
+            currentSearchTerm = searchInput.value.trim();
+
+            if (!currentSearchTerm) {
+                return;
+            }
+
+            const allProducts = Object.values(products).flat();
+            const results = allProducts.filter(p =>
+                p.name.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
+                p.brand.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
+                p.category.toLowerCase().includes(currentSearchTerm.toLowerCase())
+            );
+
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = `
+        <h1 class="page-title">Search Results</h1>
+        <p class="page-subtitle">Found ${results.length} products for "${currentSearchTerm}"</p>
+        
+        <div class="products-grid">
+          ${results.length === 0 ? `
+            <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+              <div style="width: 80px; height: 80px; margin: 0 auto 20px auto; border-radius: 8px; overflow: hidden; opacity: 0.5;">
+                <img src="no-results.jpg" alt="No Results" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='No Results'; this.style.display='none';">
+              </div>
+              <h3 style="font-size: 24px; color: #2c3e50; margin: 0 0 10px 0;">No products found</h3>
+              <p style="font-size: 16px; color: #7f8c8d;">Try a different search term</p>
+            </div>
+          ` : results.map(product => `
+            <div class="product-card">
+              <div class="product-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
+              <div class="product-brand">${product.brand}</div>
+              <h3 class="product-name">${product.name}</h3>
+              <div class="product-price">$${product.price.toFixed(2)}</div>
+              <button class="add-to-cart-btn" onclick="addToCart('${product.id}')">Add to Cart</button>
+            </div>
+          `).join('')}
+        </div>
+      `;
+        }
+
+        async function addToCart(productId) {
+            const allProducts = Object.values(products).flat();
+            const product = allProducts.find(p => p.id === productId);
+
+            if (!product) return;
+
+            if (cart.length >= 999) {
+                showToast('Maximum limit of 999 items reached. Please remove some items first.', '#e74c3c');
+                return;
+            }
+
+            const existingItem = cart.find(item => item.product_id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+                const updateResult = await window.dataSdk.update(existingItem);
+                if (updateResult.isOk) {
+                    showToast('Updated quantity in cart!');
+                } else {
+                    showToast('Failed to update cart', '#e74c3c');
+                }
+            } else {
+                const createResult = await window.dataSdk.create({
+                    id: `cart_${Date.now()}_${Math.random()}`,
+                    type: 'cart',
+                    product_id: productId,
+                    quantity: 1,
+                    created_at: new Date().toISOString()
+                });
+
+                if (createResult.isOk) {
+                    showToast('Added to cart!');
+                } else {
+                    showToast('Failed to add to cart', '#e74c3c');
+                }
+            }
+        }
+
+        function showToast(message, bgColor = '#27ae60') {
+            const existingToast = document.querySelector('.toast');
+            if (existingToast) {
+                existingToast.remove();
+            }
+
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            toast.style.background = bgColor;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        function showCart() {
+            currentCategory = 'cart';
+            document.querySelectorAll('.nav-links button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            renderCartPage();
+        }
+
+        function renderCartPage() {
+            const mainContent = document.getElementById('main-content');
+
+            if (cart.length === 0) {
+                mainContent.innerHTML = `
+          <div class="cart-page">
+            <div class="empty-state">
+              <div style="width: 120px; height: 120px; margin: 0 auto 20px auto; border-radius: 8px; overflow: hidden; opacity: 0.5;">
+                <img src="empty-cart.jpg" alt="Empty Cart" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Empty Cart'; this.style.display='none';">
+              </div>
+              <h3>Your cart is empty</h3>
+              <p>Add some products to get started</p>
+              <button class="back-btn" onclick="showCategory('home')">Continue Shopping</button>
+            </div>
+          </div>
+        `;
+                return;
+            }
+
+            const allProducts = Object.values(products).flat();
+            const cartItems = cart.map(item => {
+                const product = allProducts.find(p => p.id === item.product_id);
+                return { ...item, product };
+            });
+
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
+
+            mainContent.innerHTML = `
+        <div class="cart-page">
+          <h1 class="page-title">Shopping Cart</h1>
+          <p class="page-subtitle">${cart.length} item(s) in your cart</p>
+          
+          <div>
+            ${cartItems.map(item => `
+              <div class="cart-item">
+                <div class="cart-item-image"><img src="${item.product.icon}" alt="${item.product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
+                <div class="cart-item-details">
+                  <h3 class="cart-item-name">${item.product.name}</h3>
+                  <p class="cart-item-brand">${item.product.brand}</p>
+                  <div class="cart-item-price">$${item.product.price.toFixed(2)}</div>
+                </div>
+                <div class="cart-item-actions">
+                  <button class="qty-btn" onclick="updateQuantity('${item.__backendId}', ${item.quantity - 1})">-</button>
+                  <span class="qty-display">${item.quantity}</span>
+                  <button class="qty-btn" onclick="updateQuantity('${item.__backendId}', ${item.quantity + 1})">+</button>
+                  <button class="remove-btn" onclick="removeFromCart('${item.__backendId}')">Remove</button>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+          
+          <div class="cart-summary">
+            <div class="summary-row">
+              <span>Subtotal:</span>
+              <span>$${subtotal.toFixed(2)}</span>
+            </div>
+            <div class="summary-row">
+              <span>Tax (10%):</span>
+              <span>$${tax.toFixed(2)}</span>
+            </div>
+            <div class="summary-row total">
+              <span>Total:</span>
+              <span>$${total.toFixed(2)}</span>
+            </div>
+            <button class="continue-shopping-btn" onclick="showCategory('home')">Continue Shopping</button>
+            <button class="checkout-btn" onclick="showCategory('checkout')">Proceed to Checkout</button>
+          </div>
+        </div>
+      `;
+        }
+
+        async function updateQuantity(backendId, newQuantity) {
+            if (newQuantity < 1) return;
+
+            const item = cart.find(i => i.__backendId === backendId);
+            if (!item) return;
+
+            item.quantity = newQuantity;
+            const updateResult = await window.dataSdk.update(item);
+
+            if (!updateResult.isOk) {
+                showToast('Failed to update quantity', '#e74c3c');
+            }
+        }
+
+        async function removeFromCart(backendId) {
+            const item = cart.find(i => i.__backendId === backendId);
+            if (!item) return;
+
+            const deleteResult = await window.dataSdk.delete(item);
+
+            if (deleteResult.isOk) {
+                showToast('Removed from cart');
+            } else {
+                showToast('Failed to remove item', '#e74c3c');
+            }
+        }
+
+        function renderCheckoutPage() {
+            const allProducts = Object.values(products).flat();
+            const cartItems = cart.map(item => {
+                const product = allProducts.find(p => p.id === item.product_id);
+                return { ...item, product };
+            });
+
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
+
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = `
+        <div class="checkout-page">
+          <h1 class="page-title">Checkout</h1>
+          <p class="page-subtitle">Complete your order</p>
+          
+          <div id="checkout-message"></div>
+          
+          <form id="checkout-form" onsubmit="submitOrder(event)">
+            <div class="form-group">
+              <label for="customer-name">Full Name *</label>
+              <input type="text" id="customer-name" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="customer-email">Email Address *</label>
+              <input type="email" id="customer-email" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="customer-phone">Phone Number *</label>
+              <input type="tel" id="customer-phone" required>
+            </div>
+            
+            <div class="form-group">
+              <label for="customer-address">Shipping Address *</label>
+              <textarea id="customer-address" required></textarea>
+            </div>
+            
+            <div class="cart-summary">
+              <h3 style="margin: 0 0 15px 0;">Order Summary</h3>
+              ${cartItems.map(item => `
+                <div class="summary-row">
+                  <span>${item.product.name} x ${item.quantity}</span>
+                  <span>$${(item.product.price * item.quantity).toFixed(2)}</span>
+                </div>
+              `).join('')}
+              <div class="summary-row">
+                <span>Subtotal:</span>
+                <span>$${subtotal.toFixed(2)}</span>
+              </div>
+              <div class="summary-row">
+                <span>Tax (10%):</span>
+                <span>$${tax.toFixed(2)}</span>
+              </div>
+              <div class="summary-row total">
+                <span>Total:</span>
+                <span>$${total.toFixed(2)}</span>
+              </div>
+              <button type="button" class="continue-shopping-btn" onclick="showCart()">Back to Cart</button>
+              <button type="submit" class="checkout-btn" id="submit-order-btn">Place Order</button>
+            </div>
+          </form>
+        </div>
+      `;
+        }
+
+        async function submitOrder(event) {
+            event.preventDefault();
+
+            const submitBtn = document.getElementById('submit-order-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Processing...';
+
+            const name = document.getElementById('customer-name').value;
+            const email = document.getElementById('customer-email').value;
+            const phone = document.getElementById('customer-phone').value;
+            const address = document.getElementById('customer-address').value;
+
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            for (const item of cart) {
+                await window.dataSdk.delete(item);
+            }
+
+            const messageDiv = document.getElementById('checkout-message');
+            messageDiv.innerHTML = `
+        <div class="success-message">
+          <strong>Order placed successfully!</strong><br>
+          Thank you for your order, ${name}. We'll send a confirmation email to ${email}.
+        </div>
+      `;
+
+            document.getElementById('checkout-form').style.display = 'none';
+
+            setTimeout(() => {
+                showCategory('home');
+            }, 3000);
+        }
+
+        function renderServicePage() {
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = `
+        <div class="service-page">
+          <h1 class="page-title">Toyota Corolla Service Booking</h1>
+          <p class="page-subtitle">Schedule your maintenance service based on mileage</p>
+          
+          <div class="service-grid">
+            ${servicePackages.map((pkg, index) => `
+              <div class="service-card ${selectedService === index ? 'selected' : ''}" onclick="selectService(${index})">
+                <div class="service-km">${pkg.km} KM</div>
+                <div class="service-title">${pkg.title}</div>
+                <div class="service-price">$${pkg.price.toFixed(2)}</div>
+                <p style="margin: 10px 0 0 0; color: #7f8c8d; font-size: 14px;">${pkg.items.length} service items</p>
+              </div>
+            `).join('')}
+          </div>
+          
+          <div id="service-details-container"></div>
+        </div>
+      `;
+        }
+
+        function showProductDetails(productId) {
+            const allProducts = Object.values(products).flat();
+            const product = allProducts.find(p => p.id === productId);
+
+            if (!product) return;
+
+            const modal = document.createElement('div');
+            modal.className = 'product-details-modal';
+            modal.innerHTML = `
+        <div class="product-details-content">
+          <button class="close-modal" onclick="closeProductModal()">&times;</button>
+          <div class="product-details-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
+          <h2 style="margin: 0 0 10px 0; color: #2c3e50; font-size: 28px;">${product.name}</h2>
+          <div class="product-brand" style="font-size: 16px; margin-bottom: 15px;">${product.brand}</div>
+          <div class="product-price" style="font-size: 32px; margin-bottom: 20px;">$${product.price.toFixed(2)}</div>
+          
+          <p style="color: #7f8c8d; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">${product.description}</p>
+          
+          <div class="product-specs">
+            <h4>Product Specifications</h4>
+            <div class="spec-row">
+              <span class="spec-label">Part Number:</span>
+              <span class="spec-value">${product.partNumber}</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Compatibility:</span>
+              <span class="spec-value">${product.compatibility}</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Warranty:</span>
+              <span class="spec-value">${product.warranty}</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-label">Category:</span>
+              <span class="spec-value">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span>
+            </div>
+          </div>
+          
+          <button class="add-to-cart-btn" onclick="addToCart('${product.id}'); closeProductModal();" style="margin-top: 25px;">
+            Add to Cart - $${product.price.toFixed(2)}
+          </button>
+        </div>
+      `;
+
+            document.body.appendChild(modal);
+
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeProductModal();
+                }
+            });
+        }
+
+        function closeProductModal() {
+            const modal = document.querySelector('.product-details-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function selectService(index) {
+            currentCategory = 'service-details';
+            selectedService = index;
+            includeParts = false;
+            selectedParts = [];
+
+            renderServiceDetailsPage();
+        }
+
+        function renderServiceDetailsPage() {
+            if (selectedService === null) return;
+
+            const pkg = servicePackages[selectedService];
+            const allProducts = Object.values(products).flat();
+
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = `
+        <div class="service-details-page">
+          <button class="back-btn" onclick="showCategory('service')" style="margin-bottom: 20px;">Back to Services</button>
+          
+          <h1 class="page-title">${pkg.km} KM Service - ${pkg.title}</h1>
+          <p class="page-subtitle">Complete maintenance package for your Toyota Corolla</p>
+          
+          <div style="background: white; padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+              <div>
+                <h3 style="margin: 0; color: #2c3e50; font-size: 24px;">${pkg.title}</h3>
+                <p style="margin: 5px 0 0 0; color: #7f8c8d;">Recommended at ${pkg.km} kilometers</p>
+              </div>
+              <div class="service-price" style="margin: 0;">$${pkg.price.toFixed(2)}</div>
+            </div>
+            
+            <table class="service-table">
+              <thead>
+                <tr>
+                  <th>Service Item</th>
+                  <th>Status</th>
+                  <th>Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${pkg.items.map(item => `
+                  <tr>
+                    <td><strong>${item.name}</strong></td>
+                    <td>${item.required ? '<span style="color: #e74c3c; font-weight: 600;">Required</span>' : '<span style="color: #7f8c8d;">Optional</span>'}</td>
+                    <td style="color: #7f8c8d; font-size: 14px;">${getServiceDescription(item.name)}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="parts-option">
+            <label>
+              <input type="checkbox" id="include-parts-checkbox" onchange="togglePartsSelection(this.checked)">
+              <span>Include parts replacement with this service</span>
+            </label>
+          </div>
+          
+          <div id="parts-selection-container"></div>
+          
+          <div class="booking-form">
+            <h3>Book Your Appointment</h3>
+            <form id="service-booking-form" onsubmit="submitServiceBooking(event)">
+              <div class="form-group">
+                <label for="service-customer-name">Full Name *</label>
+                <input type="text" id="service-customer-name" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="service-customer-phone">Phone Number *</label>
+                <input type="tel" id="service-customer-phone" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="service-customer-email">Email Address *</label>
+                <input type="email" id="service-customer-email" required>
+              </div>
+              
+              <div class="form-group">
+                <label for="service-appointment-date">Preferred Date *</label>
+                <input type="date" id="service-appointment-date" required min="${new Date().toISOString().split('T')[0]}">
+              </div>
+              
+              <div class="cart-summary">
+                <div class="summary-row">
+                  <span>Service Package:</span>
+                  <span>$${pkg.price.toFixed(2)}</span>
+                </div>
+                <div class="summary-row" id="parts-cost-row" style="display: none;">
+                  <span>Parts Cost:</span>
+                  <span id="parts-cost">$0.00</span>
+                </div>
+                <div class="summary-row total">
+                  <span>Total Cost:</span>
+                  <span id="total-cost">$${pkg.price.toFixed(2)}</span>
+                </div>
+                <button type="submit" class="checkout-btn" id="book-service-btn">Book Service Appointment</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      `;
+        }
+
+        function getServiceDescription(serviceName) {
+            const descriptions = {
+                'Engine Oil Change': 'Replace old engine oil with fresh, high-quality oil',
+                'Oil Filter Replacement': 'Install new oil filter to ensure clean oil circulation',
+                'Air Filter Replacement': 'Replace air filter for optimal engine breathing',
+                'Air Filter Inspection': 'Check air filter condition and clean if necessary',
+                'Spark Plugs Replacement': 'Install new spark plugs for better ignition',
+                'Spark Plugs Check': 'Inspect spark plugs condition and gap',
+                'Timing Belt Replacement': 'Replace timing belt to prevent engine damage',
+                'Timing Belt Inspection': 'Check timing belt for wear and proper tension',
+                'Water Pump Replacement': 'Install new water pump for cooling system',
+                'Water Pump Check': 'Inspect water pump for leaks and proper operation',
+                'Water Pump Inspection': 'Check water pump condition and coolant flow',
+                'Thermostat Replacement': 'Replace thermostat for proper temperature control',
+                'Thermostat Check': 'Test thermostat operation and temperature range',
+                'Transmission Fluid Change': 'Replace transmission fluid for smooth shifting',
+                'Transmission Fluid Check': 'Check transmission fluid level and condition',
+                'Coolant Flush': 'Complete cooling system flush and refill',
+                'Coolant Replacement': 'Replace old coolant with fresh antifreeze',
+                'Coolant Check': 'Check coolant level and concentration',
+                'Brake Pads Inspection': 'Inspect brake pads for wear and thickness',
+                'Brake Pads Front': 'Replace front brake pads for safe stopping',
+                'Brake Pads Rear': 'Replace rear brake pads for optimal braking',
+                'Brake Pads All Around': 'Replace all brake pads front and rear',
+                'Brake Pads & Rotors Front': 'Replace front brake pads and rotors',
+                'Brake Pads & Rotors Rear': 'Replace rear brake pads and rotors',
+                'Brake Fluid Check': 'Check brake fluid level and color',
+                'Brake Fluid Replacement': 'Replace brake fluid for safe braking',
+                'Brake Fluid Flush': 'Complete brake system fluid flush',
+                'Brake System Overhaul': 'Complete brake system inspection and service',
+                'Brake Inspection': 'Comprehensive brake system inspection',
+                'Tire Rotation': 'Rotate tires for even wear pattern',
+                'Tire Rotation & Balance': 'Rotate and balance tires for smooth ride',
+                'Battery Test': 'Test battery condition and charging system',
+                'Cabin Air Filter': 'Replace cabin air filter for clean interior air',
+                'Power Steering Fluid': 'Check and top up power steering fluid',
+                'Differential Oil Change': 'Replace differential oil for smooth operation',
+                'Fuel System Cleaning': 'Clean fuel injectors and system components',
+                'Fuel System Clean': 'Professional fuel system cleaning service',
+                'Engine Degreasing': 'Clean engine bay and remove oil buildup',
+                'Suspension Check': 'Inspect suspension components for wear',
+                'Complete Inspection': 'Comprehensive vehicle safety inspection',
+                'Complete Vehicle Inspection': 'Full multi-point vehicle inspection',
+                'Comprehensive Inspection': 'Detailed inspection of all vehicle systems'
+            };
+
+            return descriptions[serviceName] || 'Professional automotive service';
+        }
+
+        function togglePartsSelection(checked) {
+            includeParts = checked;
+
+            if (checked) {
+                renderPartsSelection();
+            } else {
+                document.getElementById('parts-selection-container').innerHTML = '';
+                selectedParts = [];
+                updateServiceTotal();
+            }
+        }
+
+        function renderPartsSelection() {
+            const pkg = servicePackages[selectedService];
+            const allProducts = Object.values(products).flat();
+
+            const availableParts = pkg.items
+                .filter(item => item.part)
+                .map(item => {
+                    const product = allProducts.find(p => p.id === item.part);
+                    return { ...item, product };
+                })
+                .filter(item => item.product);
+
+            const container = document.getElementById('parts-selection-container');
+            container.innerHTML = `
+        <div class="parts-selection">
+          <h4 style="margin: 0 0 15px 0; color: #2c3e50;">Select Parts to Include:</h4>
+          ${availableParts.map(item => `
+            <div class="part-item">
+              <label>
+                <input type="checkbox" value="${item.product.id}" onchange="togglePart('${item.product.id}', ${item.product.price}, this.checked)">
+                <span>${item.product.name} (${item.product.brand})</span>
+              </label>
+              <span class="part-price">$${item.product.price.toFixed(2)}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+        }
+
+        function togglePart(productId, price, checked) {
+            if (checked) {
+                selectedParts.push({ productId, price });
+            } else {
+                selectedParts = selectedParts.filter(p => p.productId !== productId);
+            }
+            updateServiceTotal();
+        }
+
+        function updateServiceTotal() {
+            const pkg = servicePackages[selectedService];
+            const partsCost = selectedParts.reduce((sum, part) => sum + part.price, 0);
+            const total = pkg.price + partsCost;
+
+            const partsCostRow = document.getElementById('parts-cost-row');
+            const partsCostSpan = document.getElementById('parts-cost');
+            const totalCostSpan = document.getElementById('total-cost');
+
+            if (partsCost > 0) {
+                partsCostRow.style.display = 'flex';
+                partsCostSpan.textContent = `$${partsCost.toFixed(2)}`;
+            } else {
+                partsCostRow.style.display = 'none';
+            }
+
+            totalCostSpan.textContent = `$${total.toFixed(2)}`;
+        }
+
+        async function submitServiceBooking(event) {
+            event.preventDefault();
+
+            if (cart.length >= 999) {
+                showToast('Maximum limit of 999 bookings reached. Please contact support.', '#e74c3c');
+                return;
+            }
+
+            const submitBtn = document.getElementById('book-service-btn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Booking...';
+
+            const pkg = servicePackages[selectedService];
+            const name = document.getElementById('service-customer-name').value;
+            const phone = document.getElementById('service-customer-phone').value;
+            const email = document.getElementById('service-customer-email').value;
+            const date = document.getElementById('service-appointment-date').value;
+
+            const bookingData = {
+                id: `service_${Date.now()}_${Math.random()}`,
+                type: 'service',
+                service_km: pkg.km,
+                with_parts: includeParts,
+                customer_name: name,
+                customer_phone: phone,
+                customer_email: email,
+                appointment_date: date,
+                created_at: new Date().toISOString()
+            };
+
+            const createResult = await window.dataSdk.create(bookingData);
+
+            if (createResult.isOk) {
+                const form = document.getElementById('service-booking-form');
+                form.innerHTML = `
+          <div class="success-message">
+            <strong>Service appointment booked successfully!</strong><br>
+            Your ${pkg.km} KM service for Toyota Corolla has been scheduled for ${date}.<br>
+            We'll send a confirmation to ${email}.
+          </div>
+        `;
+
+                setTimeout(() => {
+                    showCategory('home');
+                }, 3000);
+            } else {
+                showToast('Failed to book service. Please try again.', '#e74c3c');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Book Service Appointment';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+    <script>(function () { function c() { var b = a.contentDocument || a.contentWindow.document; if (b) { var d = b.createElement('script'); d.innerHTML = "window.__CF$cv$params={r:'997233474243e238',t:'MTc2MTkwMzcyNC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);"; b.getElementsByTagName('head')[0].appendChild(d) } } if (document.body) { var a = document.createElement('iframe'); a.height = 1; a.width = 1; a.style.position = 'absolute'; a.style.top = 0; a.style.left = 0; a.style.border = 'none'; a.style.visibility = 'hidden'; document.body.appendChild(a); if ('loading' !== document.readyState) c(); else if (window.addEventListener) document.addEventListener('DOMContentLoaded', c); else { var e = document.onreadystatechange || function () { }; document.onreadystatechange = function (b) { e(b); 'loading' !== document.readyState && (document.onreadystatechange = e, c()) } } } })();</script>
+</body>
+
+</html>
