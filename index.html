@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Auto Parts Store</title>
     <link rel="stylesheet" href="style.css">
-    <script src="/_sdk/element_sdk.js"></script>
-    <script src="/_sdk/data_sdk.js"></script>
     <style>
         @view-transition {
             navigation: auto;
@@ -40,6 +38,7 @@
                     placeholder="Search for parts, brands, or categories..."> <button class="search-btn"
                     onclick="performSearch()">Search</button>
             </div>
+            <div id="search-history-container"></div>
         </div>
     </header>
     <nav class="nav">
@@ -51,6 +50,7 @@
             <li><button onclick="showCategory('lights')" id="nav-lights">Lights &amp; Electrical</button></li>
             <li><button onclick="showCategory('fluids')" id="nav-fluids">Maintenance Fluids</button></li>
             <li><button onclick="showCategory('service')" id="nav-service">Service Booking</button></li>
+            <li><button onclick="showCategory('about')" id="nav-about">About Us</button></li>
         </ul>
     </nav>
     <div class="container">
@@ -77,6 +77,92 @@
         let currentSearchTerm = '';
         let currentSortBy = 'name';
         let currentFilterBrand = 'all';
+        let searchHistory = [];
+
+        // Mock element_sdk.js
+        (function() {
+            let configHandler;
+            let config = {};
+
+            window.elementSdk = {
+                init: function(handler) {
+                    configHandler = handler;
+                    if (configHandler && typeof configHandler.onConfigChange === 'function') {
+                        configHandler.onConfigChange(config);
+                    }
+                },
+                setConfig: function(newConfig) {
+                    config = { ...config, ...newConfig };
+                    if (configHandler && typeof configHandler.onConfigChange === 'function') {
+                        configHandler.onConfigChange(config);
+                    }
+                }
+            };
+        })();
+
+        // Mock data_sdk.js
+        (function() {
+            let dataHandler;
+            let data = [];
+
+            function persistData() {
+                try {
+                    localStorage.setItem('sdk_data', JSON.stringify(data));
+                } catch (e) {
+                    console.error("Could not persist data to localStorage", e);
+                }
+            }
+
+            function notifyDataChange() {
+                if (dataHandler && typeof dataHandler.onDataChanged === 'function') {
+                    dataHandler.onDataChanged(JSON.parse(JSON.stringify(data)));
+                }
+            }
+
+            window.dataSdk = {
+                init: function(handler) {
+                    dataHandler = handler;
+                    try {
+                        const storedData = localStorage.getItem('sdk_data');
+                        if (storedData) {
+                            data = JSON.parse(storedData);
+                        }
+                    } catch (e) {
+                        console.error("Could not load data from localStorage", e);
+                        data = [];
+                    }
+                    notifyDataChange();
+                    return Promise.resolve({ isOk: true });
+                },
+                create: function(item) {
+                    item.__backendId = `mock_${Date.now()}_${Math.random()}`;
+                    data.push(item);
+                    persistData();
+                    notifyDataChange();
+                    return Promise.resolve({ isOk: true });
+                },
+                update: function(item) {
+                    const index = data.findIndex(d => d.__backendId === item.__backendId);
+                    if (index !== -1) {
+                        data[index] = item;
+                        persistData();
+                        notifyDataChange();
+                        return Promise.resolve({ isOk: true });
+                    }
+                    return Promise.resolve({ isOk: false });
+                },
+                delete: function(item) {
+                    const index = data.findIndex(d => d.__backendId === item.__backendId);
+                    if (index !== -1) {
+                        data.splice(index, 1);
+                        persistData();
+                        notifyDataChange();
+                        return Promise.resolve({ isOk: true });
+                    }
+                    return Promise.resolve({ isOk: false });
+                }
+            };
+        })();
 
         const products = {
             engine: [
@@ -537,6 +623,32 @@
             }
 
             showCategory('home');
+            loadSearchHistory();
+            renderSearchHistory();
+        }
+
+        function loadSearchHistory() {
+            const storedHistory = localStorage.getItem('searchHistory');
+            if (storedHistory) {
+                searchHistory = JSON.parse(storedHistory);
+            }
+        }
+
+        function renderSearchHistory() {
+            const historyContainer = document.getElementById('search-history-container');
+            if (historyContainer) {
+                historyContainer.innerHTML = `
+                    <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center;">
+                        <span style="font-weight: 500; color: white;">Recent Searches:</span>
+                        ${searchHistory.map(term => `<button class="search-history-btn" onclick="performSearchFromHistory('${term}')">${term}</button>`).join('')}
+                    </div>
+                `;
+            }
+        }
+
+        function performSearchFromHistory(term) {
+            document.getElementById('search-input').value = term;
+            performSearch();
         }
 
         function adjustColor(color, percent) {
@@ -579,9 +691,24 @@
                 renderCheckoutPage();
             } else if (category === 'service') {
                 renderServicePage();
+            } else if (category === 'about') {
+                renderAboutPage();
             } else {
                 renderCategoryPage(category);
             }
+        }
+
+        function renderAboutPage() {
+            const mainContent = document.getElementById('main-content');
+            mainContent.innerHTML = `
+                <h1 class="page-title">About Us</h1>
+                <p class="page-subtitle">Your trusted source for quality auto parts</p>
+                <div style="background: white; padding: 30px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                    <p>Welcome to Auto Parts Pro, your one-stop shop for high-quality auto parts. We are passionate about cars and dedicated to providing our customers with the best parts and service in the industry.</p>
+                    <p>Our mission is to make it easy and affordable for you to keep your vehicle in top condition. We offer a wide selection of parts for all makes and models, backed by our expert team and commitment to customer satisfaction.</p>
+                    <p>Thank you for choosing Auto Parts Pro. We look forward to serving you!</p>
+                </div>
+            `;
         }
 
         function renderHomePage() {
@@ -757,6 +884,15 @@
 
             if (!currentSearchTerm) {
                 return;
+            }
+
+            if (!searchHistory.includes(currentSearchTerm)) {
+                searchHistory.unshift(currentSearchTerm);
+                if (searchHistory.length > 5) {
+                    searchHistory.pop();
+                }
+                localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+                renderSearchHistory();
             }
 
             const allProducts = Object.values(products).flat();
