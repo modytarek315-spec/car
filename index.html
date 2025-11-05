@@ -763,11 +763,15 @@
             grid.innerHTML = productList.map(product => `
         <div class="product-card" onclick="showProductDetails('${product.id}')">
           <div class="product-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
-          <div class="product-brand">${product.brand}</div>
-          <h3 class="product-name">${product.name}</h3>
-          <div class="product-price">${product.price.toFixed(2)} <span style="font-size: 0.7em;">EGP</span></div>
-          <button class="view-details-btn" onclick="event.stopPropagation(); showProductDetails('${product.id}')">View Details</button>
-          <button class="add-to-cart-btn" onclick="event.stopPropagation(); addToCart('${product.id}')">Add to Cart</button>
+          <div class="product-info">
+            <div class="product-brand">${product.brand}</div>
+            <h3 class="product-name">${product.name}</h3>
+            <div class="product-price">${product.price.toFixed(2)} <span style="font-size: 0.7em;">EGP</span></div>
+          </div>
+          <div class="product-actions">
+            <button class="view-details-btn product-action-btn" onclick="event.stopPropagation(); showProductDetails('${product.id}')">View Details</button>
+            <button class="add-to-cart-btn product-action-btn" onclick="event.stopPropagation(); addToCart('${product.id}')">Add to Cart</button>
+          </div>
         </div>
       `).join('');
         }
