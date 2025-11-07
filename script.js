@@ -15,6 +15,94 @@ const translations = {
     navFluids: "Maintenance Fluids",
     navService: "Service Booking",
     navAbout: "About Us",
+    aboutUsTitle: "About Us",
+    aboutUsSubtitle: "Your trusted source for quality auto parts",
+    aboutUsWelcome: "Welcome to Auto Parts Pro, your one-stop shop for high-quality auto parts. We are passionate about cars and dedicated to providing our customers with the best parts and service in the industry.",
+    aboutUsMission: "Our mission is to make it easy and affordable for you to keep your vehicle in top condition. We offer a wide selection of parts for all makes and models, backed by our expert team and commitment to customer satisfaction.",
+    aboutUsThanks: "Thank you for choosing Auto Parts Pro. We look forward to serving you!",
+    welcomeMessage: "Welcome to",
+    browseCollection: "Browse our extensive collection of quality auto parts",
+    engineParts: "Engine Parts",
+    enginePartsDesc: "Essential engine components",
+    brakes: "Brakes",
+    brakesDesc: "Brake pads, rotors & more",
+    suspension: "Suspension",
+    suspensionDesc: "Tires, wheels & accessories",
+    maintenanceParts: "Maintenance Parts",
+    maintenancePartsDesc: "Lighting & electrical parts",
+    maintenanceFluids: "Maintenance Oils and Lubricants",
+    maintenanceFluidsDesc: "Oils, coolants & fluids",
+    serviceBooking: "Service Booking",
+    serviceBookingDesc: "Book your Toyota Corolla service",
+    highQualityParts: "High-quality parts for your vehicle",
+    noProductsFound: "No products found",
+    tryAdjustingFilters: "Try adjusting your filters or search term",
+    viewDetails: "View Details",
+    addToCart: "Add to Cart",
+    searchResults: "Search Results",
+    foundProducts: "Found {count} products for \"{term}\"",
+    tryDifferentSearch: "Try a different search term",
+    updatedCart: "Updated quantity in cart!",
+    failedUpdateCart: "Failed to update cart",
+    addedToCart: "Added to cart!",
+    failedAddToCart: "Failed to add to cart",
+    maxCartLimit: "Maximum limit of 999 items reached. Please remove some items first.",
+    removedFromCart: "Removed from cart",
+    failedRemoveItem: "Failed to remove item",
+    shoppingCart: "Shopping Cart",
+    itemsInCart: "{count} item(s) in your cart",
+    cartEmpty: "Your cart is empty",
+    addProductsToStart: "Add some products to get started",
+    continueShopping: "Continue Shopping",
+    remove: "Remove",
+    subtotal: "Subtotal:",
+    tax: "Tax (14%):",
+    total: "Total:",
+    proceedToCheckout: "Proceed to Checkout",
+    checkout: "Checkout",
+    completeYourOrder: "Complete your order",
+    fullName: "Full Name *",
+    emailAddress: "Email Address *",
+    phoneNumber: "Phone Number *",
+    shippingAddress: "Shipping Address *",
+    orderSummary: "Order Summary",
+    backToCart: "Back to Cart",
+    placeOrder: "Place Order",
+    processing: "Processing...",
+    orderPlaced: "Order placed successfully!",
+    orderConfirmation: "Thank you for your order, {name}. We'll send a confirmation email to {email}.",
+    serviceBookingTitle: "Toyota Corolla Service Booking",
+    serviceBookingSubtitle: "Schedule your maintenance service based on mileage",
+    serviceItems: "{count} service items",
+    productSpecs: "Product Specifications",
+    partNumber: "Part Number:",
+    compatibility: "Compatibility:",
+    category: "Category:",
+    addToCartPrice: "Add to Cart - {price}",
+    backToServices: "Back to Services",
+    kmService: "{km} KM Service - {title}",
+    completePackage: "Complete maintenance package for your Toyota Corolla",
+    recommendedAt: "Recommended at {km} kilometers",
+    serviceItem: "Service Item",
+    status: "Status",
+    description: "Description",
+    required: "Required",
+    optional: "Optional",
+    includeParts: "Include parts replacement with this service",
+    bookAppointment: "Book Your Appointment",
+    preferredDate: "Preferred Date *",
+    servicePackage: "Service Package:",
+    partsCost: "Parts Cost:",
+    totalCost: "Total Cost:",
+    bookServiceAppointment: "Book Service Appointment",
+    selectParts: "Select Parts to Include:",
+    booking: "Booking...",
+    serviceBooked: "Service appointment booked successfully!",
+    serviceConfirmation: "Your {km} KM service for Toyota Corolla has been scheduled for {date}. We'll send a confirmation to {email}.",
+    recentSearches: "Recent Searches:",
+    currency: "EGP"
+  },
+  ar: {},
 
   },
   ar: {
@@ -123,6 +211,19 @@ const translations = {
 };
 
 let currentLanguage = localStorage.getItem("language") || "en";
+
+function aiTranslate(text, targetLang) {
+  return `(AI-${targetLang}) ${text}`;
+}
+
+function t(key, replacements = {}) {
+  let translation;
+  if (currentLanguage === 'ar') {
+    const englishText = translations.en[key] || key;
+    translation = aiTranslate(englishText, 'ar');
+  } else {
+    translation = translations[currentLanguage][key] || key;
+  }
 
 function t(key, replacements = {}) {
   let translation = translations[currentLanguage][key] || key;
@@ -980,6 +1081,8 @@ function performSearch() {
 
   const mainContent = document.getElementById('main-content');
   mainContent.innerHTML = `
+    <h1 class="page-title">${t("searchResults")}</h1>
+    <p class="page-subtitle">${t("foundProducts", { count: results.length, term: currentSearchTerm })}</p>
       <h1 class="page-title">${t("searchResults")}</h1>
     <p class="page-subtitle">${t("foundProducts", { count: results.length, term: currentSearchTerm })}</p>
     <h1 class="page-title">Search Results</h1>
