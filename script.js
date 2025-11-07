@@ -1,121 +1,15 @@
-const translations = {
-  en: {
-    storeName: "Car House 🚗",
-    storeTagline: "Quality Parts for Your Vehicle",
-    contactPhoneLabel: "Phone:",
-    contactEmailLabel: "Email:",
-    cartBtnLabel: "Cart",
-    searchInputPlaceholder: "Search for parts, brands, or categories...",
-    searchBtn: "Search",
-    navHome: "Home",
-    navEngine: "Engine Parts",
-    navBrakes: "Brakes",
-    navSuspension: "Suspension",
-    navMaintenance: "Maintenance Parts",
-    navFluids: "Maintenance Fluids",
-    navService: "Service Booking",
-    navAbout: "About Us",
-    aboutUsTitle: "About Us",
-    aboutUsSubtitle: "Your trusted source for quality auto parts",
-    aboutUsWelcome: "Welcome to Car House 🚗, your one-stop shop for high-quality auto parts. We are passionate about cars and dedicated to providing our customers with the best parts and service in the industry.",
-    aboutUsMission: "Our mission is to make it easy and affordable for you to keep your vehicle in top condition. We offer a wide selection of parts for all makes and models, backed by our expert team and commitment to customer satisfaction.",
-    aboutUsThanks: "Thank you for choosing Car House 🚗. We look forward to serving you!",
-    welcomeMessage: "Welcome to",
-    browseCollection: "Browse our extensive collection of quality auto parts",
-    engineParts: "Engine Parts",
-    enginePartsDesc: "Essential engine components",
-    brakes: "Brakes",
-    brakesDesc: "Brake pads, rotors & more",
-    suspension: "Suspension",
-    suspensionDesc: "Tires, wheels & accessories",
-    maintenanceParts: "Maintenance Parts",
-    maintenancePartsDesc: "Lighting & electrical parts",
-    maintenanceFluids: "Maintenance Oils and Lubricants",
-    maintenanceFluidsDesc: "Oils, coolants & fluids",
-    serviceBooking: "Service Booking",
-    serviceBookingDesc: "Book your Toyota Corolla service",
-    highQualityParts: "High-quality parts for your vehicle",
-    noProductsFound: "No products found",
-    tryAdjustingFilters: "Try adjusting your filters or search term",
-    viewDetails: "View Details",
-    addToCart: "Add to Cart",
-    searchResults: "Search Results",
-    foundProducts: "Found {count} products for \"{term}\"",
-    tryDifferentSearch: "Try a different search term",
-    updatedCart: "Updated quantity in cart!",
-    failedUpdateCart: "Failed to update cart",
-    addedToCart: "Added to cart!",
-    failedAddToCart: "Failed to add to cart",
-    maxCartLimit: "Maximum limit of 999 items reached. Please remove some items first.",
-    removedFromCart: "Removed from cart",
-    failedRemoveItem: "Failed to remove item",
-    shoppingCart: "Shopping Cart",
-    itemsInCart: "{count} item(s) in your cart",
-    cartEmpty: "Your cart is empty",
-    addProductsToStart: "Add some products to get started",
-    continueShopping: "Continue Shopping",
-    remove: "Remove",
-    subtotal: "Subtotal:",
-    tax: "Tax (14%):",
-    total: "Total:",
-    proceedToCheckout: "Proceed to Checkout",
-    checkout: "Checkout",
-    completeYourOrder: "Complete your order",
-    fullName: "Full Name *",
-    emailAddress: "Email Address *",
-    phoneNumber: "Phone Number *",
-    shippingAddress: "Shipping Address *",
-    orderSummary: "Order Summary",
-    backToCart: "Back to Cart",
-    placeOrder: "Place Order",
-    processing: "Processing...",
-    orderPlaced: "Order placed successfully!",
-    orderConfirmation: "Thank you for your order, {name}. We'll send a confirmation email to {email}.",
-    serviceBookingTitle: "Toyota Corolla Service Booking",
-    serviceBookingSubtitle: "Schedule your maintenance service based on mileage",
-    serviceItems: "{count} service items",
-    productSpecs: "Product Specifications",
-    partNumber: "Part Number:",
-    compatibility: "Compatibility:",
-    category: "Category:",
-    addToCartPrice: "Add to Cart - {price}",
-    backToServices: "Back to Services",
-    kmService: "{km} KM Service - {title}",
-    completePackage: "Complete maintenance package for your Toyota Corolla",
-    recommendedAt: "Recommended at {km} kilometers",
-    serviceItem: "Service Item",
-    status: "Status",
-    description: "Description",
-    required: "Required",
-    optional: "Optional",
-    includeParts: "Include parts replacement with this service",
-    bookAppointment: "Book Your Appointment",
-    preferredDate: "Preferred Date *",
-    servicePackage: "Service Package:",
-    partsCost: "Parts Cost:",
-    totalCost: "Total Cost:",
-    bookServiceAppointment: "Book Service Appointment",
-    selectParts: "Select Parts to Include:",
-    booking: "Booking...",
-    serviceBooked: "Service appointment booked successfully!",
-    serviceConfirmation: "Your {km} KM service for Toyota Corolla has been scheduled for {date}. We'll send a confirmation to {email}.",
-    recentSearches: "Recent Searches:",
-    currency: "EGP"
-  },
-};
-
 const defaultConfig = {
-  store_name: "Car House 🚗",
-  store_tagline: "Quality Parts for Your Vehicle",
-  contact_phone: "+1 (555) 123-4567",
-  contact_email: "info@autoparts.com",
-  primary_color: "#2C2C2C",
-  secondary_color: "#FFC700",
-  accent_color: "#FFC700",
-  success_color: "#FFD700",
-  background_color: "#1A1A1A",
-  font_family: "Segoe UI",
-  font_size: 16
+    store_name: "Car House 🚗",
+    store_tagline: "Quality Parts for Your Vehicle",
+    contact_phone: "+1 (555) 123-4567",
+    contact_email: "info@autoparts.com",
+    primary_color: "#2C2C2C",
+    secondary_color: "#FFC700",
+    accent_color: "#FFC700",
+    success_color: "#FFD700",
+    background_color: "#1A1A1A",
+    font_family: "Segoe UI",
+    font_size: 16
 };
 
 let config = { ...defaultConfig };
@@ -128,301 +22,301 @@ let searchHistory = [];
 
 // Mock element_sdk.js
 (function () {
-  let configHandler;
-  let config = {};
+    let configHandler;
+    let config = {};
 
-  window.elementSdk = {
-    init: function (handler) {
-      configHandler = handler;
-      if (configHandler && typeof configHandler.onConfigChange === 'function') {
-        configHandler.onConfigChange(config);
-      }
-    },
-    setConfig: function (newConfig) {
-      config = { ...config, ...newConfig };
-      if (configHandler && typeof configHandler.onConfigChange === 'function') {
-        configHandler.onConfigChange(config);
-      }
-    }
-  };
+    window.elementSdk = {
+        init: function (handler) {
+            configHandler = handler;
+            if (configHandler && typeof configHandler.onConfigChange === 'function') {
+                configHandler.onConfigChange(config);
+            }
+        },
+        setConfig: function (newConfig) {
+            config = { ...config, ...newConfig };
+            if (configHandler && typeof configHandler.onConfigChange === 'function') {
+                configHandler.onConfigChange(config);
+            }
+        }
+    };
 })();
 
 // Mock data_sdk.js
 (function () {
-  let dataHandler;
-  let data = [];
+    let dataHandler;
+    let data = [];
 
-  function persistData() {
-    try {
-      localStorage.setItem('sdk_data', JSON.stringify(data));
-    } catch (e) {
-      console.error("Could not persist data to localStorage", e);
-    }
-  }
-
-  function notifyDataChange() {
-    if (dataHandler && typeof dataHandler.onDataChanged === 'function') {
-      dataHandler.onDataChanged(JSON.parse(JSON.stringify(data)));
-    }
-  }
-
-  window.dataSdk = {
-    init: function (handler) {
-      dataHandler = handler;
-      try {
-        const storedData = localStorage.getItem('sdk_data');
-        if (storedData) {
-          data = JSON.parse(storedData);
+    function persistData() {
+        try {
+            localStorage.setItem('sdk_data', JSON.stringify(data));
+        } catch (e) {
+            console.error("Could not persist data to localStorage", e);
         }
-      } catch (e) {
-        console.error("Could not load data from localStorage", e);
-        data = [];
-      }
-      notifyDataChange();
-      return Promise.resolve({ isOk: true });
-    },
-    create: function (item) {
-      item.__backendId = `mock_${Date.now()}_${Math.random()}`;
-      data.push(item);
-      persistData();
-      notifyDataChange();
-      return Promise.resolve({ isOk: true });
-    },
-    update: function (item) {
-      const index = data.findIndex(d => d.__backendId === item.__backendId);
-      if (index !== -1) {
-        data[index] = item;
-        persistData();
-        notifyDataChange();
-        return Promise.resolve({ isOk: true });
-      }
-      return Promise.resolve({ isOk: false });
-    },
-    delete: function (item) {
-      const index = data.findIndex(d => d.__backendId === item.__backendId);
-      if (index !== -1) {
-        data.splice(index, 1);
-        persistData();
-        notifyDataChange();
-        return Promise.resolve({ isOk: true });
-      }
-      return Promise.resolve({ isOk: false });
     }
-  };
+
+    function notifyDataChange() {
+        if (dataHandler && typeof dataHandler.onDataChanged === 'function') {
+            dataHandler.onDataChanged(JSON.parse(JSON.stringify(data)));
+        }
+    }
+
+    window.dataSdk = {
+        init: function (handler) {
+            dataHandler = handler;
+            try {
+                const storedData = localStorage.getItem('sdk_data');
+                if (storedData) {
+                    data = JSON.parse(storedData);
+                }
+            } catch (e) {
+                console.error("Could not load data from localStorage", e);
+                data = [];
+            }
+            notifyDataChange();
+            return Promise.resolve({ isOk: true });
+        },
+        create: function (item) {
+            item.__backendId = `mock_${Date.now()}_${Math.random()}`;
+            data.push(item);
+            persistData();
+            notifyDataChange();
+            return Promise.resolve({ isOk: true });
+        },
+        update: function (item) {
+            const index = data.findIndex(d => d.__backendId === item.__backendId);
+            if (index !== -1) {
+                data[index] = item;
+                persistData();
+                notifyDataChange();
+                return Promise.resolve({ isOk: true });
+            }
+            return Promise.resolve({ isOk: false });
+        },
+        delete: function (item) {
+            const index = data.findIndex(d => d.__backendId === item.__backendId);
+            if (index !== -1) {
+                data.splice(index, 1);
+                persistData();
+                notifyDataChange();
+                return Promise.resolve({ isOk: true });
+            }
+            return Promise.resolve({ isOk: false });
+        }
+    };
 })();
 
 const products = {
-  engine: [
-    { id: 'e1', name: 'cylinder head', brand: 'TOYOTA', price: 52200, icon: 'https://sc04.alicdn.com/kf/H829fc649d8f14231ade029b992ce2008L.jpg', category: 'engine', description: 'Essential engine component that seals the combustion chamber and ensures efficient performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-    { id: 'e2', name: 'comprisor', brand: 'TOYOTA', price: 67850, icon: 'https://m.media-amazon.com/images/I/71Qzw4LqSQL.jpg_BO30,255,255,255_UF900,850_SR1910,1000,0,C_QL100_.jpg', category: 'engine', description: 'Delivers pressurized air for the AC system, ensuring efficient cooling performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-    { id: 'e3', name: 'Ignition coil', brand: 'TOYOTA', price: 4425.5, icon: 'https://www.energizedcustoms.co.uk/cdn/shop/files/a248cc8a-f1b2-473e-9ea4-c8335c2f0424.jpg?v=1761067911', category: 'engine', description: 'Converts battery power into high voltage to ignite the engine’s fuel mixture efficiently', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'NGK-7090' },
-    { id: 'e4', name: 'Injectors', brand: 'TOYOTA', price: 7980, icon: 'https://www.maxspeedparts.com/wp-content/uploads/23250-0D030-3.jpg', category: 'engine', description: 'Deliver precise amounts of fuel into the engine for optimal combustion and performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'GAT-T295' },
-    { id: 'e5', name: 'Water Pump', brand: 'TOYOTA', price: 5160, icon: 'https://i.ebayimg.com/images/g/RdMAAOSwozhhVEAE/s-l400.jpg', category: 'engine', description: 'Circulates coolant through the engine to prevent overheating and ensure smooth performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'ACD-251-712' },
-    { id: 'e6', name: 'Turbo', brand: 'TOYOTA', price: 28540, icon: 'https://gturbo.com.au/wp-content/uploads/2019/01/1kd-STD-Turbo-1-scaled.jpg', category: 'engine', description: 'Boosts engine power by forcing more air into the combustion chamber for higher performance', compatibility: 'Toyota CHR 2020-2025', partNumber: 'DEL-FE0442' },
-    { id: 'e7', name: 'Alternator', brand: 'TOYOTA', price: 34950, icon: 'https://gbdirect.co.za/cdn/shop/products/ALT6191_A_580x.png?v=1667551585', category: 'engine', description: 'Generates electrical power to charge the battery and run the vehicle’s electrical systems', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'DEN-210-4317' },
-    { id: 'e8', name: 'Starter Motor', brand: 'TOYOTA', price: 15500, icon: 'https://www.seg-automotive.com/image/editorial-pictures/high-res/1440x1440/seg-automotive_starter-motors_pc_sc70.jpg', category: 'engine', description: 'Cranks the engine to start the vehicle quickly and reliably', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'VAL-458178' },
-    { id: 'e9', name: 'Radiator', brand: 'TOYOTA', price: 26143.4, icon: 'https://allautomotiveparts.com.au/cdn/shop/products/toyota-corolla-radiator-inlet-left-2007-2019.png?v=1670270270', category: 'engine', description: 'Dissipates engine heat to maintain optimal operating temperature and prevent overheating', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'MSH-R2363' },
-    { id: 'e10', name: 'Thermostat', brand: 'TOYOTA', price: 980, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEnzlhkVpnTeezdgFkvajBjNlxAjH2BCisJSMoPPp_Lr_jw8yMCWUntxo_X-0cka3MvsE&usqp=CAU', category: 'engine', description: 'Regulates engine temperature by controlling coolant flow between the engine and radiator.', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'STN-14538' }
-  ],
-  brakes: [
-    { id: 'b1', name: 'Front Brake Pad', brand: 'Brembo', price: 4000, icon: 'https://m.media-amazon.com/images/I/61hKZ8+0vFL.jpg', category: 'brakes', description: 'Provides reliable stopping power and ensures safe, smooth braking performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-    { id: 'b2', name: 'Brake Shoe', brand: 'Brembo', price: 3670, icon: 'https://epc-images.toyota.com/04495-02212.jpg', category: 'brakes', category: 'brakes', description: 'Presses against the brake drum to slow or stop the vehicle efficiently', compatibility: 'Toyota Fortuner 2021-2025', partNumber: 'BOF-1234' },
-    { id: 'b3', name: 'Brake Disc', brand: 'EBC', price: 6475, icon: 'https://picdn.trodo.com/media/m2_catalog_cache/1440x1440/Vendor/febi_bilstein/44039/44039_1.jpg', category: 'brakes', description: 'Works with brake pads to provide smooth, consistent braking performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-    { id: 'b4', name: 'Rear Brake Drum', brand: 'EBC', price: 6100, icon: 'https://m.media-amazon.com/images/I/61qsLar9Z5L.jpg', category: 'brakes', description: 'Houses the brake shoes and provides effective braking for the rear wheels', compatibility: 'Toyota Hiace 2015-2019', partNumber: 'BOF-1234' },
-    { id: 'b5', name: 'Caliper Rebuild Kit', brand: 'Castrol', price: 3000, icon: 'https://d38d04rlvwt0bd.cloudfront.net/images/detailed/7/04479-12230.jpg?t=1511853534', category: 'brakes', description: 'Includes essential parts to restore brake caliper function and prevent fluid leaks', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-    { id: 'b6', name: 'Front Brake Caliper', brand: 'Cardone', price: 11100, icon: 'https://contentinfo.autozone.com/znetcs/additional-prod-images/en/US/c19/99-01524A/3/image/10/', category: 'brakes', description: 'Applies pressure to the brake pads, ensuring strong and consistent front-wheel braking', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-    { id: 'b7', name: 'Brake Booster', brand: 'Cardone', price: 20140, icon: 'https://m.media-amazon.com/images/I/61zYocap-nL.jpg', category: 'brakes', description: 'Uses vacuum pressure to enhance braking power and reduce pedal effort', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-    { id: 'b8', name: 'Master Cylinder', brand: 'Russell', price: 10984, icon: 'https://www.wheel-cylinder.com/uploads/202523293/brake-master-cylinder-for-toyota-cb0c2a6f6-d1b1-45cd-8b26-ac13ed8b3f33.jpg', category: 'brakes', description: 'Converts pedal force into hydraulic pressure to operate the vehicle’s braking system', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-    { id: 'b9', name: 'Tire', brand: 'ATE', price: 4600, icon: 'https://cdn-api.ridestyler.net/Tire/image?TireModel=8496d768-f846-440f-be35-43d2406543e7&Format=1&PositionX=1&PositionY=1&IncludeShadow=True&Key=61d95d2a-0b82-4aff-8156-2032af58dcff&cacheKey=181553&TireFitmentResourceType=Side&Width=1000&Height=500', category: 'brakes', description: 'Provides traction, stability, and a smooth ride on all road conditions', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-    { id: 'b10', name: 'Rims', brand: 'Wagner', price: 35102, icon: 'https://i.ebayimg.com/images/g/RYgAAOSwN3FmQcZL/s-l1200.jpg', category: 'brakes', description: 'Support the tires and enhance the vehicle’s stability and appearance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' }
-  ],
-  suspension: [
-    { id: 't1', name: 'Front Absorbers Shock', brand: 'Michelin', price: 7300, icon: 'https://www.fredauto.com.au/assets/full/48510-02660.png?20250804181753', category: 'suspension', description: 'Absorb road impact to ensure a smooth and stable front suspension ride', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-    { id: 't2', name: 'rear Absorbers Shock', brand: 'Pirelli', price: 2500, icon: 'https://www.shockwarehouse.com/cdn/shop/products/341448.jpg?v=1695269106', category: 'suspension', description: 'Reduce vibrations and improve stability for a comfortable rear suspension ride', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-    { id: 't3', name: 'Front Control Arm', brand: 'Bridgestone', price: 8012, icon: 'https://tgq-auto.com/wp-content/uploads/2023/10/58805801A.png', category: 'suspension', description: 'Connects the suspension to the frame, ensuring smooth steering and stable handling', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-    { id: 't4', name: 'Ball Joint FR Lower', brand: 'Enkei', price: 2900, icon: 'https://m.media-amazon.com/images/I/61--smNgROL._UF894,1000_QL80_.jpg', category: 'suspension', description: 'Allows smooth movement of the front suspension while maintaining precise wheel alignment', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-    { id: 't5', name: 'Front Drive Shaft', brand: 'OEM', price: 24000, icon: 'https://media.pkwteile.de/360_photos/15208518/preview.jpg', category: 'suspension', description: 'Transfers power from the transmission to the front wheels for smooth acceleration', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-    { id: 't6', name: 'Engine Mount', brand: 'Gorilla', price: 6455, icon: 'https://m.media-amazon.com/images/I/61ej5H0g-XL.jpg', category: 'suspension', description: 'Secures the engine to the chassis and absorbs vibrations for a smoother ride', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-    { id: 't7', name: 'Front Stabilizer Link', brand: 'Schrader', price: 3500, icon: 'https://image.made-in-china.com/202f0j00flJpLqmzlMkF/Stabilizer-Link-for-Toyota-RAV4-Corolla-Zre152-OEM-48820-02080.webp', category: 'suspension', description: '', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-    { id: 't8', name: 'Steering Linkage', brand: 'Slime', price: 22750, icon: 'https://image.made-in-china.com/202f0j00uzToYjehnncO/Power-Steering-Gear-Rack-and-Pinion-for-Toyota-Rush-J200-J210-Rhd-45510-B4012-45510b4011-45510b4010-45510b4012.webp', category: 'suspension', description: 'Connects the steering wheel to the wheels, ensuring precise control and smooth handling', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-    { id: 't9', name: 'Steering Knuckle', brand: 'OEM', price: 8000, icon: 'https://m.media-amazon.com/images/I/61Ob3YSzzPL.jpg', category: 'suspension', description: 'Connects the wheel hub to the suspension and allows smooth steering movement', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-    { id: 't10', name: 'Front Suspension Crossmember', brand: 'Slime', price: 47500, icon: 'https://i.ebayimg.com/images/g/kiYAAOSwmghnGw5G/s-l1200.jpg', category: 'suspension', description: 'Provides structural support for the front suspension and helps maintain vehicle stability', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' }
-  ],
-  maintenance: [
-    { id: 'l1', name: 'Oil Filter', brand: 'Toyota', price: 500, icon: 'https://direct.toyota-indus.com/media/catalog/product/i/m/img_1026_1_8.png?quality=80&bg-color=255,255,255&fit=bounds&height=700&width=700&canvas=700:700', category: 'maintenance', description: 'High-quality oil filter for optimal engine protection', compatibility: 'Toyota Corolla 2020-2025', warranty: '12 months', partNumber: 'BOF-1234', backgroundimage: 'https://t3.ftcdn.net/jpg/03/11/16/14/360_F_311161460_0Uw0qieFHNarQfTU5OR9MKdYAETt13Rs.jpg' },
-    { id: 'l2', name: 'Air Filter', brand: 'Toyota', price: 2500, icon: 'https://img.lazcdn.com/g/p/332266575e67c9c1e041764b88ef2048.jpg_720x720q80.jpg', category: 'maintenance', description: 'Performance air filter for improved airflow and engine efficiency', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/air_filter_bg.jpg')" },
-    { id: 'l3', name: 'Ac Filter', brand: 'Toyota', price: 2000, icon: 'https://static.tudo.lk/uploads/2022/03s3/a181cd6cc9dc5ceaf04b1c768a02a2f2.webp', category: 'maintenance', description: 'Filters dust and pollutants from the air to ensure clean, fresh cabin airflow', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/ac_filter_bg.jpg')" },
-    { id: 'l4', name: 'Fuel Filter', brand: 'Toyota', price: 1500, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTGHrSiyCHG20j9unDfbuxrNjHLpjMEgaO8Q&sturn-signal.jpg', category: 'maintenance', description: 'Removes impurities from fuel to protect the engine and ensure smooth performance', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/fuel_filter_bg.jpg')" },
-    { id: 'l5', name: 'Spark Plug', brand: 'Toyota', price: 1000, icon: 'https://s3.amazonaws.com/rp-part-images/assets/c1f8eb0ace46cd9493704051694ab673.webp', category: 'maintenance', description: 'Ignites the air-fuel mixture to ensure efficient engine combustion and performance', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/spark_plug_bg.jpg')" },
-    { id: 'l6', name: 'V Belt', brand: 'Toyota', price: 3000, icon: 'https://media.autodoc.de/360_photos/21852959/preview.jpg', category: 'maintenance', description: 'Transfers power between engine components, ensuring efficient performance and reliability', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/v_belt_bg.jpg')" },
-    { id: 'l7', name: 'crankshaft rear seal', brand: 'Toyota', price: 1500, icon: 'https://auto-drives.com/wp-content/uploads/2023/02/%D8%A3%D9%88%D9%8A%D9%84-%D8%B3%D9%8A%D9%84-%D9%A1-%D8%A7%D9%84%D9%83%D8%B1%D9%86%D9%83.jpeg', category: 'maintenance', description: 'Prevents oil leaks from the rear of the crankshaft, ensuring smooth engine operation', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/crankshaft_seal_bg.jpg')" },
-    { id: 'l8', name: 'Battery', brand: 'Toyota', price: 3800, icon: 'https://cdn.spareto.com/variants/images/001/030/884/medium/converted-20230218-3832547-1ckrpe8.jpg?1676751782', category: 'maintenance', description: 'Provides electrical power to start the engine and support all vehicle electronics', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/battery_bg.jpg')" },
-    { id: 'l9', name: 'Rubber Blade', brand: 'Toyota', price: 700, icon: 'https://m.media-amazon.com/images/I/41TCNk5M9RL._UF894,1000_QL80_.jpg', category: 'maintenance', description: 'Ensures clear visibility by wiping rain, dirt, and debris from the windshield', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/rubber_blade_bg.jpg')" },
-    { id: 'l10', name: 'Headlight', brand: 'Toyota', price: 2000, icon: 'https://cdn.lemona.lt/display?url=https://www.lemona.lt/media/catalog/product/9/0/9005PRB1-APP-global-001_3_33.jpg&q=80', category: 'maintenance', description: 'EProvides bright, clear illumination for safe driving at night and in low visibility', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/headlight_bg.jpg')" }
-  ],
-  fluids: [
-    { id: 'f1', name: 'Engine Oil 5W-30 ( 4L)', brand: 'TOYOTA', price: 1800, icon: 'https://p.turbosquid.com/ts-thumb/Vm/cql4oQ/EU/toyota_motor_oil_metal_can_360/jpg/1660367001/1920x1080/turn_fit_q99/87d20a72ef72f94507ddc0aad1188b693af55cb7/toyota_motor_oil_metal_can_360-1.jpg', category: 'fluids' },
-    { id: 'f2', name: 'Brake Fluid DOT 3 (1L)', brand: 'TOYOTA', price: 250, icon: 'https://m.media-amazon.com/images/I/71ZYOtgMp+L.jpg', category: 'fluids' },
-    { id: 'f3', name: 'CVT Oil (4L)', brand: 'TOYOTA', price: 3050, icon: 'https://m.media-amazon.com/images/I/51yfwgPvNJL.jpg_BO30,255,255,255_UF900,850_SR1910,1000,0,C_QL100_.jpg', category: 'fluids' },
-    { id: 'f4', name: 'Coolant (4L)', brand: 'TOYOTA', price: 800, icon: 'https://static-01.daraz.com.bd/p/8f96178805ca37338d89b373b99c43f9.jpg', category: 'fluids' },
-    { id: 'f5', name: 'Differential Oil (1L)', brand: 'TOYOTA', price: 400, icon: 'https://i0.wp.com/zarouniauto.ae/wp-content/uploads/2021/10/WhatsApp_Image_2021-10-06_at_19.21.43__1_-removebg-preview.png?fit=433%2C577&ssl=1', category: 'fluids' },
-    { id: 'f6', name: 'Engine Oil 15W-40 (6L)', brand: 'TOYOTA', price: 1200, icon: 'https://vroomdeals.com/wp-content/uploads/2024/05/353ec2ce-35f7-4175-9d92-a453440bb47e-1.jpg', category: 'fluids' },
-    { id: 'f7', name: 'Fome Cleaner', brand: 'Gunk', price: 150, icon: 'https://m.media-amazon.com/images/I/71+U5VJnb6L.jpg_BO30,255,255,255_UF900,850_SR1910,1000,0,C_QL100_.jpg', category: 'fluids' },
-    { id: 'f8', name: 'Brake Cleaner', brand: 'TOYOTA', price: 200, icon: 'https://s3.amazonaws.com/rp-part-images/assets/f8b3735f57cba0c3b300660a82cd186d.webp', category: 'fluids' },
-    { id: 'f9', name: 'Windshield Washer Fluid', brand: 'TOYOTA', price: 60, icon: 'https://www.autobros.in/cdn/shop/files/Windshield.png?v=1692705161', category: 'fluids' },
-    { id: 'f10', name: 'T-IV ATF Oil (5L)', brand: 'TOYOTA', price: 3500, icon: 'https://s13emagst.akamaized.net/products/48063/48062787/images/res_c6f64981fde00e4d9508f9177a556b4e.jpg', category: 'fluids' }
-  ]
+    engine: [
+        { id: 'e1', name: 'cylinder head', brand: 'TOYOTA', price: 52200, icon: 'https://sc04.alicdn.com/kf/H829fc649d8f14231ade029b992ce2008L.jpg', category: 'engine', description: 'Essential engine component that seals the combustion chamber and ensures efficient performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
+        { id: 'e2', name: 'comprisor', brand: 'TOYOTA', price: 67850, icon: 'https://m.media-amazon.com/images/I/71Qzw4LqSQL.jpg_BO30,255,255,255_UF900,850_SR1910,1000,0,C_QL100_.jpg', category: 'engine', description: 'Delivers pressurized air for the AC system, ensuring efficient cooling performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
+        { id: 'e3', name: 'Ignition coil', brand: 'TOYOTA', price: 4425.5, icon: 'https://www.energizedcustoms.co.uk/cdn/shop/files/a248cc8a-f1b2-473e-9ea4-c8335c2f0424.jpg?v=1761067911', category: 'engine', description: 'Converts battery power into high voltage to ignite the engine’s fuel mixture efficiently', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'NGK-7090' },
+        { id: 'e4', name: 'Injectors', brand: 'TOYOTA', price: 7980, icon: 'https://www.maxspeedparts.com/wp-content/uploads/23250-0D030-3.jpg', category: 'engine', description: 'Deliver precise amounts of fuel into the engine for optimal combustion and performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'GAT-T295' },
+        { id: 'e5', name: 'Water Pump', brand: 'TOYOTA', price: 5160, icon: 'https://i.ebayimg.com/images/g/RdMAAOSwozhhVEAE/s-l400.jpg', category: 'engine', description: 'Circulates coolant through the engine to prevent overheating and ensure smooth performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'ACD-251-712' },
+        { id: 'e6', name: 'Turbo', brand: 'TOYOTA', price: 28540, icon: 'https://gturbo.com.au/wp-content/uploads/2019/01/1kd-STD-Turbo-1-scaled.jpg', category: 'engine', description: 'Boosts engine power by forcing more air into the combustion chamber for higher performance', compatibility: 'Toyota CHR 2020-2025', partNumber: 'DEL-FE0442' },
+        { id: 'e7', name: 'Alternator', brand: 'TOYOTA', price: 34950, icon: 'https://gbdirect.co.za/cdn/shop/products/ALT6191_A_580x.png?v=1667551585', category: 'engine', description: 'Generates electrical power to charge the battery and run the vehicle’s electrical systems', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'DEN-210-4317' },
+        { id: 'e8', name: 'Starter Motor', brand: 'TOYOTA', price: 15500, icon: 'https://www.seg-automotive.com/image/editorial-pictures/high-res/1440x1440/seg-automotive_starter-motors_pc_sc70.jpg', category: 'engine', description: 'Cranks the engine to start the vehicle quickly and reliably', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'VAL-458178' },
+        { id: 'e9', name: 'Radiator', brand: 'TOYOTA', price: 26143.4, icon: 'https://allautomotiveparts.com.au/cdn/shop/products/toyota-corolla-radiator-inlet-left-2007-2019.png?v=1670270270', category: 'engine', description: 'Dissipates engine heat to maintain optimal operating temperature and prevent overheating', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'MSH-R2363' },
+        { id: 'e10', name: 'Thermostat', brand: 'TOYOTA', price: 980, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEnzlhkVpnTeezdgFkvajBjNlxAjH2BCisJSMoPPp_Lr_jw8yMCWUntxo_X-0cka3MvsE&usqp=CAU', category: 'engine', description: 'Regulates engine temperature by controlling coolant flow between the engine and radiator.', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'STN-14538' }
+    ],
+    brakes: [
+        { id: 'b1', name: 'Front Brake Pad', brand: 'Brembo', price: 4000, icon: 'https://m.media-amazon.com/images/I/61hKZ8+0vFL.jpg', category: 'brakes', description: 'Provides reliable stopping power and ensures safe, smooth braking performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
+        { id: 'b2', name: 'Brake Shoe', brand: 'Brembo', price: 3670, icon: 'https://epc-images.toyota.com/04495-02212.jpg', category: 'brakes', category: 'brakes', description: 'Presses against the brake drum to slow or stop the vehicle efficiently', compatibility: 'Toyota Fortuner 2021-2025', partNumber: 'BOF-1234' },
+        { id: 'b3', name: 'Brake Disc', brand: 'EBC', price: 6475, icon: 'https://picdn.trodo.com/media/m2_catalog_cache/1440x1440/Vendor/febi_bilstein/44039/44039_1.jpg', category: 'brakes', description: 'Works with brake pads to provide smooth, consistent braking performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
+        { id: 'b4', name: 'Rear Brake Drum', brand: 'EBC', price: 6100, icon: 'https://m.media-amazon.com/images/I/61qsLar9Z5L.jpg', category: 'brakes', description: 'Houses the brake shoes and provides effective braking for the rear wheels', compatibility: 'Toyota Hiace 2015-2019', partNumber: 'BOF-1234' },
+        { id: 'b5', name: 'Caliper Rebuild Kit', brand: 'Castrol', price: 3000, icon: 'https://d38d04rlvwt0bd.cloudfront.net/images/detailed/7/04479-12230.jpg?t=1511853534', category: 'brakes', description: 'Includes essential parts to restore brake caliper function and prevent fluid leaks', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
+        { id: 'b6', name: 'Front Brake Caliper', brand: 'Cardone', price: 11100, icon: 'https://contentinfo.autozone.com/znetcs/additional-prod-images/en/US/c19/99-01524A/3/image/10/', category: 'brakes', description: 'Applies pressure to the brake pads, ensuring strong and consistent front-wheel braking', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
+        { id: 'b7', name: 'Brake Booster', brand: 'Cardone', price: 20140, icon: 'https://m.media-amazon.com/images/I/61zYocap-nL.jpg', category: 'brakes', description: 'Uses vacuum pressure to enhance braking power and reduce pedal effort', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
+        { id: 'b8', name: 'Master Cylinder', brand: 'Russell', price: 10984, icon: 'https://www.wheel-cylinder.com/uploads/202523293/brake-master-cylinder-for-toyota-cb0c2a6f6-d1b1-45cd-8b26-ac13ed8b3f33.jpg', category: 'brakes', description: 'Converts pedal force into hydraulic pressure to operate the vehicle’s braking system', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
+        { id: 'b9', name: 'Tire', brand: 'ATE', price: 4600, icon: 'https://cdn-api.ridestyler.net/Tire/image?TireModel=8496d768-f846-440f-be35-43d2406543e7&Format=1&PositionX=1&PositionY=1&IncludeShadow=True&Key=61d95d2a-0b82-4aff-8156-2032af58dcff&cacheKey=181553&TireFitmentResourceType=Side&Width=1000&Height=500', category: 'brakes', description: 'Provides traction, stability, and a smooth ride on all road conditions', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
+        { id: 'b10', name: 'Rims', brand: 'Wagner', price: 35102, icon: 'https://i.ebayimg.com/images/g/RYgAAOSwN3FmQcZL/s-l1200.jpg', category: 'brakes', description: 'Support the tires and enhance the vehicle’s stability and appearance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' }
+    ],
+    suspension: [
+        { id: 't1', name: 'Front Absorbers Shock', brand: 'Michelin', price: 7300, icon: 'https://www.fredauto.com.au/assets/full/48510-02660.png?20250804181753', category: 'suspension', description: 'Absorb road impact to ensure a smooth and stable front suspension ride', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
+        { id: 't2', name: 'rear Absorbers Shock', brand: 'Pirelli', price: 2500, icon: 'https://www.shockwarehouse.com/cdn/shop/products/341448.jpg?v=1695269106', category: 'suspension', description: 'Reduce vibrations and improve stability for a comfortable rear suspension ride', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
+        { id: 't3', name: 'Front Control Arm', brand: 'Bridgestone', price: 8012, icon: 'https://tgq-auto.com/wp-content/uploads/2023/10/58805801A.png', category: 'suspension', description: 'Connects the suspension to the frame, ensuring smooth steering and stable handling', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
+        { id: 't4', name: 'Ball Joint FR Lower', brand: 'Enkei', price: 2900, icon: 'https://m.media-amazon.com/images/I/61--smNgROL._UF894,1000_QL80_.jpg', category: 'suspension', description: 'Allows smooth movement of the front suspension while maintaining precise wheel alignment', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
+        { id: 't5', name: 'Front Drive Shaft', brand: 'OEM', price: 24000, icon: 'https://media.pkwteile.de/360_photos/15208518/preview.jpg', category: 'suspension', description: 'Transfers power from the transmission to the front wheels for smooth acceleration', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
+        { id: 't6', name: 'Engine Mount', brand: 'Gorilla', price: 6455, icon: 'https://m.media-amazon.com/images/I/61ej5H0g-XL.jpg', category: 'suspension', description: 'Secures the engine to the chassis and absorbs vibrations for a smoother ride', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
+        { id: 't7', name: 'Front Stabilizer Link', brand: 'Schrader', price: 3500, icon: 'https://image.made-in-china.com/202f0j00flJpLqmzlMkF/Stabilizer-Link-for-Toyota-RAV4-Corolla-Zre152-OEM-48820-02080.webp', category: 'suspension', description: '', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
+        { id: 't8', name: 'Steering Linkage', brand: 'Slime', price: 22750, icon: 'https://image.made-in-china.com/202f0j00uzToYjehnncO/Power-Steering-Gear-Rack-and-Pinion-for-Toyota-Rush-J200-J210-Rhd-45510-B4012-45510b4011-45510b4010-45510b4012.webp', category: 'suspension', description: 'Connects the steering wheel to the wheels, ensuring precise control and smooth handling', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
+        { id: 't9', name: 'Steering Knuckle', brand: 'OEM', price: 8000, icon: 'https://m.media-amazon.com/images/I/61Ob3YSzzPL.jpg', category: 'suspension', description: 'Connects the wheel hub to the suspension and allows smooth steering movement', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
+        { id: 't10', name: 'Front Suspension Crossmember', brand: 'Slime', price: 47500, icon: 'https://i.ebayimg.com/images/g/kiYAAOSwmghnGw5G/s-l1200.jpg', category: 'suspension', description: 'Provides structural support for the front suspension and helps maintain vehicle stability', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' }
+    ],
+    maintenance: [
+        { id: 'l1', name: 'Oil Filter', brand: 'Toyota', price: 500, icon: 'https://direct.toyota-indus.com/media/catalog/product/i/m/img_1026_1_8.png?quality=80&bg-color=255,255,255&fit=bounds&height=700&width=700&canvas=700:700', category: 'maintenance', description: 'High-quality oil filter for optimal engine protection', compatibility: 'Toyota Corolla 2020-2025', warranty: '12 months', partNumber: 'BOF-1234', backgroundimage: 'https://t3.ftcdn.net/jpg/03/11/16/14/360_F_311161460_0Uw0qieFHNarQfTU5OR9MKdYAETt13Rs.jpg' },
+        { id: 'l2', name: 'Air Filter', brand: 'Toyota', price: 2500, icon: 'https://img.lazcdn.com/g/p/332266575e67c9c1e041764b88ef2048.jpg_720x720q80.jpg', category: 'maintenance', description: 'Performance air filter for improved airflow and engine efficiency', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/air_filter_bg.jpg')" },
+        { id: 'l3', name: 'Ac Filter', brand: 'Toyota', price: 2000, icon: 'https://static.tudo.lk/uploads/2022/03s3/a181cd6cc9dc5ceaf04b1c768a02a2f2.webp', category: 'maintenance', description: 'Filters dust and pollutants from the air to ensure clean, fresh cabin airflow', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/ac_filter_bg.jpg')" },
+        { id: 'l4', name: 'Fuel Filter', brand: 'Toyota', price: 1500, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTGHrSiyCHG20j9unDfbuxrNjHLpjMEgaO8Q&sturn-signal.jpg', category: 'maintenance', description: 'Removes impurities from fuel to protect the engine and ensure smooth performance', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/fuel_filter_bg.jpg')" },
+        { id: 'l5', name: 'Spark Plug', brand: 'Toyota', price: 1000, icon: 'https://s3.amazonaws.com/rp-part-images/assets/c1f8eb0ace46cd9493704051694ab673.webp', category: 'maintenance', description: 'Ignites the air-fuel mixture to ensure efficient engine combustion and performance', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/spark_plug_bg.jpg')" },
+        { id: 'l6', name: 'V Belt', brand: 'Toyota', price: 3000, icon: 'https://media.autodoc.de/360_photos/21852959/preview.jpg', category: 'maintenance', description: 'Transfers power between engine components, ensuring efficient performance and reliability', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/v_belt_bg.jpg')" },
+        { id: 'l7', name: 'crankshaft rear seal', brand: 'Toyota', price: 1500, icon: 'https://auto-drives.com/wp-content/uploads/2023/02/%D8%A3%D9%88%D9%8A%D9%84-%D8%B3%D9%8A%D9%84-%D9%A1-%D8%A7%D9%84%D9%83%D8%B1%D9%86%D9%83.jpeg', category: 'maintenance', description: 'Prevents oil leaks from the rear of the crankshaft, ensuring smooth engine operation', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/crankshaft_seal_bg.jpg')" },
+        { id: 'l8', name: 'Battery', brand: 'Toyota', price: 3800, icon: 'https://cdn.spareto.com/variants/images/001/030/884/medium/converted-20230218-3832547-1ckrpe8.jpg?1676751782', category: 'maintenance', description: 'Provides electrical power to start the engine and support all vehicle electronics', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/battery_bg.jpg')" },
+        { id: 'l9', name: 'Rubber Blade', brand: 'Toyota', price: 700, icon: 'https://m.media-amazon.com/images/I/41TCNk5M9RL._UF894,1000_QL80_.jpg', category: 'maintenance', description: 'Ensures clear visibility by wiping rain, dirt, and debris from the windshield', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/rubber_blade_bg.jpg')" },
+        { id: 'l10', name: 'Headlight', brand: 'Toyota', price: 2000, icon: 'https://cdn.lemona.lt/display?url=https://www.lemona.lt/media/catalog/product/9/0/9005PRB1-APP-global-001_3_33.jpg&q=80', category: 'maintenance', description: 'EProvides bright, clear illumination for safe driving at night and in low visibility', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/headlight_bg.jpg')" }
+    ],
+    fluids: [
+        { id: 'f1', name: 'Engine Oil 5W-30 ( 4L)', brand: 'TOYOTA', price: 1800, icon: 'https://p.turbosquid.com/ts-thumb/Vm/cql4oQ/EU/toyota_motor_oil_metal_can_360/jpg/1660367001/1920x1080/turn_fit_q99/87d20a72ef72f94507ddc0aad1188b693af55cb7/toyota_motor_oil_metal_can_360-1.jpg', category: 'fluids' },
+        { id: 'f2', name: 'Brake Fluid DOT 3 (1L)', brand: 'TOYOTA', price: 250, icon: 'https://m.media-amazon.com/images/I/71ZYOtgMp+L.jpg', category: 'fluids' },
+        { id: 'f3', name: 'CVT Oil (4L)', brand: 'TOYOTA', price: 3050, icon: 'https://m.media-amazon.com/images/I/51yfwgPvNJL.jpg_BO30,255,255,255_UF900,850_SR1910,1000,0,C_QL100_.jpg', category: 'fluids' },
+        { id: 'f4', name: 'Coolant (4L)', brand: 'TOYOTA', price: 800, icon: 'https://static-01.daraz.com.bd/p/8f96178805ca37338d89b373b99c43f9.jpg', category: 'fluids' },
+        { id: 'f5', name: 'Differential Oil (1L)', brand: 'TOYOTA', price: 400, icon: 'https://i0.wp.com/zarouniauto.ae/wp-content/uploads/2021/10/WhatsApp_Image_2021-10-06_at_19.21.43__1_-removebg-preview.png?fit=433%2C577&ssl=1', category: 'fluids' },
+        { id: 'f6', name: 'Engine Oil 15W-40 (6L)', brand: 'TOYOTA', price: 1200, icon: 'https://vroomdeals.com/wp-content/uploads/2024/05/353ec2ce-35f7-4175-9d92-a453440bb47e-1.jpg', category: 'fluids' },
+        { id: 'f7', name: 'Fome Cleaner', brand: 'Gunk', price: 150, icon: 'https://m.media-amazon.com/images/I/71+U5VJnb6L.jpg_BO30,255,255,255_UF900,850_SR1910,1000,0,C_QL100_.jpg', category: 'fluids' },
+        { id: 'f8', name: 'Brake Cleaner', brand: 'TOYOTA', price: 200, icon: 'https://s3.amazonaws.com/rp-part-images/assets/f8b3735f57cba0c3b300660a82cd186d.webp', category: 'fluids' },
+        { id: 'f9', name: 'Windshield Washer Fluid', brand: 'TOYOTA', price: 60, icon: 'https://www.autobros.in/cdn/shop/files/Windshield.png?v=1692705161', category: 'fluids' },
+        { id: 'f10', name: 'T-IV ATF Oil (5L)', brand: 'TOYOTA', price: 3500, icon: 'https://s13emagst.akamaized.net/products/48063/48062787/images/res_c6f64981fde00e4d9508f9177a556b4e.jpg', category: 'fluids' }
+    ]
 };
 
 const servicePackages = [
-  {
-    km: '10,000',
-    title: 'Basic Service',
-    price: 149.99,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'l1', required: true },
-      { name: 'Cleaners', part: 'f8', required: true },
-      { name: 'Tire Rotation', part: null, required: true },
-      { name: 'Brake Inspection', part: null, required: false },
-      { name: 'Fluid Level Check', part: null, required: false }
-    ]
-  },
-  {
-    km: '20,000',
-    title: 'Standard Service',
-    price: 249.99,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'e1', required: true },
-      { name: 'Air Filter Replacement', part: 'e2', required: true },
-      { name: 'Cabin Air Filter', part: null, required: false },
-      { name: 'Tire Rotation & Balance', part: null, required: false },
-      { name: 'Brake Fluid Check', part: 'b5', required: false },
-      { name: 'Battery Test', part: null, required: false }
-    ]
-  },
-  {
-    km: '30,000',
-    title: 'Major Service',
-    price: 399.99,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'e1', required: true },
-      { name: 'Air Filter Replacement', part: 'e2', required: true },
-      { name: 'Spark Plugs Replacement', part: 'e3', required: true },
-      { name: 'Transmission Fluid Change', part: 'f2', required: true },
-      { name: 'Coolant Flush', part: 'f3', required: true },
-      { name: 'Brake Pads Inspection', part: null, required: false },
-      { name: 'Tire Rotation', part: null, required: false }
-    ]
-  },
-  {
-    km: '40,000',
-    title: 'Standard Service Plus',
-    price: 279.99,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'e1', required: true },
-      { name: 'Air Filter Replacement', part: 'e2', required: true },
-      { name: 'Brake Fluid Replacement', part: 'b5', required: true },
-      { name: 'Power Steering Fluid', part: 'f4', required: false },
-      { name: 'Tire Rotation', part: null, required: false },
-      { name: 'Suspension Check', part: null, required: false }
-    ]
-  },
-  {
-    km: '50,000',
-    title: 'Comprehensive Service',
-    price: 499.99,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'e1', required: true },
-      { name: 'Air Filter Replacement', part: 'e2', required: true },
-      { name: 'Spark Plugs Replacement', part: 'e3', required: true },
-      { name: 'Timing Belt Inspection', part: 'e4', required: false },
-      { name: 'Water Pump Check', part: 'e5', required: false },
-      { name: 'Brake Pads Front', part: 'b1', required: true },
-      { name: 'Brake Fluid Flush', part: 'b5', required: true },
-      { name: 'Coolant Replacement', part: 'f3', required: true }
-    ]
-  },
-  {
-    km: '60,000',
-    title: 'Major Service',
-    price: 449.99,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'e1', required: true },
-      { name: 'Air Filter Replacement', part: 'e2', required: true },
-      { name: 'Transmission Fluid Change', part: 'f2', required: true },
-      { name: 'Differential Oil Change', part: 'f7', required: true },
-      { name: 'Spark Plugs Check', part: null, required: false },
-      { name: 'Tire Rotation', part: null, required: false },
-      { name: 'Brake Inspection', part: null, required: false }
-    ]
-  },
-  {
-    km: '70,000',
-    title: 'Standard Service',
-    price: 269.99,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'e1', required: true },
-      { name: 'Air Filter Replacement', part: 'e2', required: true },
-      { name: 'Coolant Check', part: 'f3', required: false },
-      { name: 'Brake Fluid Check', part: 'b5', required: false },
-      { name: 'Battery Test', part: null, required: false },
-      { name: 'Tire Rotation', part: null, required: false }
-    ]
-  },
-  {
-    km: '80,000',
-    title: 'Major Service Plus',
-    price: 549.99,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'e1', required: true },
-      { name: 'Air Filter Replacement', part: 'e2', required: true },
-      { name: 'Spark Plugs Replacement', part: 'e3', required: true },
-      { name: 'Timing Belt Replacement', part: 'e4', required: true },
-      { name: 'Water Pump Replacement', part: 'e5', required: true },
-      { name: 'Fuel Filter Replacement', part: 'e6', required: true },
-      { name: 'Coolant Flush', part: 'f3', required: true },
-      { name: 'Brake Pads All Around', part: 'b1', required: true }
-    ]
-  },
-  {
-    km: '90,000',
-    title: 'Standard Service',
-    price: 289.99,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'e1', required: true },
-      { name: 'Air Filter Replacement', part: 'e2', required: true },
-      { name: 'Transmission Fluid Check', part: 'f2', required: false },
-      { name: 'Brake Fluid Replacement', part: 'b5', required: true },
-      { name: 'Power Steering Fluid', part: 'f4', required: false },
-      { name: 'Tire Rotation', part: null, required: false }
-    ]
-  },
-  {
-    km: '100,000',
-    title: 'Major Milestone Service',
-    price: 699.99,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'e1', required: true },
-      { name: 'Air Filter Replacement', part: 'e2', required: true },
-      { name: 'Spark Plugs Replacement', part: 'e3', required: true },
-      { name: 'Transmission Fluid Change', part: 'f2', required: true },
-      { name: 'Coolant Flush', part: 'f3', required: true },
-      { name: 'Brake Pads & Rotors Front', part: 'b1', required: true },
-      { name: 'Brake Pads & Rotors Rear', part: 'b2', required: true },
-      { name: 'Fuel System Cleaning', part: 'f8', required: true },
-      { name: 'Complete Inspection', part: null, required: false }
-    ]
-  },
+    {
+        km: '10,000',
+        title: 'Basic Service',
+        price: 149.99,
+        items: [
+            { name: 'Engine Oil Change', part: 'f1', required: true },
+            { name: 'Oil Filter Replacement', part: 'l1', required: true },
+            { name: 'Cleaners', part: 'f8', required: true },
+            { name: 'Tire Rotation', part: null, required: true },
+            { name: 'Brake Inspection', part: null, required: false },
+            { name: 'Fluid Level Check', part: null, required: false }
+        ]
+    },
+    {
+        km: '20,000',
+        title: 'Standard Service',
+        price: 249.99,
+        items: [
+            { name: 'Engine Oil Change', part: 'f1', required: true },
+            { name: 'Oil Filter Replacement', part: 'e1', required: true },
+            { name: 'Air Filter Replacement', part: 'e2', required: true },
+            { name: 'Cabin Air Filter', part: null, required: false },
+            { name: 'Tire Rotation & Balance', part: null, required: false },
+            { name: 'Brake Fluid Check', part: 'b5', required: false },
+            { name: 'Battery Test', part: null, required: false }
+        ]
+    },
+    {
+        km: '30,000',
+        title: 'Major Service',
+        price: 399.99,
+        items: [
+            { name: 'Engine Oil Change', part: 'f1', required: true },
+            { name: 'Oil Filter Replacement', part: 'e1', required: true },
+            { name: 'Air Filter Replacement', part: 'e2', required: true },
+            { name: 'Spark Plugs Replacement', part: 'e3', required: true },
+            { name: 'Transmission Fluid Change', part: 'f2', required: true },
+            { name: 'Coolant Flush', part: 'f3', required: true },
+            { name: 'Brake Pads Inspection', part: null, required: false },
+            { name: 'Tire Rotation', part: null, required: false }
+        ]
+    },
+    {
+        km: '40,000',
+        title: 'Standard Service Plus',
+        price: 279.99,
+        items: [
+            { name: 'Engine Oil Change', part: 'f1', required: true },
+            { name: 'Oil Filter Replacement', part: 'e1', required: true },
+            { name: 'Air Filter Replacement', part: 'e2', required: true },
+            { name: 'Brake Fluid Replacement', part: 'b5', required: true },
+            { name: 'Power Steering Fluid', part: 'f4', required: false },
+            { name: 'Tire Rotation', part: null, required: false },
+            { name: 'Suspension Check', part: null, required: false }
+        ]
+    },
+    {
+        km: '50,000',
+        title: 'Comprehensive Service',
+        price: 499.99,
+        items: [
+            { name: 'Engine Oil Change', part: 'f1', required: true },
+            { name: 'Oil Filter Replacement', part: 'e1', required: true },
+            { name: 'Air Filter Replacement', part: 'e2', required: true },
+            { name: 'Spark Plugs Replacement', part: 'e3', required: true },
+            { name: 'Timing Belt Inspection', part: 'e4', required: false },
+            { name: 'Water Pump Check', part: 'e5', required: false },
+            { name: 'Brake Pads Front', part: 'b1', required: true },
+            { name: 'Brake Fluid Flush', part: 'b5', required: true },
+            { name: 'Coolant Replacement', part: 'f3', required: true }
+        ]
+    },
+    {
+        km: '60,000',
+        title: 'Major Service',
+        price: 449.99,
+        items: [
+            { name: 'Engine Oil Change', part: 'f1', required: true },
+            { name: 'Oil Filter Replacement', part: 'e1', required: true },
+            { name: 'Air Filter Replacement', part: 'e2', required: true },
+            { name: 'Transmission Fluid Change', part: 'f2', required: true },
+            { name: 'Differential Oil Change', part: 'f7', required: true },
+            { name: 'Spark Plugs Check', part: null, required: false },
+            { name: 'Tire Rotation', part: null, required: false },
+            { name: 'Brake Inspection', part: null, required: false }
+        ]
+    },
+    {
+        km: '70,000',
+        title: 'Standard Service',
+        price: 269.99,
+        items: [
+            { name: 'Engine Oil Change', part: 'f1', required: true },
+            { name: 'Oil Filter Replacement', part: 'e1', required: true },
+            { name: 'Air Filter Replacement', part: 'e2', required: true },
+            { name: 'Coolant Check', part: 'f3', required: false },
+            { name: 'Brake Fluid Check', part: 'b5', required: false },
+            { name: 'Battery Test', part: null, required: false },
+            { name: 'Tire Rotation', part: null, required: false }
+        ]
+    },
+    {
+        km: '80,000',
+        title: 'Major Service Plus',
+        price: 549.99,
+        items: [
+            { name: 'Engine Oil Change', part: 'f1', required: true },
+            { name: 'Oil Filter Replacement', part: 'e1', required: true },
+            { name: 'Air Filter Replacement', part: 'e2', required: true },
+            { name: 'Spark Plugs Replacement', part: 'e3', required: true },
+            { name: 'Timing Belt Replacement', part: 'e4', required: true },
+            { name: 'Water Pump Replacement', part: 'e5', required: true },
+            { name: 'Fuel Filter Replacement', part: 'e6', required: true },
+            { name: 'Coolant Flush', part: 'f3', required: true },
+            { name: 'Brake Pads All Around', part: 'b1', required: true }
+        ]
+    },
+    {
+        km: '90,000',
+        title: 'Standard Service',
+        price: 289.99,
+        items: [
+            { name: 'Engine Oil Change', part: 'f1', required: true },
+            { name: 'Oil Filter Replacement', part: 'e1', required: true },
+            { name: 'Air Filter Replacement', part: 'e2', required: true },
+            { name: 'Transmission Fluid Check', part: 'f2', required: false },
+            { name: 'Brake Fluid Replacement', part: 'b5', required: true },
+            { name: 'Power Steering Fluid', part: 'f4', required: false },
+            { name: 'Tire Rotation', part: null, required: false }
+        ]
+    },
+    {
+        km: '100,000',
+        title: 'Major Milestone Service',
+        price: 699.99,
+        items: [
+            { name: 'Engine Oil Change', part: 'f1', required: true },
+            { name: 'Oil Filter Replacement', part: 'e1', required: true },
+            { name: 'Air Filter Replacement', part: 'e2', required: true },
+            { name: 'Spark Plugs Replacement', part: 'e3', required: true },
+            { name: 'Transmission Fluid Change', part: 'f2', required: true },
+            { name: 'Coolant Flush', part: 'f3', required: true },
+            { name: 'Brake Pads & Rotors Front', part: 'b1', required: true },
+            { name: 'Brake Pads & Rotors Rear', part: 'b2', required: true },
+            { name: 'Fuel System Cleaning', part: 'f8', required: true },
+            { name: 'Complete Inspection', part: null, required: false }
+        ]
+    },
 
 ];
 
@@ -431,238 +325,238 @@ let includeParts = false;
 let selectedParts = [];
 
 const dataHandler = {
-  onDataChanged(data) {
-    cart = data.filter(item => item.type === 'cart');
-    updateCartCount();
+    onDataChanged(data) {
+        cart = data.filter(item => item.type === 'cart');
+        updateCartCount();
 
-    if (currentCategory === 'cart') {
-      renderCartPage();
+        if (currentCategory === 'cart') {
+            renderCartPage();
+        }
     }
-  }
 };
 
 async function initApp() {
-  const initResult = await window.dataSdk.init(dataHandler);
-  if (!initResult.isOk) {
-    console.error('Failed to initialize data SDK');
-    return;
-  }
+    const initResult = await window.dataSdk.init(dataHandler);
+    if (!initResult.isOk) {
+        console.error('Failed to initialize data SDK');
+        return;
+    }
 
-  function applyConfig(newConfig) {
-    config = { ...newConfig };
-    const root = document.documentElement;
+    function applyConfig(newConfig) {
+        config = { ...newConfig };
+        const root = document.documentElement;
 
-    // Set CSS variables for colors
-    root.style.setProperty('--primary-color', config.primary_color || defaultConfig.primary_color);
-    root.style.setProperty('--secondary-color', config.secondary_color || defaultConfig.secondary_color);
-    root.style.setProperty('--accent-color', config.accent_color || defaultConfig.accent_color);
-    root.style.setProperty('--success-color', config.success_color || defaultConfig.success_color);
-    root.style.setProperty('--background-color', config.background_color || defaultConfig.background_color);
+        // Set CSS variables for colors
+        root.style.setProperty('--primary-color', config.primary_color || defaultConfig.primary_color);
+        root.style.setProperty('--secondary-color', config.secondary_color || defaultConfig.secondary_color);
+        root.style.setProperty('--accent-color', config.accent_color || defaultConfig.accent_color);
+        root.style.setProperty('--success-color', config.success_color || defaultConfig.success_color);
+        root.style.setProperty('--background-color', config.background_color || defaultConfig.background_color);
 
-    // Update text content
-    const storeName = document.getElementById('store-name');
-    const storeTagline = document.getElementById('store-tagline');
-    const contactPhone = document.getElementById('contact-phone');
-    const contactEmail = document.getElementById('contact-email');
+        // Update text content
+        const storeName = document.getElementById('store-name');
+        const storeTagline = document.getElementById('store-tagline');
+        const contactPhone = document.getElementById('contact-phone');
+        const contactEmail = document.getElementById('contact-email');
 
-    if (storeName) storeName.textContent = config.store_name || defaultConfig.store_name;
-    if (storeTagline) storeTagline.textContent = config.store_tagline || defaultConfig.store_tagline;
-    if (contactPhone) contactPhone.textContent = config.contact_phone || defaultConfig.contact_phone;
-    if (contactEmail) contactEmail.textContent = config.contact_email || defaultConfig.contact_email;
+        if (storeName) storeName.textContent = config.store_name || defaultConfig.store_name;
+        if (storeTagline) storeTagline.textContent = config.store_tagline || defaultConfig.store_tagline;
+        if (contactPhone) contactPhone.textContent = config.contact_phone || defaultConfig.contact_phone;
+        if (contactEmail) contactEmail.textContent = config.contact_email || defaultConfig.contact_email;
 
-    // Update font styles
-    const customFont = config.font_family || defaultConfig.font_family;
-    const baseFontStack = 'Tahoma, Geneva, Verdana, sans-serif';
-    document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
+        // Update font styles
+        const customFont = config.font_family || defaultConfig.font_family;
+        const baseFontStack = 'Tahoma, Geneva, Verdana, sans-serif';
+        document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
 
-    const baseSize = config.font_size || defaultConfig.font_size;
-    document.body.style.fontSize = `${baseSize}px`;
+        const baseSize = config.font_size || defaultConfig.font_size;
+        document.body.style.fontSize = `${baseSize}px`;
 
-    // Update dynamic font sizes
-    const pageTitles = document.querySelectorAll('.page-title');
-    pageTitles.forEach(title => {
-      title.style.fontSize = `${baseSize * 2}px`;
-    });
+        // Update dynamic font sizes
+        const pageTitles = document.querySelectorAll('.page-title');
+        pageTitles.forEach(title => {
+            title.style.fontSize = `${baseSize * 2}px`;
+        });
 
-    const pageSubtitles = document.querySelectorAll('.page-subtitle');
-    pageSubtitles.forEach(subtitle => {
-      subtitle.style.fontSize = `${baseSize}px`;
-    });
+        const pageSubtitles = document.querySelectorAll('.page-subtitle');
+        pageSubtitles.forEach(subtitle => {
+            subtitle.style.fontSize = `${baseSize}px`;
+        });
 
-    const productNames = document.querySelectorAll('.product-name');
-    productNames.forEach(name => {
-      name.style.fontSize = `${baseSize * 1.125}px`;
-    });
+        const productNames = document.querySelectorAll('.product-name');
+        productNames.forEach(name => {
+            name.style.fontSize = `${baseSize * 1.125}px`;
+        });
 
-    const productPrices = document.querySelectorAll('.product-price');
-    productPrices.forEach(price => {
-      price.style.fontSize = `${baseSize * 1.5}px`;
-    });
-  }
+        const productPrices = document.querySelectorAll('.product-price');
+        productPrices.forEach(price => {
+            price.style.fontSize = `${baseSize * 1.5}px`;
+        });
+    }
 
-  if (window.elementSdk) {
-    window.elementSdk.init({
-      defaultConfig,
-      onConfigChange: async (newConfig) => {
-        applyConfig(newConfig);
-      },
-      mapToCapabilities: (cfg) => ({
-        recolorables: [
-          {
-            get: () => cfg.primary_color || defaultConfig.primary_color,
-            set: (value) => {
-              cfg.primary_color = value;
-              if (window.elementSdk) window.elementSdk.setConfig({ primary_color: value });
-            }
-          },
-          {
-            get: () => cfg.secondary_color || defaultConfig.secondary_color,
-            set: (value) => {
-              cfg.secondary_color = value;
-              if (window.elementSdk) window.elementSdk.setConfig({ secondary_color: value });
-            }
-          },
-          {
-            get: () => cfg.accent_color || defaultConfig.accent_color,
-            set: (value) => {
-              cfg.accent_color = value;
-              if (window.elementSdk) window.elementSdk.setConfig({ accent_color: value });
-            }
-          },
-          {
-            get: () => cfg.success_color || defaultConfig.success_color,
-            set: (value) => {
-              cfg.success_color = value;
-              if (window.elementSdk) window.elementSdk.setConfig({ success_color: value });
-            }
-          },
-          {
-            get: () => cfg.background_color || defaultConfig.background_color,
-            set: (value) => {
-              cfg.background_color = value;
-              if (window.elementSdk) window.elementSdk.setConfig({ background_color: value });
-            }
-          }
-        ],
-        borderables: [],
-        fontEditable: {
-          get: () => cfg.font_family || defaultConfig.font_family,
-          set: (value) => {
-            cfg.font_family = value;
-            if (window.elementSdk) window.elementSdk.setConfig({ font_family: value });
-          }
-        },
-        fontSizeable: {
-          get: () => cfg.font_size || defaultConfig.font_size,
-          set: (value) => {
-            cfg.font_size = value;
-            if (window.elementSdk) window.elementSdk.setConfig({ font_size: value });
-          }
-        }
-      }),
-      mapToEditPanelValues: (cfg) => new Map([
-        ['store_name', cfg.store_name || defaultConfig.store_name],
-        ['store_tagline', cfg.store_tagline || defaultConfig.store_tagline],
-        ['contact_phone', cfg.contact_phone || defaultConfig.contact_phone],
-        ['contact_email', cfg.contact_email || defaultConfig.contact_email]
-      ])
-    });
-  }
+    if (window.elementSdk) {
+        window.elementSdk.init({
+            defaultConfig,
+            onConfigChange: async (newConfig) => {
+                applyConfig(newConfig);
+            },
+            mapToCapabilities: (cfg) => ({
+                recolorables: [
+                    {
+                        get: () => cfg.primary_color || defaultConfig.primary_color,
+                        set: (value) => {
+                            cfg.primary_color = value;
+                            if (window.elementSdk) window.elementSdk.setConfig({ primary_color: value });
+                        }
+                    },
+                    {
+                        get: () => cfg.secondary_color || defaultConfig.secondary_color,
+                        set: (value) => {
+                            cfg.secondary_color = value;
+                            if (window.elementSdk) window.elementSdk.setConfig({ secondary_color: value });
+                        }
+                    },
+                    {
+                        get: () => cfg.accent_color || defaultConfig.accent_color,
+                        set: (value) => {
+                            cfg.accent_color = value;
+                            if (window.elementSdk) window.elementSdk.setConfig({ accent_color: value });
+                        }
+                    },
+                    {
+                        get: () => cfg.success_color || defaultConfig.success_color,
+                        set: (value) => {
+                            cfg.success_color = value;
+                            if (window.elementSdk) window.elementSdk.setConfig({ success_color: value });
+                        }
+                    },
+                    {
+                        get: () => cfg.background_color || defaultConfig.background_color,
+                        set: (value) => {
+                            cfg.background_color = value;
+                            if (window.elementSdk) window.elementSdk.setConfig({ background_color: value });
+                        }
+                    }
+                ],
+                borderables: [],
+                fontEditable: {
+                    get: () => cfg.font_family || defaultConfig.font_family,
+                    set: (value) => {
+                        cfg.font_family = value;
+                        if (window.elementSdk) window.elementSdk.setConfig({ font_family: value });
+                    }
+                },
+                fontSizeable: {
+                    get: () => cfg.font_size || defaultConfig.font_size,
+                    set: (value) => {
+                        cfg.font_size = value;
+                        if (window.elementSdk) window.elementSdk.setConfig({ font_size: value });
+                    }
+                }
+            }),
+            mapToEditPanelValues: (cfg) => new Map([
+                ['store_name', cfg.store_name || defaultConfig.store_name],
+                ['store_tagline', cfg.store_tagline || defaultConfig.store_tagline],
+                ['contact_phone', cfg.contact_phone || defaultConfig.contact_phone],
+                ['contact_email', cfg.contact_email || defaultConfig.contact_email]
+            ])
+        });
+    }
 
-  applyConfig(defaultConfig); // Apply the initial configuration
+    applyConfig(defaultConfig); // Apply the initial configuration
 
-  // Set static text content
-  document.getElementById('cart-btn-label').textContent = "Cart";
-  document.getElementById('search-btn').textContent = "Search";
-  document.getElementById('nav-home').textContent = "Home";
-  document.getElementById('nav-engine').textContent = "Engine Parts";
-  document.getElementById('nav-brakes').textContent = "Brakes";
-  document.getElementById('nav-suspension').textContent = "Suspension";
-  document.getElementById('nav-maintenance').textContent = "Maintenance Parts";
-  document.getElementById('nav-fluids').textContent = "Maintenance Fluids";
-  document.getElementById('nav-service').textContent = "Service Booking";
-  document.getElementById('nav-about').textContent = "About Us";
-  document.getElementById('search-input').placeholder = "Search for parts, brands, or categories...";
+    // Set static text content
+    document.getElementById('cart-btn-label').textContent = "Cart";
+    document.getElementById('search-btn').textContent = "Search";
+    document.getElementById('nav-home').textContent = "Home";
+    document.getElementById('nav-engine').textContent = "Engine Parts";
+    document.getElementById('nav-brakes').textContent = "Brakes";
+    document.getElementById('nav-suspension').textContent = "Suspension";
+    document.getElementById('nav-maintenance').textContent = "Maintenance Parts";
+    document.getElementById('nav-fluids').textContent = "Maintenance Fluids";
+    document.getElementById('nav-service').textContent = "Service Booking";
+    document.getElementById('nav-about').textContent = "About Us";
+    document.getElementById('search-input').placeholder = "Search for parts, brands, or categories...";
 
-  showCategory('home');
-  loadSearchHistory();
-  renderSearchHistory();
+    showCategory('home');
+    loadSearchHistory();
+    renderSearchHistory();
 }
 
 function loadSearchHistory() {
-  const storedHistory = localStorage.getItem('searchHistory');
-  if (storedHistory) {
-    searchHistory = JSON.parse(storedHistory);
-  }
+    const storedHistory = localStorage.getItem('searchHistory');
+    if (storedHistory) {
+        searchHistory = JSON.parse(storedHistory);
+    }
 }
 
 function renderSearchHistory() {
-  const historyContainer = document.getElementById('search-history-container');
-  if (historyContainer) {
-    historyContainer.innerHTML = `
+    const historyContainer = document.getElementById('search-history-container');
+    if (historyContainer) {
+        historyContainer.innerHTML = `
                 <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center;">
                     <span style="font-weight: 500; color: white;">Recent Searches:</span>
                     ${searchHistory.map(term => `<button class="search-history-btn" onclick="performSearchFromHistory('${term}')">${term}</button>`).join('')}
                 </div>
             `;
-  }
+    }
 }
 
 function performSearchFromHistory(term) {
-  document.getElementById('search-input').value = term;
-  performSearch();
+    document.getElementById('search-input').value = term;
+    performSearch();
 }
 
 function adjustColor(color, percent) {
-  const num = parseInt(color.replace('#', ''), 16);
-  const amt = Math.round(2.55 * percent);
-  const R = (num >> 16) + amt;
-  const G = (num >> 8 & 0x00FF) + amt;
-  const B = (num & 0x0000FF) + amt;
-  return '#' + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
-    (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
-    (B < 255 ? B < 1 ? 0 : B : 255))
-    .toString(16).slice(1);
+    const num = parseInt(color.replace('#', ''), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = (num >> 16) + amt;
+    const G = (num >> 8 & 0x00FF) + amt;
+    const B = (num & 0x0000FF) + amt;
+    return '#' + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+        (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+        (B < 255 ? B < 1 ? 0 : B : 255))
+        .toString(16).slice(1);
 }
 
 function updateCartCount() {
-  const cartCount = document.getElementById('cart-count');
-  if (cartCount) {
-    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-    cartCount.textContent = totalItems;
-  }
+    const cartCount = document.getElementById('cart-count');
+    if (cartCount) {
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        cartCount.textContent = totalItems;
+    }
 }
 
 function showCategory(category) {
-  currentCategory = category;
-  currentSearchTerm = '';
-  document.getElementById('search-input').value = '';
+    currentCategory = category;
+    currentSearchTerm = '';
+    document.getElementById('search-input').value = '';
 
-  document.querySelectorAll('.nav-links button').forEach(btn => {
-    btn.classList.remove('active');
-  });
-  document.querySelector(`[data-category="${category}"]`).classList.add('active');
+    document.querySelectorAll('.nav-links button').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    document.querySelector(`[data-category="${category}"]`).classList.add('active');
 
-  const mainContent = document.getElementById('main-content');
+    const mainContent = document.getElementById('main-content');
 
-  if (category === 'home') {
-    renderHomePage();
-  } else if (category === 'cart') {
-    renderCartPage();
-  } else if (category === 'checkout') {
-    renderCheckoutPage();
-  } else if (category === 'service') {
-    renderServicePage();
-  } else if (category === 'about') {
-    renderAboutPage();
-  } else {
-    renderCategoryPage(category);
-  }
+    if (category === 'home') {
+        renderHomePage();
+    } else if (category === 'cart') {
+        renderCartPage();
+    } else if (category === 'checkout') {
+        renderCheckoutPage();
+    } else if (category === 'service') {
+        renderServicePage();
+    } else if (category === 'about') {
+        renderAboutPage();
+    } else {
+        renderCategoryPage(category);
+    }
 }
 
 function renderAboutPage() {
-  const mainContent = document.getElementById('main-content');
-  mainContent.innerHTML = `
+    const mainContent = document.getElementById('main-content');
+    mainContent.innerHTML = `
             <h1 class="page-title">About Us</h1>
             <p class="page-subtitle">Your trusted source for quality auto parts</p>
             <div style="background: black; padding: 80px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
@@ -674,8 +568,8 @@ function renderAboutPage() {
 }
 
 function renderHomePage() {
-  const mainContent = document.getElementById('main-content');
-  mainContent.innerHTML = `
+    const mainContent = document.getElementById('main-content');
+    mainContent.innerHTML = `
     <h1 class="page-title">Welcome to ${config.store_name || defaultConfig.store_name}</h1>
     <p class="page-subtitle">Browse our extensive collection of quality auto parts</p>
     <div class="category-grid">
@@ -723,74 +617,74 @@ function renderHomePage() {
       </div>
     </div>
   `;
-  observeElements('[data-category]');
+    observeElements('[data-category]');
 }
 
 function renderCategoryPage(category) {
-  const categoryNames = {
-    engine: "Engine Parts",
-    brakes: "Brakes",
-    suspension: "Suspension",
-    maintenance: "Maintenance Parts",
-    fluids: "Maintenance Fluids",
-  };
+    const categoryNames = {
+        engine: "Engine Parts",
+        brakes: "Brakes",
+        suspension: "Suspension",
+        maintenance: "Maintenance Parts",
+        fluids: "Maintenance Fluids",
+    };
 
-  const mainContent = document.getElementById('main-content');
-  mainContent.innerHTML = `
+    const mainContent = document.getElementById('main-content');
+    mainContent.innerHTML = `
     <h1 class="page-title">${categoryNames[category]}</h1>
     <p class="page-subtitle">High-quality parts for your vehicle</p>
     <div class="products-grid" id="products-grid"></div>
   `;
 
-  renderProducts(category);
+    renderProducts(category);
 }
 
 function getUniqueBrands(category) {
-  const brands = [...new Set(products[category].map(p => p.brand))];
-  return brands.sort();
+    const brands = [...new Set(products[category].map(p => p.brand))];
+    return brands.sort();
 }
 
 function updateSort(sortBy) {
-  currentSortBy = sortBy;
-  renderProducts(currentCategory);
+    currentSortBy = sortBy;
+    renderProducts(currentCategory);
 }
 
 function updateBrandFilter(brand) {
-  currentFilterBrand = brand;
-  renderProducts(currentCategory);
+    currentFilterBrand = brand;
+    renderProducts(currentCategory);
 }
 
 function renderProducts(category) {
-  let productList = [...products[category]];
+    let productList = [...products[category]];
 
-  if (currentSearchTerm) {
-    productList = productList.filter(p =>
-      p.name.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
-      p.brand.toLowerCase().includes(currentSearchTerm.toLowerCase())
-    );
-  }
+    if (currentSearchTerm) {
+        productList = productList.filter(p =>
+            p.name.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
+            p.brand.toLowerCase().includes(currentSearchTerm.toLowerCase())
+        );
+    }
 
-  if (currentFilterBrand !== 'all') {
-    productList = productList.filter(p => p.brand === currentFilterBrand);
-  }
+    if (currentFilterBrand !== 'all') {
+        productList = productList.filter(p => p.brand === currentFilterBrand);
+    }
 
-  switch (currentSortBy) {
-    case 'price-low':
-      productList.sort((a, b) => a.price - b.price);
-      break;
-    case 'price-high':
-      productList.sort((a, b) => b.price - a.price);
-      break;
-    case 'brand':
-      productList.sort((a, b) => a.brand.localeCompare(b.brand));
-      break;
-    default:
-      productList.sort((a, b) => a.name.localeCompare(b.name));
-  }
+    switch (currentSortBy) {
+        case 'price-low':
+            productList.sort((a, b) => a.price - b.price);
+            break;
+        case 'price-high':
+            productList.sort((a, b) => b.price - a.price);
+            break;
+        case 'brand':
+            productList.sort((a, b) => a.brand.localeCompare(b.brand));
+            break;
+        default:
+            productList.sort((a, b) => a.name.localeCompare(b.name));
+    }
 
-  const grid = document.getElementById('products-grid');
-  if (productList.length === 0) {
-    grid.innerHTML = `
+    const grid = document.getElementById('products-grid');
+    if (productList.length === 0) {
+        grid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
         <div style="width: 80px; height: 80px; margin: 0 auto 20px auto; border-radius: 8px; overflow: hidden; opacity: 0.5;">
           <img src="no-results.jpg" alt="No products found" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='No products found'; this.style.display='none';">
@@ -799,10 +693,10 @@ function renderProducts(category) {
         <p style="font-size: 16px; color: #7f8c8d;">Try adjusting your filters or search term</p>
       </div>
     `;
-    return;
-  }
+        return;
+    }
 
-  grid.innerHTML = productList.map(product => `
+    grid.innerHTML = productList.map(product => `
     <div class="product-card" data-product-id="${product.id}" style="background-image: ${product['background-image'] || 'none'}">
       <div class="product-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
       <div class="product-brand">${product.brand}</div>
@@ -812,35 +706,35 @@ function renderProducts(category) {
       <button class="add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
     </div>
   `).join('');
-  observeElements('.product-card');
+    observeElements('.product-card');
 }
 
 function performSearch() {
-  const searchInput = document.getElementById('search-input');
-  currentSearchTerm = searchInput.value.trim();
+    const searchInput = document.getElementById('search-input');
+    currentSearchTerm = searchInput.value.trim();
 
-  if (!currentSearchTerm) {
-    return;
-  }
-
-  if (!searchHistory.includes(currentSearchTerm)) {
-    searchHistory.unshift(currentSearchTerm);
-    if (searchHistory.length > 5) {
-      searchHistory.pop();
+    if (!currentSearchTerm) {
+        return;
     }
-    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
-    renderSearchHistory();
-  }
 
-  const allProducts = Object.values(products).flat();
-  const results = allProducts.filter(p =>
-    p.name.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
-    p.brand.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
-    p.category.toLowerCase().includes(currentSearchTerm.toLowerCase())
-  );
+    if (!searchHistory.includes(currentSearchTerm)) {
+        searchHistory.unshift(currentSearchTerm);
+        if (searchHistory.length > 5) {
+            searchHistory.pop();
+        }
+        localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+        renderSearchHistory();
+    }
 
-  const mainContent = document.getElementById('main-content');
-  mainContent.innerHTML = `
+    const allProducts = Object.values(products).flat();
+    const results = allProducts.filter(p =>
+        p.name.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
+        p.brand.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
+        p.category.toLowerCase().includes(currentSearchTerm.toLowerCase())
+    );
+
+    const mainContent = document.getElementById('main-content');
+    mainContent.innerHTML = `
     <h1 class="page-title">Search Results</h1>
     <p class="page-subtitle">Found ${results.length} products for "${currentSearchTerm}"</p>
     <div class="products-grid">
@@ -863,107 +757,107 @@ function performSearch() {
       `).join('')}
     </div>
   `;
-  observeElements('.product-card');
+    observeElements('.product-card');
 }
 
 async function addToCart(productId) {
-  const allProducts = Object.values(products).flat();
-  const product = allProducts.find(p => p.id === productId);
+    const allProducts = Object.values(products).flat();
+    const product = allProducts.find(p => p.id === productId);
 
-  if (!product) return;
+    if (!product) return;
 
-  if (cart.length >= 999) {
-    showToast("Maximum limit of 999 items reached. Please remove some items first.", '#e74c3c');
-    return;
-  }
-
-  const existingItem = cart.find(item => item.product_id === productId);
-
-  if (existingItem) {
-    existingItem.quantity += 1;
-    const updateResult = await window.dataSdk.update(existingItem);
-    if (updateResult.isOk) {
-      showToast("Updated quantity in cart!");
-      bounceCartIcon();
-    } else {
-      showToast("Failed to update cart", '#e74c3c');
+    if (cart.length >= 999) {
+        showToast("Maximum limit of 999 items reached. Please remove some items first.", '#e74c3c');
+        return;
     }
-  } else {
-    const createResult = await window.dataSdk.create({
-      id: `cart_${Date.now()}_${Math.random()}`,
-      type: 'cart',
-      product_id: productId,
-      quantity: 1,
-      created_at: new Date().toISOString()
-    });
 
-    if (createResult.isOk) {
-      showToast("Added to cart!");
-      bounceCartIcon();
+    const existingItem = cart.find(item => item.product_id === productId);
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+        const updateResult = await window.dataSdk.update(existingItem);
+        if (updateResult.isOk) {
+            showToast("Updated quantity in cart!");
+            bounceCartIcon();
+        } else {
+            showToast("Failed to update cart", '#e74c3c');
+        }
     } else {
-      showToast("Failed to add to cart", '#e74c3c');
+        const createResult = await window.dataSdk.create({
+            id: `cart_${Date.now()}_${Math.random()}`,
+            type: 'cart',
+            product_id: productId,
+            quantity: 1,
+            created_at: new Date().toISOString()
+        });
+
+        if (createResult.isOk) {
+            showToast("Added to cart!");
+            bounceCartIcon();
+        } else {
+            showToast("Failed to add to cart", '#e74c3c');
+        }
     }
-  }
 }
 
 function showToast(message, bgColor = '#27ae60') {
-  const existingToast = document.querySelector('.toast');
-  if (existingToast) {
-    existingToast.remove();
-  }
+    const existingToast = document.querySelector('.toast');
+    if (existingToast) {
+        existingToast.remove();
+    }
 
-  const toast = document.createElement('div');
-  toast.className = 'toast';
-  toast.textContent = message;
-  toast.style.background = bgColor;
-  document.body.appendChild(toast);
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    toast.style.background = bgColor;
+    document.body.appendChild(toast);
 
-  setTimeout(() => {
-    toast.remove();
-  }, 3000);
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
 }
 
 // Add bounce animation to cart icon
 function bounceCartIcon() {
-  const cartBtn = document.getElementById('cart-btn');
-  if (cartBtn) {
-    cartBtn.classList.add('bounce');
-    setTimeout(() => {
-      cartBtn.classList.remove('bounce');
-    }, 500);
-  }
+    const cartBtn = document.getElementById('cart-btn');
+    if (cartBtn) {
+        cartBtn.classList.add('bounce');
+        setTimeout(() => {
+            cartBtn.classList.remove('bounce');
+        }, 500);
+    }
 }
 
 // Add Intersection Observer for fade-in effect
 function observeElements(selector) {
-  const elements = document.querySelectorAll(selector);
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('fade-in');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.1 });
+    const elements = document.querySelectorAll(selector);
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('fade-in');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.1 });
 
-  elements.forEach(element => {
-    observer.observe(element);
-  });
+    elements.forEach(element => {
+        observer.observe(element);
+    });
 }
 
 function showCart() {
-  currentCategory = 'cart';
-  document.querySelectorAll('.nav-links button').forEach(btn => {
-    btn.classList.remove('active');
-  });
-  renderCartPage();
+    currentCategory = 'cart';
+    document.querySelectorAll('.nav-links button').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    renderCartPage();
 }
 
 function renderCartPage() {
-  const mainContent = document.getElementById('main-content');
+    const mainContent = document.getElementById('main-content');
 
-  if (cart.length === 0) {
-    mainContent.innerHTML = `
+    if (cart.length === 0) {
+        mainContent.innerHTML = `
       <div class="cart-page">
         <div class="empty-state">
           <div style="width: 120px; height: 120px; margin: 0 auto 20px auto; border-radius: 8px; overflow: hidden; opacity: 0.5;">
@@ -975,20 +869,20 @@ function renderCartPage() {
         </div>
       </div>
     `;
-    return;
-  }
+        return;
+    }
 
-  const allProducts = Object.values(products).flat();
-  const cartItems = cart.map(item => {
-    const product = allProducts.find(p => p.id === item.product_id);
-    return { ...item, product };
-  });
+    const allProducts = Object.values(products).flat();
+    const cartItems = cart.map(item => {
+        const product = allProducts.find(p => p.id === item.product_id);
+        return { ...item, product };
+    });
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-  const tax = subtotal * 0.14;
-  const total = subtotal + tax;
+    const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+    const tax = subtotal * 0.14;
+    const total = subtotal + tax;
 
-  mainContent.innerHTML = `
+    mainContent.innerHTML = `
     <div class="cart-page">
       <h1 class="page-title">Shopping Cart</h1>
       <p class="page-subtitle">${cart.length} item(s) in your cart</p>
@@ -1031,45 +925,45 @@ function renderCartPage() {
 }
 
 async function updateQuantity(backendId, newQuantity) {
-  if (newQuantity < 1) return;
+    if (newQuantity < 1) return;
 
-  const item = cart.find(i => i.__backendId === backendId);
-  if (!item) return;
+    const item = cart.find(i => i.__backendId === backendId);
+    if (!item) return;
 
-  item.quantity = newQuantity;
-  const updateResult = await window.dataSdk.update(item);
+    item.quantity = newQuantity;
+    const updateResult = await window.dataSdk.update(item);
 
-  if (!updateResult.isOk) {
-    showToast("Failed to update cart", '#e74c3c');
-  }
+    if (!updateResult.isOk) {
+        showToast("Failed to update cart", '#e74c3c');
+    }
 }
 
 async function removeFromCart(backendId) {
-  const item = cart.find(i => i.__backendId === backendId);
-  if (!item) return;
+    const item = cart.find(i => i.__backendId === backendId);
+    if (!item) return;
 
-  const deleteResult = await window.dataSdk.delete(item);
+    const deleteResult = await window.dataSdk.delete(item);
 
-  if (deleteResult.isOk) {
-    showToast("Removed from cart");
-  } else {
-    showToast("Failed to remove item", '#e74c3c');
-  }
+    if (deleteResult.isOk) {
+        showToast("Removed from cart");
+    } else {
+        showToast("Failed to remove item", '#e74c3c');
+    }
 }
 
 function renderCheckoutPage() {
-  const allProducts = Object.values(products).flat();
-  const cartItems = cart.map(item => {
-    const product = allProducts.find(p => p.id === item.product_id);
-    return { ...item, product };
-  });
+    const allProducts = Object.values(products).flat();
+    const cartItems = cart.map(item => {
+        const product = allProducts.find(p => p.id === item.product_id);
+        return { ...item, product };
+    });
 
-  const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-  const tax = subtotal * 0.14;
-  const total = subtotal + tax;
+    const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+    const tax = subtotal * 0.14;
+    const total = subtotal + tax;
 
-  const mainContent = document.getElementById('main-content');
-  mainContent.innerHTML = `
+    const mainContent = document.getElementById('main-content');
+    mainContent.innerHTML = `
     <div class="checkout-page">
       <h1 class="page-title">Checkout</h1>
       <p class="page-subtitle">Complete your order</p>
@@ -1120,41 +1014,41 @@ function renderCheckoutPage() {
 }
 
 async function submitOrder(event) {
-  event.preventDefault();
+    event.preventDefault();
 
-  const submitBtn = document.getElementById('submit-order-btn');
-  submitBtn.disabled = true;
-  submitBtn.textContent = "Processing...";
+    const submitBtn = document.getElementById('submit-order-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Processing...";
 
-  const name = document.getElementById('customer-name').value;
-  const email = document.getElementById('customer-email').value;
-  const phone = document.getElementById('customer-phone').value;
-  const address = document.getElementById('customer-address').value;
+    const name = document.getElementById('customer-name').value;
+    const email = document.getElementById('customer-email').value;
+    const phone = document.getElementById('customer-phone').value;
+    const address = document.getElementById('customer-address').value;
 
-  await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-  for (const item of cart) {
-    await window.dataSdk.delete(item);
-  }
+    for (const item of cart) {
+        await window.dataSdk.delete(item);
+    }
 
-  const messageDiv = document.getElementById('checkout-message');
-  messageDiv.innerHTML = `
+    const messageDiv = document.getElementById('checkout-message');
+    messageDiv.innerHTML = `
     <div class="success-message">
       <strong>Order placed successfully!</strong><br>
       Thank you for your order, ${name}. We'll send a confirmation email to ${email}.
     </div>
   `;
 
-  document.getElementById('checkout-form').style.display = 'none';
+    document.getElementById('checkout-form').style.display = 'none';
 
-  setTimeout(() => {
-    showCategory('home');
-  }, 3000);
+    setTimeout(() => {
+        showCategory('home');
+    }, 3000);
 }
 
 function renderServicePage() {
-  const mainContent = document.getElementById('main-content');
-  mainContent.innerHTML = `
+    const mainContent = document.getElementById('main-content');
+    mainContent.innerHTML = `
     <div class="service-page">
       <h1 class="page-title">Toyota Corolla Service Booking</h1>
       <p class="page-subtitle">Schedule your maintenance service based on mileage</p>
@@ -1174,14 +1068,14 @@ function renderServicePage() {
 }
 
 function showProductDetails(productId) {
-  const allProducts = Object.values(products).flat();
-  const product = allProducts.find(p => p.id === productId);
+    const allProducts = Object.values(products).flat();
+    const product = allProducts.find(p => p.id === productId);
 
-  if (!product) return;
+    if (!product) return;
 
-  const modal = document.createElement('div');
-  modal.className = 'product-details-modal';
-  modal.innerHTML = `
+    const modal = document.createElement('div');
+    modal.className = 'product-details-modal';
+    modal.innerHTML = `
     <div class="product-details-content">
       <button class="close-modal">&times;</button>
       <div class="product-details-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
@@ -1210,33 +1104,33 @@ function showProductDetails(productId) {
     </div>
   `;
 
-  document.body.appendChild(modal);
+    document.body.appendChild(modal);
 }
 
 function closeProductModal() {
-  const modal = document.querySelector('.product-details-modal');
-  if (modal) {
-    modal.remove();
-  }
+    const modal = document.querySelector('.product-details-modal');
+    if (modal) {
+        modal.remove();
+    }
 }
 
 function selectService(index) {
-  currentCategory = 'service-details';
-  selectedService = index;
-  includeParts = false;
-  selectedParts = [];
+    currentCategory = 'service-details';
+    selectedService = index;
+    includeParts = false;
+    selectedParts = [];
 
-  renderServiceDetailsPage();
+    renderServiceDetailsPage();
 }
 
 function renderServiceDetailsPage() {
-  if (selectedService === null) return;
+    if (selectedService === null) return;
 
-  const pkg = servicePackages[selectedService];
-  const allProducts = Object.values(products).flat();
+    const pkg = servicePackages[selectedService];
+    const allProducts = Object.values(products).flat();
 
-  const mainContent = document.getElementById('main-content');
-  mainContent.innerHTML = `
+    const mainContent = document.getElementById('main-content');
+    mainContent.innerHTML = `
     <div class="service-details-page">
       <button class="back-btn" data-category="service" style="margin-bottom: 20px;">Back to Services</button>
       <h1 class="page-title">${pkg.km} KM Service - ${pkg.title}</h1>
@@ -1324,80 +1218,80 @@ function renderServiceDetailsPage() {
 }
 
 function getServiceDescription(serviceName) {
-  const descriptions = {
-    'Engine Oil Change': 'Replace old engine oil with fresh, high-quality oil',
-    'Oil Filter Replacement': 'Install new oil filter to ensure clean oil circulation',
-    'Air Filter Replacement': 'Replace air filter for optimal engine breathing',
-    'Air Filter Inspection': 'Check air filter condition and clean if necessary',
-    'Spark Plugs Replacement': 'Install new spark plugs for better ignition',
-    'Spark Plugs Check': 'Inspect spark plugs condition and gap',
-    'Timing Belt Replacement': 'Replace timing belt to prevent engine damage',
-    'Timing Belt Inspection': 'Check timing belt for wear and proper tension',
-    'Water Pump Replacement': 'Install new water pump for cooling system',
-    'Water Pump Check': 'Inspect water pump for leaks and proper operation',
-    'Water Pump Inspection': 'Check water pump condition and coolant flow',
-    'Thermostat Replacement': 'Replace thermostat for proper temperature control',
-    'Thermostat Check': 'Test thermostat operation and temperature range',
-    'Transmission Fluid Change': 'Replace transmission fluid for smooth shifting',
-    'Transmission Fluid Check': 'Check transmission fluid level and condition',
-    'Coolant Flush': 'Complete cooling system flush and refill',
-    'Coolant Replacement': 'Replace old coolant with fresh antifreeze',
-    'Coolant Check': 'Check coolant level and concentration',
-    'Brake Pads Inspection': 'Inspect brake pads for wear and thickness',
-    'Brake Pads Front': 'Replace front brake pads for safe stopping',
-    'Brake Pads Rear': 'Replace rear brake pads for optimal braking',
-    'Brake Pads All Around': 'Replace all brake pads front and rear',
-    'Brake Pads & Rotors Front': 'Replace front brake pads and rotors',
-    'Brake Pads & Rotors Rear': 'Replace rear brake pads and rotors',
-    'Brake Fluid Check': 'Check brake fluid level and color',
-    'Brake Fluid Replacement': 'Replace brake fluid for safe braking',
-    'Brake Fluid Flush': 'Complete brake system fluid flush',
-    'Brake System Overhaul': 'Complete brake system inspection and service',
-    'Brake Inspection': 'Comprehensive brake system inspection',
-    'Tire Rotation': 'Rotate tires for even wear pattern',
-    'Tire Rotation & Balance': 'Rotate and balance tires for smooth ride',
-    'Battery Test': 'Test battery condition and charging system',
-    'Cabin Air Filter': 'Replace cabin air filter for clean interior air',
-    'Power Steering Fluid': 'Check and top up power steering fluid',
-    'Differential Oil Change': 'Replace differential oil for smooth operation',
-    'Fuel System Cleaning': 'Clean fuel injectors and system components',
-    'Fuel System Clean': 'Professional fuel system cleaning service',
-    'Engine Degreasing': 'Clean engine bay and remove oil buildup',
-    'Suspension Check': 'Inspect suspension components for wear',
-    'Complete Inspection': 'Comprehensive vehicle safety inspection',
-    'Complete Vehicle Inspection': 'Full multi-point vehicle inspection',
-    'Comprehensive Inspection': 'Detailed inspection of all vehicle systems'
-  };
+    const descriptions = {
+        'Engine Oil Change': 'Replace old engine oil with fresh, high-quality oil',
+        'Oil Filter Replacement': 'Install new oil filter to ensure clean oil circulation',
+        'Air Filter Replacement': 'Replace air filter for optimal engine breathing',
+        'Air Filter Inspection': 'Check air filter condition and clean if necessary',
+        'Spark Plugs Replacement': 'Install new spark plugs for better ignition',
+        'Spark Plugs Check': 'Inspect spark plugs condition and gap',
+        'Timing Belt Replacement': 'Replace timing belt to prevent engine damage',
+        'Timing Belt Inspection': 'Check timing belt for wear and proper tension',
+        'Water Pump Replacement': 'Install new water pump for cooling system',
+        'Water Pump Check': 'Inspect water pump for leaks and proper operation',
+        'Water Pump Inspection': 'Check water pump condition and coolant flow',
+        'Thermostat Replacement': 'Replace thermostat for proper temperature control',
+        'Thermostat Check': 'Test thermostat operation and temperature range',
+        'Transmission Fluid Change': 'Replace transmission fluid for smooth shifting',
+        'Transmission Fluid Check': 'Check transmission fluid level and condition',
+        'Coolant Flush': 'Complete cooling system flush and refill',
+        'Coolant Replacement': 'Replace old coolant with fresh antifreeze',
+        'Coolant Check': 'Check coolant level and concentration',
+        'Brake Pads Inspection': 'Inspect brake pads for wear and thickness',
+        'Brake Pads Front': 'Replace front brake pads for safe stopping',
+        'Brake Pads Rear': 'Replace rear brake pads for optimal braking',
+        'Brake Pads All Around': 'Replace all brake pads front and rear',
+        'Brake Pads & Rotors Front': 'Replace front brake pads and rotors',
+        'Brake Pads & Rotors Rear': 'Replace rear brake pads and rotors',
+        'Brake Fluid Check': 'Check brake fluid level and color',
+        'Brake Fluid Replacement': 'Replace brake fluid for safe braking',
+        'Brake Fluid Flush': 'Complete brake system fluid flush',
+        'Brake System Overhaul': 'Complete brake system inspection and service',
+        'Brake Inspection': 'Comprehensive brake system inspection',
+        'Tire Rotation': 'Rotate tires for even wear pattern',
+        'Tire Rotation & Balance': 'Rotate and balance tires for smooth ride',
+        'Battery Test': 'Test battery condition and charging system',
+        'Cabin Air Filter': 'Replace cabin air filter for clean interior air',
+        'Power Steering Fluid': 'Check and top up power steering fluid',
+        'Differential Oil Change': 'Replace differential oil for smooth operation',
+        'Fuel System Cleaning': 'Clean fuel injectors and system components',
+        'Fuel System Clean': 'Professional fuel system cleaning service',
+        'Engine Degreasing': 'Clean engine bay and remove oil buildup',
+        'Suspension Check': 'Inspect suspension components for wear',
+        'Complete Inspection': 'Comprehensive vehicle safety inspection',
+        'Complete Vehicle Inspection': 'Full multi-point vehicle inspection',
+        'Comprehensive Inspection': 'Detailed inspection of all vehicle systems'
+    };
 
-  return descriptions[serviceName] || 'Professional automotive service';
+    return descriptions[serviceName] || 'Professional automotive service';
 }
 
 function togglePartsSelection(checked) {
-  includeParts = checked;
+    includeParts = checked;
 
-  if (checked) {
-    renderPartsSelection();
-  } else {
-    document.getElementById('parts-selection-container').innerHTML = '';
-    selectedParts = [];
-    updateServiceTotal();
-  }
+    if (checked) {
+        renderPartsSelection();
+    } else {
+        document.getElementById('parts-selection-container').innerHTML = '';
+        selectedParts = [];
+        updateServiceTotal();
+    }
 }
 
 function renderPartsSelection() {
-  const pkg = servicePackages[selectedService];
-  const allProducts = Object.values(products).flat();
+    const pkg = servicePackages[selectedService];
+    const allProducts = Object.values(products).flat();
 
-  const availableParts = pkg.items
-    .filter(item => item.part)
-    .map(item => {
-      const product = allProducts.find(p => p.id === item.part);
-      return { ...item, product };
-    })
-    .filter(item => item.product);
+    const availableParts = pkg.items
+        .filter(item => item.part)
+        .map(item => {
+            const product = allProducts.find(p => p.id === item.part);
+            return { ...item, product };
+        })
+        .filter(item => item.product);
 
-  const container = document.getElementById('parts-selection-container');
-  container.innerHTML = `
+    const container = document.getElementById('parts-selection-container');
+    container.innerHTML = `
     <div class="parts-selection">
       <h4 style="margin: 0 0 15px 0; color: #2c3e50;">Select Parts to Include:</h4>
       ${availableParts.map(item => `
@@ -1414,74 +1308,74 @@ function renderPartsSelection() {
 }
 
 function togglePart(productId, price, checked) {
-  if (checked) {
-    selectedParts.push({ productId, price });
-  } else {
-    selectedParts = selectedParts.filter(p => p.productId !== productId);
-  }
-  updateServiceTotal();
+    if (checked) {
+        selectedParts.push({ productId, price });
+    } else {
+        selectedParts = selectedParts.filter(p => p.productId !== productId);
+    }
+    updateServiceTotal();
 }
 
 function updateServiceTotal() {
-  const pkg = servicePackages[selectedService];
-  const partsCost = selectedParts.reduce((sum, part) => sum + part.price, 0);
-  const subtotal = pkg.price + partsCost;
-  const tax = subtotal * 0.14;
-  const total = subtotal + tax;
+    const pkg = servicePackages[selectedService];
+    const partsCost = selectedParts.reduce((sum, part) => sum + part.price, 0);
+    const subtotal = pkg.price + partsCost;
+    const tax = subtotal * 0.14;
+    const total = subtotal + tax;
 
-  const partsCostRow = document.getElementById('parts-cost-row');
-  const partsCostSpan = document.getElementById('parts-cost');
-  const subtotalCostSpan = document.getElementById('subtotal-cost');
-  const taxCostSpan = document.getElementById('tax-cost');
-  const totalCostSpan = document.getElementById('total-cost');
+    const partsCostRow = document.getElementById('parts-cost-row');
+    const partsCostSpan = document.getElementById('parts-cost');
+    const subtotalCostSpan = document.getElementById('subtotal-cost');
+    const taxCostSpan = document.getElementById('tax-cost');
+    const totalCostSpan = document.getElementById('total-cost');
 
-  if (partsCost > 0) {
-    partsCostRow.style.display = 'flex';
-    partsCostSpan.innerHTML = `${partsCost.toFixed(2)} <span class="currency-symbol">EGP</span>`;
-  } else {
-    partsCostRow.style.display = 'none';
-  }
+    if (partsCost > 0) {
+        partsCostRow.style.display = 'flex';
+        partsCostSpan.innerHTML = `${partsCost.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+    } else {
+        partsCostRow.style.display = 'none';
+    }
 
-  subtotalCostSpan.innerHTML = `${subtotal.toFixed(2)} <span class="currency-symbol">EGP</span>`;
-  taxCostSpan.innerHTML = `${tax.toFixed(2)} <span class="currency-symbol">EGP</span>`;
-  totalCostSpan.innerHTML = `${total.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+    subtotalCostSpan.innerHTML = `${subtotal.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+    taxCostSpan.innerHTML = `${tax.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+    totalCostSpan.innerHTML = `${total.toFixed(2)} <span class="currency-symbol">EGP</span>`;
 }
 
 async function submitServiceBooking(event) {
-  event.preventDefault();
+    event.preventDefault();
 
-  if (cart.length >= 999) {
-    showToast("Maximum limit of 999 bookings reached. Please contact support.", '#e74c3c');
-    return;
-  }
+    if (cart.length >= 999) {
+        showToast("Maximum limit of 999 bookings reached. Please contact support.", '#e74c3c');
+        return;
+    }
 
-  const submitBtn = document.getElementById('book-service-btn');
-  submitBtn.disabled = true;
-  submitBtn.textContent = "Booking...";
+    const submitBtn = document.getElementById('book-service-btn');
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Booking...";
 
-  const pkg = servicePackages[selectedService];
-  const name = document.getElementById('service-customer-name').value;
-  const phone = document.getElementById('service-customer-phone').value;
-  const email = document.getElementById('service-customer-email').value;
-  const date = document.getElementById('service-appointment-date').value;
+    const pkg = servicePackages[selectedService];
+    const name = document.getElementById('service-customer-name').value;
+    const phone = document.getElementById('service-customer-phone').value;
+    const email = document.getElementById('service-customer-email').value;
+    const date = document.getElementById('service-appointment-date').value;
 
-  const bookingData = {
-    id: `service_${Date.now()}_${Math.random()}`,
-    type: 'service',
-    service_km: pkg.km,
-    with_parts: includeParts,
-    customer_name: name,
-    customer_phone: phone,
-    customer_email: email,
-    appointment_date: date,
-    created_at: new Date().toISOString()
-  };
+    const bookingData = {
+        id: `service_${Date.now()}_${Math.random()}`,
+        type: 'service',
+        service_km: pkg.km,
+        with_parts: includeParts,
+        customer_name: name,
+        customer_phone: phone,
+        customer_email: email,
+        appointment_date: date,
+        created_at: new Date().toISOString()
+    };
 
-  const createResult = await window.dataSdk.create(bookingData);
+    const createResult = await window.dataSdk.create(bookingData);
 
-  if (createResult.isOk) {
-    const form = document.getElementById('service-booking-form');
-    form.innerHTML = `
+    if (createResult.isOk) {
+        const form = document.getElementById('service-booking-form');
+        form.innerHTML = `
       <div class="success-message">
         <strong>Service appointment booked successfully!</strong><br>
         Your ${pkg.km} KM service for Toyota Corolla has been scheduled for ${date}.<br>
@@ -1489,58 +1383,58 @@ async function submitServiceBooking(event) {
       </div>
     `;
 
-    setTimeout(() => {
-      showCategory('home');
-    }, 3000);
-  } else {
-    showToast('Failed to book service. Please try again.', '#e74c3c');
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Book Service Appointment';
-  }
+        setTimeout(() => {
+            showCategory('home');
+        }, 3000);
+    } else {
+        showToast('Failed to book service. Please try again.', '#e74c3c');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Book Service Appointment';
+    }
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
 
 document.addEventListener('click', (e) => {
-  if (e.target.matches('[data-category]')) {
-    showCategory(e.target.dataset.category);
-  }
-  if (e.target.matches('.add-to-cart-btn')) {
-    addToCart(e.target.dataset.productId);
-  }
-  if (e.target.matches('.view-details-btn')) {
-    showProductDetails(e.target.dataset.productId);
-  }
-  if (e.target.matches('.close-modal')) {
-    closeProductModal();
-  }
-  if (e.target.matches('.product-details-modal')) {
-    closeProductModal();
-  }
-  if (e.target.matches('.qty-btn')) {
-    updateQuantity(e.target.dataset.backendId, parseInt(e.target.dataset.quantity));
-  }
-  if (e.target.matches('.remove-btn')) {
-    removeFromCart(e.target.dataset.backendId);
-  }
-  if (e.target.matches('[data-service-index]')) {
-    selectService(parseInt(e.target.dataset.serviceIndex));
-  }
-  if (e.target.matches('#include-parts-checkbox')) {
-    togglePartsSelection(e.target.checked);
-  }
-  if (e.target.matches('.part-item input[type="checkbox"]')) {
-    togglePart(e.target.value, parseFloat(e.target.dataset.price), e.target.checked);
-  }
+    if (e.target.matches('[data-category]')) {
+        showCategory(e.target.dataset.category);
+    }
+    if (e.target.matches('.add-to-cart-btn')) {
+        addToCart(e.target.dataset.productId);
+    }
+    if (e.target.matches('.view-details-btn')) {
+        showProductDetails(e.target.dataset.productId);
+    }
+    if (e.target.matches('.close-modal')) {
+        closeProductModal();
+    }
+    if (e.target.matches('.product-details-modal')) {
+        closeProductModal();
+    }
+    if (e.target.matches('.qty-btn')) {
+        updateQuantity(e.target.dataset.backendId, parseInt(e.target.dataset.quantity));
+    }
+    if (e.target.matches('.remove-btn')) {
+        removeFromCart(e.target.dataset.backendId);
+    }
+    if (e.target.matches('[data-service-index]')) {
+        selectService(parseInt(e.target.dataset.serviceIndex));
+    }
+    if (e.target.matches('#include-parts-checkbox')) {
+        togglePartsSelection(e.target.checked);
+    }
+    if (e.target.matches('.part-item input[type="checkbox"]')) {
+        togglePart(e.target.value, parseFloat(e.target.dataset.price), e.target.checked);
+    }
 });
 
 document.addEventListener('submit', (e) => {
-  if (e.target.matches('#checkout-form')) {
-    submitOrder(e);
-  }
-  if (e.target.matches('#service-booking-form')) {
-    submitServiceBooking(e);
-  }
+    if (e.target.matches('#checkout-form')) {
+        submitOrder(e);
+    }
+    if (e.target.matches('#service-booking-form')) {
+        submitServiceBooking(e);
+    }
 });
 
 document.getElementById('search-btn').addEventListener('click', performSearch);
