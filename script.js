@@ -1,6 +1,6 @@
 const translations = {
   en: {
-    storeName: "Auto Parts Pro",
+    storeName: "Car House 🚗",
     storeTagline: "Quality Parts for Your Vehicle",
     contactPhoneLabel: "Phone:",
     contactEmailLabel: "Email:",
@@ -17,9 +17,9 @@ const translations = {
     navAbout: "About Us",
     aboutUsTitle: "About Us",
     aboutUsSubtitle: "Your trusted source for quality auto parts",
-    aboutUsWelcome: "Welcome to Auto Parts Pro, your one-stop shop for high-quality auto parts. We are passionate about cars and dedicated to providing our customers with the best parts and service in the industry.",
+    aboutUsWelcome: "Welcome to Car House 🚗, your one-stop shop for high-quality auto parts. We are passionate about cars and dedicated to providing our customers with the best parts and service in the industry.",
     aboutUsMission: "Our mission is to make it easy and affordable for you to keep your vehicle in top condition. We offer a wide selection of parts for all makes and models, backed by our expert team and commitment to customer satisfaction.",
-    aboutUsThanks: "Thank you for choosing Auto Parts Pro. We look forward to serving you!",
+    aboutUsThanks: "Thank you for choosing Car House 🚗. We look forward to serving you!",
     welcomeMessage: "Welcome to",
     browseCollection: "Browse our extensive collection of quality auto parts",
     engineParts: "Engine Parts",
@@ -102,158 +102,10 @@ const translations = {
     recentSearches: "Recent Searches:",
     currency: "EGP"
   },
-  ar: {
-    storeName: "برو قطع غيار السيارات",
-    storeTagline: "قطع غيار عالية الجودة لسيارتك",
-    contactPhoneLabel: "الهاتف:",
-    contactEmailLabel: "البريد الإلكتروني:",
-    cartBtnLabel: "السلة",
-    searchInputPlaceholder: "البحث عن قطع غيار أو ماركات أو فئات...",
-    searchBtn: "بحث",
-    navHome: "الرئيسية",
-    navEngine: "أجزاء المحرك",
-    navBrakes: "الفرامل",
-    navSuspension: "التعليق",
-    navMaintenance: "أجزاء الصيانة",
-    navFluids: "سوائل الصيانة",
-    navService: "حجز خدمة",
-    navAbout: "معلومات عنا",
-    aboutUsTitle: "معلومات عنا",
-    aboutUsSubtitle: "مصدرك الموثوق لقطع غيار السيارات عالية الجودة",
-    aboutUsWelcome: "مرحبًا بك في Auto Parts Pro، متجرك الشامل لقطع غيار السيارات عالية الجودة. نحن متحمسون للسيارات وملتزمون بتزويد عملائنا بأفضل القطع والخدمات في هذا المجال.",
-    aboutUsMission: "مهمتنا هي أن نجعل من السهل والميسور لك الحفاظ على سيارتك في أفضل حالة. نحن نقدم مجموعة واسعة من قطع الغيار لجميع الماركات والموديلات، مدعومة بفريق من الخبراء والتزامنا برضا العملاء.",
-    aboutUsThanks: "شكرًا لاختيارك Auto Parts Pro. نتطلع إلى خدمتك!",
-    welcomeMessage: "مرحبًا بك في",
-    browseCollection: "تصفح مجموعتنا الواسعة من قطع غيار السيارات عالية الجودة",
-    engineParts: "أجزاء المحرك",
-    enginePartsDesc: "مكونات المحرك الأساسية",
-    brakes: "الفرامل",
-    brakesDesc: "وسادات الفرامل والأقراص والمزيد",
-    suspension: "التعليق",
-    suspensionDesc: "الإطارات والعجلات والملحقات",
-    maintenanceParts: "أجزاء الصيانة",
-    maintenancePartsDesc: "الإضاءة والأجزاء الكهربائية",
-    maintenanceFluids: "زيوت التشحيم والصيانة",
-    maintenanceFluidsDesc: "الزيوت والمبردات والسوائل",
-    serviceBooking: "حجز خدمة",
-    serviceBookingDesc: "احجز خدمة تويوتا كورولا الخاصة بك",
-    highQualityParts: "قطع غيار عالية الجودة لسيارتك",
-    noProductsFound: "لم يتم العثور على منتجات",
-    tryAdjustingFilters: "حاول تعديل الفلاتر أو مصطلح البحث",
-    viewDetails: "عرض التفاصيل",
-    addToCart: "أضف إلى السلة",
-    searchResults: "نتائج البحث",
-    foundProducts: "تم العثور على {count} منتجًا لـ \"{term}\"",
-    tryDifferentSearch: "حاول مصطلح بحث مختلف",
-    updatedCart: "تم تحديث الكمية في السلة!",
-    failedUpdateCart: "فشل تحديث السلة",
-    addedToCart: "تمت الإضافة إلى السلة!",
-    failedAddToCart: "فشل الإضافة إلى السلة",
-    maxCartLimit: "تم الوصول إلى الحد الأقصى البالغ 999 عنصرًا. يرجى إزالة بعض العناصر أولاً.",
-    removedFromCart: "تمت الإزالة من السلة",
-    failedRemoveItem: "فشل إزالة العنصر",
-    shoppingCart: "سلة التسوق",
-    itemsInCart: "{count} عنصر(عناصر) في سلتك",
-    cartEmpty: "سلتك فارغة",
-    addProductsToStart: "أضف بعض المنتجات للبدء",
-    continueShopping: "مواصلة التسوق",
-    remove: "إزالة",
-    subtotal: "المجموع الفرعي:",
-    tax: "الضريبة (14٪):",
-    total: "المجموع:",
-    proceedToCheckout: "الانتقال إلى الدفع",
-    checkout: "الدفع",
-    completeYourOrder: "أكمل طلبك",
-    fullName: "الاسم الكامل *",
-    emailAddress: "عنوان البريد الإلكتروني *",
-    phoneNumber: "رقم الهاتف *",
-    shippingAddress: "عنوان الشحن *",
-    orderSummary: "ملخص الطلب",
-    backToCart: "العودة إلى السلة",
-    placeOrder: "إتمام الطلب",
-    processing: "جارٍ المعالجة...",
-    orderPlaced: "تم تقديم الطلب بنجاح!",
-    orderConfirmation: "شكرًا لطلبك، {name}. سنرسل تأكيدًا بالبريد الإلكتروني إلى {email}.",
-    serviceBookingTitle: "حجز خدمة تويوتا كورولا",
-    serviceBookingSubtitle: "حدد خدمة الصيانة الخاصة بك بناءً على عدد الكيلومترات",
-    serviceItems: "{count}รายการบริการ",
-    productSpecs: "مواصفات المنتج",
-    partNumber: "رقم القطعة:",
-    compatibility: "التوافق:",
-    category: "الفئة:",
-    addToCartPrice: "أضف إلى السلة - {price}",
-    backToServices: "العودة إلى الخدمات",
-    kmService: "خدمة {km} كم - {title}",
-    completePackage: "باقة صيانة كاملة لسيارتك تويوتا كورولا",
-    recommendedAt: "موصى به عند {km} كيلومتر",
-    serviceItem: "عنصر الخدمة",
-    status: "الحالة",
-    description: "الوصف",
-    required: "مطلوب",
-    optional: "اختياري",
-    includeParts: "تضمين استبدال قطع الغيار مع هذه الخدمة",
-    bookAppointment: "احجز موعدك",
-    preferredDate: "التاريخ المفضل *",
-    servicePackage: "باقة الخدمة:",
-    partsCost: "تكلفة قطع الغيار:",
-    totalCost: "التكلفة الإجمالية:",
-    bookServiceAppointment: "حجز موعد الخدمة",
-    selectParts: "حدد قطع الغيار لتضمينها:",
-    booking: "جارٍ الحجز...",
-    serviceBooked: "تم حجز موعد الخدمة بنجاح!",
-    serviceConfirmation: "تم تحديد موعد خدمة {km} كم لسيارتك تويوتا كورولا في {date}. سنرسل تأكيدًا إلى {email}.",
-    recentSearches: "عمليات البحث الأخيرة:",
-    currency: "جنيه مصري"
-  },
 };
 
-let currentLanguage = localStorage.getItem("language") || "en";
-
-function t(key, replacements = {}) {
-  let translation = (translations[currentLanguage] && translations[currentLanguage][key]) || translations.en[key] || key;
-  for (const placeholder in replacements) {
-    translation = translation.replace(`{${placeholder}}`, replacements[placeholder]);
-  }
-  return translation;
-}
-
-function setLanguage(lang) {
-  currentLanguage = lang;
-  localStorage.setItem("language", lang);
-  document.documentElement.lang = lang;
-  document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-
-  const elements = {
-    "store-name": "storeName",
-    "store-tagline": "storeTagline",
-    "contact-phone-label": "contactPhoneLabel",
-    "contact-email-label": "contactEmailLabel",
-    "cart-btn-label": "cartBtnLabel",
-    "search-btn": "searchBtn",
-    "nav-home": "navHome",
-    "nav-engine": "navEngine",
-    "nav-brakes": "navBrakes",
-    "nav-suspension": "navSuspension",
-    "nav-maintenance": "navMaintenance",
-    "nav-fluids": "navFluids",
-    "nav-service": "navService",
-    "nav-about": "navAbout",
-  };
-
-  for (const id in elements) {
-    const element = document.getElementById(id);
-    if (element) {
-      element.textContent = t(elements[id]);
-    }
-  }
-
-  document.getElementById("search-input").placeholder = t("searchInputPlaceholder");
-  document.getElementById("lang-btn").textContent = lang === "en" ? "AR" : "EN";
-  showCategory(currentCategory);
-}
-
 const defaultConfig = {
-  store_name: "Auto Parts Pro",
+  store_name: "Car House 🚗",
   store_tagline: "Quality Parts for Your Vehicle",
   contact_phone: "+1 (555) 123-4567",
   contact_email: "info@autoparts.com",
@@ -718,7 +570,20 @@ async function initApp() {
   }
 
   applyConfig(defaultConfig); // Apply the initial configuration
-  setLanguage(currentLanguage);
+
+  // Set static text content
+  document.getElementById('cart-btn-label').textContent = "Cart";
+  document.getElementById('search-btn').textContent = "Search";
+  document.getElementById('nav-home').textContent = "Home";
+  document.getElementById('nav-engine').textContent = "Engine Parts";
+  document.getElementById('nav-brakes').textContent = "Brakes";
+  document.getElementById('nav-suspension').textContent = "Suspension";
+  document.getElementById('nav-maintenance').textContent = "Maintenance Parts";
+  document.getElementById('nav-fluids').textContent = "Maintenance Fluids";
+  document.getElementById('nav-service').textContent = "Service Booking";
+  document.getElementById('nav-about').textContent = "About Us";
+  document.getElementById('search-input').placeholder = "Search for parts, brands, or categories...";
+
   showCategory('home');
   loadSearchHistory();
   renderSearchHistory();
@@ -736,7 +601,6 @@ function renderSearchHistory() {
   if (historyContainer) {
     historyContainer.innerHTML = `
                 <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center;">
-                    <span style="font-weight: 500; color: white;">${t("recentSearches")}</span>
                     <span style="font-weight: 500; color: white;">Recent Searches:</span>
                     ${searchHistory.map(term => `<button class="search-history-btn" onclick="performSearchFromHistory('${term}')">${term}</button>`).join('')}
                 </div>
@@ -799,12 +663,12 @@ function showCategory(category) {
 function renderAboutPage() {
   const mainContent = document.getElementById('main-content');
   mainContent.innerHTML = `
-            <h1 class="page-title">${t("aboutUsTitle")}</h1>
-            <p class="page-subtitle">${t("aboutUsSubtitle")}</p>
+            <h1 class="page-title">About Us</h1>
+            <p class="page-subtitle">Your trusted source for quality auto parts</p>
             <div style="background: black; padding: 80px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-                <p>${t("aboutUsWelcome")}</p>
-                <p>${t("aboutUsMission")}</p>
-                <p>${t("aboutUsThanks")}</p>
+                <p>Welcome to Car House 🚗, your one-stop shop for high-quality auto parts. We are passionate about cars and dedicated to providing our customers with the best parts and service in the industry.</p>
+                <p>Our mission is to make it easy and affordable for you to keep your vehicle in top condition. We offer a wide selection of parts for all makes and models, backed by our expert team and commitment to customer satisfaction.</p>
+                <p>Thank you for choosing Car House 🚗. We look forward to serving you!</p>
             </div>
         `;
 }
@@ -812,50 +676,50 @@ function renderAboutPage() {
 function renderHomePage() {
   const mainContent = document.getElementById('main-content');
   mainContent.innerHTML = `
-    <h1 class="page-title">${t("welcomeMessage")} ${config.store_name || defaultConfig.store_name}</h1>
-    <p class="page-subtitle">${t("browseCollection")}</p>
+    <h1 class="page-title">Welcome to ${config.store_name || defaultConfig.store_name}</h1>
+    <p class="page-subtitle">Browse our extensive collection of quality auto parts</p>
     <div class="category-grid">
       <div class="category-card" data-category="engine">
         <div class="category-card-image-wrapper">
-          <img src="https://media.hswstatic.com/eyJidWNrZXQiOiJjb250ZW50Lmhzd3N0YXRpYy5jb20iLCJrZXkiOiJnaWZcL2VuZ2luZS1xdWl6LWEtb2cuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo4Mjh9fX0=" alt="${t("engineParts")}" class="category-card-image" onerror="this.src=''; this.alt='${t("engineParts")}'; this.style.display='none';">
+          <img src="https://media.hswstatic.com/eyJidWNrZXQiOiJjb250ZW50Lmhzd3N0YXRpYy5jb20iLCJrZXkiOiJnaWZcL2VuZ2luZS1xdWl6LWEtb2cuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo4Mjh9fX0=" alt="Engine Parts" class="category-card-image" onerror="this.src=''; this.alt='Engine Parts'; this.style.display='none';">
         </div>
-        <h3 class="category-card-title">${t("engineParts")}</h3>
-        <p class="category-card-description">${t("enginePartsDesc")}</p>
+        <h3 class="category-card-title">Engine Parts</h3>
+        <p class="category-card-description">Essential engine components</p>
       </div>
       <div class="category-card" data-category="brakes">
         <div class="category-card-image-wrapper">
-          <img src="https://img.freepik.com/free-photo/car-repair-garage_1170-1497.jpg?semt=ais_hybrid&w=740&q=80" alt="${t("brakes")}" class="category-card-image" onerror="this.src=''; this.alt='${t("brakes")}'; this.style.display='none';">
+          <img src="https://img.freepik.com/free-photo/car-repair-garage_1170-1497.jpg?semt=ais_hybrid&w=740&q=80" alt="Brakes" class="category-card-image" onerror="this.src=''; this.alt='Brakes'; this.style.display='none';">
         </div>
-        <h3 class="category-card-title">${t("brakes")}</h3>
-        <p class="category-card-description">${t("brakesDesc")}</p>
+        <h3 class="category-card-title">Brakes</h3>
+        <p class="category-card-description">Brake pads, rotors & more</p>
       </div>
       <div class="category-card" data-category="suspension">
         <div class="category-card-image-wrapper">
-          <img src="https://static.pakwheels.com/2015/08/2014-Toyota-Corolla-Suspension.jpg" alt="${t("suspension")}" class="category-card-image" onerror="this.src=''; this.alt='${t("suspension")}'; this.style.display='none';">
+          <img src="https://static.pakwheels.com/2015/08/2014-Toyota-Corolla-Suspension.jpg" alt="Suspension" class="category-card-image" onerror="this.src=''; this.alt='Suspension'; this.style.display='none';">
         </div>
-        <h3 class="category-card-title">${t("suspension")}</h3>
-        <p class="category-card-description">${t("suspensionDesc")}</p>
+        <h3 class="category-card-title">Suspension</h3>
+        <p class="category-card-description">Tires, wheels & accessories</p>
       </div>
       <div class="category-card" data-category="maintenance">
         <div class="category-card-image-wrapper">
-          <img src="https://toyota.com.eg/storage/6592/image-3-(4).png.png" alt="${t("maintenanceParts")}" class="category-card-image" onerror="this.src=''; this.alt='${t("maintenanceParts")}'; this.style.display='none';">
+          <img src="https://toyota.com.eg/storage/6592/image-3-(4).png.png" alt="Maintenance Parts" class="category-card-image" onerror="this.src=''; this.alt='Maintenance Parts'; this.style.display='none';">
         </div>
-        <h3 class="category-card-title">${t("maintenanceParts")}</h3>
-        <p class="category-card-description">${t("maintenancePartsDesc")}</p>
+        <h3 class="category-card-title">Maintenance Parts</h3>
+        <p class="category-card-description">Lighting & electrical parts</p>
       </div>
       <div class="category-card" data-category="fluids">
         <div class="category-card-image-wrapper">
-          <img src="https://rsauto.ca/wp-content/uploads/2021/08/fluid-flush-North-York.png" alt="${t("maintenanceFluids")}" class="category-card-image" onerror="this.src=''; this.alt='${t("maintenanceFluids")}'; this.style.display='none';">
+          <img src="https://rsauto.ca/wp-content/uploads/2021/08/fluid-flush-North-York.png" alt="Maintenance Fluids" class="category-card-image" onerror="this.src=''; this.alt='Maintenance Fluids'; this.style.display='none';">
         </div>
-        <h3 class="category-card-title">${t("maintenanceFluids")}</h3>
-        <p class="category-card-description">${t("maintenanceFluidsDesc")}</p>
+        <h3 class="category-card-title">Maintenance Oils and Lubricants</h3>
+        <p class="category-card-description">Oils, coolants & fluids</p>
       </div>
       <div class="category-card" data-category="service">
         <div class="category-card-image-wrapper">
-          <img src="https://toyotacorporate.sitedemo.com.my/wp-content/uploads/2022/01/v2-services-image4.jpg" alt="${t("serviceBooking")}" class="category-card-image" onerror="this.src=''; this.alt='${t("serviceBooking")}'; this.style.display='none';">
+          <img src="https://toyotacorporate.sitedemo.com.my/wp-content/uploads/2022/01/v2-services-image4.jpg" alt="Service Booking" class="category-card-image" onerror="this.src=''; this.alt='Service Booking'; this.style.display='none';">
         </div>
-        <h3 class="category-card-title">${t("serviceBooking")}</h3>
-        <p class="category-card-description">${t("serviceBookingDesc")}</p>
+        <h3 class="category-card-title">Service Booking</h3>
+        <p class="category-card-description">Book your Toyota Corolla service</p>
       </div>
     </div>
   `;
@@ -864,17 +728,17 @@ function renderHomePage() {
 
 function renderCategoryPage(category) {
   const categoryNames = {
-    engine: t("engineParts"),
-    brakes: t("brakes"),
-    suspension: t("suspension"),
-    maintenance: t("maintenanceParts"),
-    fluids: t("maintenanceFluids"),
+    engine: "Engine Parts",
+    brakes: "Brakes",
+    suspension: "Suspension",
+    maintenance: "Maintenance Parts",
+    fluids: "Maintenance Fluids",
   };
 
   const mainContent = document.getElementById('main-content');
   mainContent.innerHTML = `
     <h1 class="page-title">${categoryNames[category]}</h1>
-    <p class="page-subtitle">${t("highQualityParts")}</p>
+    <p class="page-subtitle">High-quality parts for your vehicle</p>
     <div class="products-grid" id="products-grid"></div>
   `;
 
@@ -929,10 +793,10 @@ function renderProducts(category) {
     grid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
         <div style="width: 80px; height: 80px; margin: 0 auto 20px auto; border-radius: 8px; overflow: hidden; opacity: 0.5;">
-          <img src="no-results.jpg" alt="${t("noProductsFound")}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='${t("noProductsFound")}'; this.style.display='none';">
+          <img src="no-results.jpg" alt="No products found" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='No products found'; this.style.display='none';">
         </div>
-        <h3 style="font-size: 24px; color: #2c3e50; margin: 0 0 10px 0;">${t("noProductsFound")}</h3>
-        <p style="font-size: 16px; color: #7f8c8d;">${t("tryAdjustingFilters")}</p>
+        <h3 style="font-size: 24px; color: #2c3e50; margin: 0 0 10px 0;">No products found</h3>
+        <p style="font-size: 16px; color: #7f8c8d;">Try adjusting your filters or search term</p>
       </div>
     `;
     return;
@@ -943,9 +807,9 @@ function renderProducts(category) {
       <div class="product-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
       <div class="product-brand">${product.brand}</div>
       <h3 class="product-name">${product.name}</h3>
-      <div class="product-price">${product.price.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></div>
-      <button class="view-details-btn" data-product-id="${product.id}">${t("viewDetails")}</button>
-      <button class="add-to-cart-btn" data-product-id="${product.id}">${t("addToCart")}</button>
+      <div class="product-price">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
+      <button class="view-details-btn" data-product-id="${product.id}">View Details</button>
+      <button class="add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
     </div>
   `).join('');
   observeElements('.product-card');
@@ -977,24 +841,24 @@ function performSearch() {
 
   const mainContent = document.getElementById('main-content');
   mainContent.innerHTML = `
-    <h1 class="page-title">${t("searchResults")}</h1>
-    <p class="page-subtitle">${t("foundProducts", { count: results.length, term: currentSearchTerm })}</p>
+    <h1 class="page-title">Search Results</h1>
+    <p class="page-subtitle">Found ${results.length} products for "${currentSearchTerm}"</p>
     <div class="products-grid">
       ${results.length === 0 ? `
         <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
           <div style="width: 80px; height: 80px; margin: 0 auto 20px auto; border-radius: 8px; overflow: hidden; opacity: 0.5;">
-            <img src="no-results.jpg" alt="${t("noProductsFound")}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='${t("noProductsFound")}'; this.style.display='none';">
+            <img src="no-results.jpg" alt="No products found" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='No products found'; this.style.display='none';">
           </div>
-          <h3 style="font-size: 24px; color: #2c3e50; margin: 0 0 10px 0;">${t("noProductsFound")}</h3>
-          <p style="font-size: 16px; color: #7f8c8d;">${t("tryDifferentSearch")}</p>
+          <h3 style="font-size: 24px; color: #2c3e50; margin: 0 0 10px 0;">No products found</h3>
+          <p style="font-size: 16px; color: #7f8c8d;">Try a different search term</p>
         </div>
       ` : results.map(product => `
         <div class="product-card">
           <div class="product-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
           <div class="product-brand">${product.brand}</div>
           <h3 class="product-name">${product.name}</h3>
-          <div class="product-price">${product.price.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></div>
-          <button class="add-to-cart-btn" data-product-id="${product.id}">${t("addToCart")}</button>
+          <div class="product-price">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
+          <button class="add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
         </div>
       `).join('')}
     </div>
@@ -1009,7 +873,7 @@ async function addToCart(productId) {
   if (!product) return;
 
   if (cart.length >= 999) {
-    showToast(t("maxCartLimit"), '#e74c3c');
+    showToast("Maximum limit of 999 items reached. Please remove some items first.", '#e74c3c');
     return;
   }
 
@@ -1019,10 +883,10 @@ async function addToCart(productId) {
     existingItem.quantity += 1;
     const updateResult = await window.dataSdk.update(existingItem);
     if (updateResult.isOk) {
-      showToast(t("updatedCart"));
+      showToast("Updated quantity in cart!");
       bounceCartIcon();
     } else {
-      showToast(t("failedUpdateCart"), '#e74c3c');
+      showToast("Failed to update cart", '#e74c3c');
     }
   } else {
     const createResult = await window.dataSdk.create({
@@ -1034,10 +898,10 @@ async function addToCart(productId) {
     });
 
     if (createResult.isOk) {
-      showToast(t("addedToCart"));
+      showToast("Added to cart!");
       bounceCartIcon();
     } else {
-      showToast(t("failedAddToCart"), '#e74c3c');
+      showToast("Failed to add to cart", '#e74c3c');
     }
   }
 }
@@ -1103,11 +967,11 @@ function renderCartPage() {
       <div class="cart-page">
         <div class="empty-state">
           <div style="width: 120px; height: 120px; margin: 0 auto 20px auto; border-radius: 8px; overflow: hidden; opacity: 0.5;">
-            <img src="empty-cart.jpg" alt="${t("cartEmpty")}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='${t("cartEmpty")}'; this.style.display='none';">
+            <img src="empty-cart.jpg" alt="Your cart is empty" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Your cart is empty'; this.style.display='none';">
           </div>
-          <h3>${t("cartEmpty")}</h3>
-          <p>${t("addProductsToStart")}</p>
-          <button class="back-btn" data-category="home">${t("continueShopping")}</button>
+          <h3>Your cart is empty</h3>
+          <p>Add some products to get started</p>
+          <button class="back-btn" data-category="home">Continue Shopping</button>
         </div>
       </div>
     `;
@@ -1126,8 +990,8 @@ function renderCartPage() {
 
   mainContent.innerHTML = `
     <div class="cart-page">
-      <h1 class="page-title">${t("shoppingCart")}</h1>
-      <p class="page-subtitle">${t("itemsInCart", { count: cart.length })}</p>
+      <h1 class="page-title">Shopping Cart</h1>
+      <p class="page-subtitle">${cart.length} item(s) in your cart</p>
       <div>
         ${cartItems.map(item => `
           <div class="cart-item">
@@ -1135,32 +999,32 @@ function renderCartPage() {
             <div class="cart-item-details">
               <h3 class="cart-item-name">${item.product.name}</h3>
               <p class="cart-item-brand">${item.product.brand}</p>
-              <div class="cart-item-price">${item.product.price.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></div>
+              <div class="cart-item-price">${item.product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
             </div>
             <div class="cart-item-actions">
               <button class="qty-btn" data-backend-id="${item.__backendId}" data-quantity="${item.quantity - 1}">-</button>
               <span class="qty-display">${item.quantity}</span>
               <button class="qty-btn" data-backend-id="${item.__backendId}" data-quantity="${item.quantity + 1}">+</button>
-              <button class="remove-btn" data-backend-id="${item.__backendId}">${t("remove")}</button>
+              <button class="remove-btn" data-backend-id="${item.__backendId}">Remove</button>
             </div>
           </div>
         `).join('')}
       </div>
       <div class="cart-summary">
         <div class="summary-row">
-          <span>${t("subtotal")}</span>
-          <span>${subtotal.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></span>
+          <span>Subtotal:</span>
+          <span>${subtotal.toFixed(2)} <span class="currency-symbol">EGP</span></span>
         </div>
         <div class="summary-row">
-          <span>${t("tax")}</span>
-          <span>${tax.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></span>
+          <span>Tax (14%):</span>
+          <span>${tax.toFixed(2)} <span class="currency-symbol">EGP</span></span>
         </div>
         <div class="summary-row total">
-          <span>${t("total")}</span>
-          <span>${total.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></span>
+          <span>Total:</span>
+          <span>${total.toFixed(2)} <span class="currency-symbol">EGP</span></span>
         </div>
-        <button class="continue-shopping-btn" data-category="home">${t("continueShopping")}</button>
-        <button class="checkout-btn" data-category="checkout">${t("proceedToCheckout")}</button>
+        <button class="continue-shopping-btn" data-category="home">Continue Shopping</button>
+        <button class="checkout-btn" data-category="checkout">Proceed to Checkout</button>
       </div>
     </div>
   `;
@@ -1176,7 +1040,7 @@ async function updateQuantity(backendId, newQuantity) {
   const updateResult = await window.dataSdk.update(item);
 
   if (!updateResult.isOk) {
-    showToast(t("failedUpdateCart"), '#e74c3c');
+    showToast("Failed to update cart", '#e74c3c');
   }
 }
 
@@ -1187,9 +1051,9 @@ async function removeFromCart(backendId) {
   const deleteResult = await window.dataSdk.delete(item);
 
   if (deleteResult.isOk) {
-    showToast(t("removedFromCart"));
+    showToast("Removed from cart");
   } else {
-    showToast(t("failedRemoveItem"), '#e74c3c');
+    showToast("Failed to remove item", '#e74c3c');
   }
 }
 
@@ -1207,48 +1071,48 @@ function renderCheckoutPage() {
   const mainContent = document.getElementById('main-content');
   mainContent.innerHTML = `
     <div class="checkout-page">
-      <h1 class="page-title">${t("checkout")}</h1>
-      <p class="page-subtitle">${t("completeYourOrder")}</p>
+      <h1 class="page-title">Checkout</h1>
+      <p class="page-subtitle">Complete your order</p>
       <div id="checkout-message"></div>
       <form id="checkout-form">
         <div class="form-group">
-          <label for="customer-name">${t("fullName")}</label>
+          <label for="customer-name">Full Name *</label>
           <input type="text" id="customer-name" required>
         </div>
         <div class="form-group">
-          <label for="customer-email">${t("emailAddress")}</label>
+          <label for="customer-email">Email Address *</label>
           <input type="email" id="customer-email" required>
         </div>
         <div class="form-group">
-          <label for="customer-phone">${t("phoneNumber")}</label>
+          <label for="customer-phone">Phone Number *</label>
           <input type="tel" id="customer-phone" required>
         </div>
         <div class="form-group">
-          <label for="customer-address">${t("shippingAddress")}</label>
+          <label for="customer-address">Shipping Address *</label>
           <textarea id="customer-address" required></textarea>
         </div>
         <div class="cart-summary">
-          <h3 style="margin: 0 0 15px 0;">${t("orderSummary")}</h3>
+          <h3 style="margin: 0 0 15px 0;">Order Summary</h3>
           ${cartItems.map(item => `
             <div class="summary-row">
               <span>${item.product.name} x ${item.quantity}</span>
-              <span>${(item.product.price * item.quantity).toFixed(2)} ${t("currency")}</span>
+              <span>${(item.product.price * item.quantity).toFixed(2)} EGP</span>
             </div>
           `).join('')}
           <div class="summary-row">
-            <span>${t("subtotal")}</span>
-            <span>${subtotal.toFixed(2)} ${t("currency")}</span>
+            <span>Subtotal:</span>
+            <span>${subtotal.toFixed(2)} EGP</span>
           </div>
           <div class="summary-row">
-            <span>${t("tax")}</span>
-            <span>${tax.toFixed(2)} ${t("currency")}</span>
+            <span>Tax (14%):</span>
+            <span>${tax.toFixed(2)} EGP</span>
           </div>
           <div class="summary-row total">
-            <span>${t("total")}</span>
-            <span>${total.toFixed(2)} ${t("currency")}</span>
+            <span>Total:</span>
+            <span>${total.toFixed(2)} EGP</span>
           </div>
-          <button type="button" class="continue-shopping-btn" data-category="cart">${t("backToCart")}</button>
-          <button type="submit" class="checkout-btn" id="submit-order-btn">${t("placeOrder")}</button>
+          <button type="button" class="continue-shopping-btn" data-category="cart">Back to Cart</button>
+          <button type="submit" class="checkout-btn" id="submit-order-btn">Place Order</button>
         </div>
       </form>
     </div>
@@ -1260,7 +1124,7 @@ async function submitOrder(event) {
 
   const submitBtn = document.getElementById('submit-order-btn');
   submitBtn.disabled = true;
-  submitBtn.textContent = t("processing");
+  submitBtn.textContent = "Processing...";
 
   const name = document.getElementById('customer-name').value;
   const email = document.getElementById('customer-email').value;
@@ -1276,8 +1140,8 @@ async function submitOrder(event) {
   const messageDiv = document.getElementById('checkout-message');
   messageDiv.innerHTML = `
     <div class="success-message">
-      <strong>${t("orderPlaced")}</strong><br>
-      ${t("orderConfirmation", { name, email })}
+      <strong>Order placed successfully!</strong><br>
+      Thank you for your order, ${name}. We'll send a confirmation email to ${email}.
     </div>
   `;
 
@@ -1292,15 +1156,15 @@ function renderServicePage() {
   const mainContent = document.getElementById('main-content');
   mainContent.innerHTML = `
     <div class="service-page">
-      <h1 class="page-title">${t("serviceBookingTitle")}</h1>
-      <p class="page-subtitle">${t("serviceBookingSubtitle")}</p>
+      <h1 class="page-title">Toyota Corolla Service Booking</h1>
+      <p class="page-subtitle">Schedule your maintenance service based on mileage</p>
       <div class="service-grid">
         ${servicePackages.map((pkg, index) => `
           <div class="service-card ${selectedService === index ? 'selected' : ''}" data-service-index="${index}">
             <div class="service-km">${pkg.km} KM</div>
             <div class="service-title">${pkg.title}</div>
-            <div class="service-price">${pkg.price.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></div>
-            <p style="margin: 10px 0 0 0; color: #7f8c8d; font-size: 14px;">${t("serviceItems", { count: pkg.items.length })}</p>
+            <div class="service-price">${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
+            <p style="margin: 10px 0 0 0; color: #7f8c8d; font-size: 14px;">${pkg.items.length} service items</p>
           </div>
         `).join('')}
       </div>
@@ -1323,25 +1187,25 @@ function showProductDetails(productId) {
       <div class="product-details-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
       <h2 style="margin: 0 0 10px 0; color: #2c3e50; font-size: 28px;">${product.name}</h2>
       <div class="product-brand" style="font-size: 16px; margin-bottom: 15px;">${product.brand}</div>
-      <div class="product-price" style="font-size: 32px; margin-bottom: 20px;">${product.price.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></div>
+      <div class="product-price" style="font-size: 32px; margin-bottom: 20px;">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
       <p style="color: #7f8c8d; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">${product.description}</p>
       <div class="product-specs">
-        <h4>${t("productSpecs")}</h4>
+        <h4>Product Specifications</h4>
         <div class="spec-row">
-          <span class="spec-label">${t("partNumber")}</span>
+          <span class="spec-label">Part Number:</span>
           <span class="spec-value">${product.partNumber}</span>
         </div>
         <div class="spec-row">
-          <span class="spec-label">${t("compatibility")}</span>
+          <span class="spec-label">Compatibility:</span>
           <span class="spec-value">${product.compatibility}</span>
         </div>
         <div class="spec-row">
-          <span class="spec-label">${t("category")}</span>
+          <span class="spec-label">Category:</span>
           <span class="spec-value">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span>
         </div>
       </div>
       <button class="add-to-cart-btn" data-product-id="${product.id}" style="margin-top: 25px;">
-        ${t("addToCartPrice", { price: product.price.toFixed(2) })}
+        Add to Cart - ${product.price.toFixed(2)}
       </button>
     </div>
   `;
@@ -1374,30 +1238,30 @@ function renderServiceDetailsPage() {
   const mainContent = document.getElementById('main-content');
   mainContent.innerHTML = `
     <div class="service-details-page">
-      <button class="back-btn" data-category="service" style="margin-bottom: 20px;">${t("backToServices")}</button>
-      <h1 class="page-title">${t("kmService", { km: pkg.km, title: pkg.title })}</h1>
-      <p class="page-subtitle">${t("completePackage")}</p>
+      <button class="back-btn" data-category="service" style="margin-bottom: 20px;">Back to Services</button>
+      <h1 class="page-title">${pkg.km} KM Service - ${pkg.title}</h1>
+      <p class="page-subtitle">Complete maintenance package for your Toyota Corolla</p>
       <div style="background: #252525; padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
           <div>
             <h3 style="margin: 0; color: #2c3e50; font-size: 24px;">${pkg.title}</h3>
-            <p style="margin: 5px 0 0 0; color: #7f8c8d;">${t("recommendedAt", { km: pkg.km })}</p>
+            <p style="margin: 5px 0 0 0; color: #7f8c8d;">Recommended at ${pkg.km} kilometers</p>
           </div>
-          <div class="service-price" style="margin: 0;">${pkg.price.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></div>
+          <div class="service-price" style="margin: 0;">${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
         </div>
         <table class="service-table">
           <thead>
             <tr>
-              <th>${t("serviceItem")}</th>
-              <th>${t("status")}</th>
-              <th>${t("description")}</th>
+              <th>Service Item</th>
+              <th>Status</th>
+              <th>Description</th>
             </tr>
           </thead>
           <tbody>
             ${pkg.items.map(item => `
               <tr>
                 <td><strong>${item.name}</strong></td>
-                <td>${item.required ? `<span style="color: #e74c3c; font-weight: 600;">${t("required")}</span>` : `<span style="color: #7f8c8d;">${t("optional")}</span>`}</td>
+                <td>${item.required ? `<span style="color: #e74c3c; font-weight: 600;">Required</span>` : `<span style="color: #7f8c8d;">Optional</span>`}</td>
                 <td style="color: #7f8c8d; font-size: 14px;">${getServiceDescription(item.name)}</td>
               </tr>
             `).join('')}
@@ -1407,51 +1271,51 @@ function renderServiceDetailsPage() {
       <div class="parts-option">
         <label>
           <input type="checkbox" id="include-parts-checkbox">
-          <span>${t("includeParts")}</span>
+          <span>Include parts replacement with this service</span>
         </label>
       </div>
       <div id="parts-selection-container"></div>
       <div class="booking-form">
-        <h3>${t("bookAppointment")}</h3>
+        <h3>Book Your Appointment</h3>
         <form id="service-booking-form">
           <div class="form-group">
-            <label for="service-customer-name">${t("fullName")}</label>
+            <label for="service-customer-name">Full Name *</label>
             <input type="text" id="service-customer-name" required>
           </div>
           <div class="form-group">
-            <label for="service-customer-phone">${t("phoneNumber")}</label>
+            <label for="service-customer-phone">Phone Number *</label>
             <input type="tel" id="service-customer-phone" required>
           </div>
           <div class="form-group">
-            <label for="service-customer-email">${t("emailAddress")}</label>
+            <label for="service-customer-email">Email Address *</label>
             <input type="email" id="service-customer-email" required>
           </div>
           <div class="form-group">
-            <label for="service-appointment-date">${t("preferredDate")}</label>
+            <label for="service-appointment-date">Preferred Date *</label>
             <input type="date" id="service-appointment-date" required min="${new Date().toISOString().split('T')[0]}">
           </div>
           <div class="cart-summary">
             <div class="summary-row">
-              <span>${t("servicePackage")}</span>
-              <span>${pkg.price.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></span>
+              <span>Service Package:</span>
+              <span>${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></span>
             </div>
             <div class="summary-row" id="parts-cost-row" style="display: none;">
-              <span>${t("partsCost")}</span>
-              <span id="parts-cost">0.00 <span class="currency-symbol">${t("currency")}</span></span>
+              <span>Parts Cost:</span>
+              <span id="parts-cost">0.00 <span class="currency-symbol">EGP</span></span>
             </div>
             <div class="summary-row">
-              <span>${t("subtotal")}</span>
-              <span id="subtotal-cost">${pkg.price.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></span>
+              <span>Subtotal:</span>
+              <span id="subtotal-cost">${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></span>
             </div>
             <div class="summary-row">
-              <span>${t("tax")}</span>
-              <span id="tax-cost">${(pkg.price * 0.14).toFixed(2)} <span class="currency-symbol">${t("currency")}</span></span>
+              <span>Tax (14%):</span>
+              <span id="tax-cost">${(pkg.price * 0.14).toFixed(2)} <span class="currency-symbol">EGP</span></span>
             </div>
             <div class="summary-row total">
-              <span>${t("totalCost")}</span>
-              <span id="total-cost">${(pkg.price * 1.14).toFixed(2)} <span class="currency-symbol">${t("currency")}</span></span>
+              <span>Total Cost:</span>
+              <span id="total-cost">${(pkg.price * 1.14).toFixed(2)} <span class="currency-symbol">EGP</span></span>
             </div>
-            <button type="submit" class="checkout-btn" id="book-service-btn">${t("bookServiceAppointment")}</button>
+            <button type="submit" class="checkout-btn" id="book-service-btn">Book Service Appointment</button>
           </div>
         </form>
       </div>
@@ -1535,14 +1399,14 @@ function renderPartsSelection() {
   const container = document.getElementById('parts-selection-container');
   container.innerHTML = `
     <div class="parts-selection">
-      <h4 style="margin: 0 0 15px 0; color: #2c3e50;">${t("selectParts")}</h4>
+      <h4 style="margin: 0 0 15px 0; color: #2c3e50;">Select Parts to Include:</h4>
       ${availableParts.map(item => `
         <div class="part-item">
           <label>
             <input type="checkbox" value="${item.product.id}" data-price="${item.product.price}">
             <span>${item.product.name} (${item.product.brand})</span>
           </label>
-          <span class="part-price">${item.product.price.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></span>
+          <span class="part-price">${item.product.price.toFixed(2)} <span class="currency-symbol">EGP</span></span>
         </div>
       `).join('')}
     </div>
@@ -1573,27 +1437,27 @@ function updateServiceTotal() {
 
   if (partsCost > 0) {
     partsCostRow.style.display = 'flex';
-    partsCostSpan.innerHTML = `${partsCost.toFixed(2)} <span class="currency-symbol">${t("currency")}</span>`;
+    partsCostSpan.innerHTML = `${partsCost.toFixed(2)} <span class="currency-symbol">EGP</span>`;
   } else {
     partsCostRow.style.display = 'none';
   }
 
-  subtotalCostSpan.innerHTML = `${subtotal.toFixed(2)} <span class="currency-symbol">${t("currency")}</span>`;
-  taxCostSpan.innerHTML = `${tax.toFixed(2)} <span class="currency-symbol">${t("currency")}</span>`;
-  totalCostSpan.innerHTML = `${total.toFixed(2)} <span class="currency-symbol">${t("currency")}</span>`;
+  subtotalCostSpan.innerHTML = `${subtotal.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+  taxCostSpan.innerHTML = `${tax.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+  totalCostSpan.innerHTML = `${total.toFixed(2)} <span class="currency-symbol">EGP</span>`;
 }
 
 async function submitServiceBooking(event) {
   event.preventDefault();
 
   if (cart.length >= 999) {
-    showToast(t("maxCartLimit"), '#e74c3c');
+    showToast("Maximum limit of 999 bookings reached. Please contact support.", '#e74c3c');
     return;
   }
 
   const submitBtn = document.getElementById('book-service-btn');
   submitBtn.disabled = true;
-  submitBtn.textContent = t("booking");
+  submitBtn.textContent = "Booking...";
 
   const pkg = servicePackages[selectedService];
   const name = document.getElementById('service-customer-name').value;
@@ -1619,8 +1483,9 @@ async function submitServiceBooking(event) {
     const form = document.getElementById('service-booking-form');
     form.innerHTML = `
       <div class="success-message">
-        <strong>${t("serviceBooked")}</strong><br>
-        ${t("serviceConfirmation", { km: pkg.km, date, email })}
+        <strong>Service appointment booked successfully!</strong><br>
+        Your ${pkg.km} KM service for Toyota Corolla has been scheduled for ${date}.<br>
+        We'll send a confirmation to ${email}.
       </div>
     `;
 
@@ -1628,9 +1493,9 @@ async function submitServiceBooking(event) {
       showCategory('home');
     }, 3000);
   } else {
-    showToast(t("failedBookService"), '#e74c3c');
+    showToast('Failed to book service. Please try again.', '#e74c3c');
     submitBtn.disabled = false;
-    submitBtn.textContent = t("bookServiceAppointment");
+    submitBtn.textContent = 'Book Service Appointment';
   }
 }
 
@@ -1680,7 +1545,3 @@ document.addEventListener('submit', (e) => {
 
 document.getElementById('search-btn').addEventListener('click', performSearch);
 document.getElementById('cart-btn').addEventListener('click', showCart);
-document.getElementById('lang-btn').addEventListener('click', () => {
-  const newLang = currentLanguage === 'en' ? 'ar' : 'en';
-  setLanguage(newLang);
-});
