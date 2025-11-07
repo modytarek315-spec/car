@@ -217,6 +217,7 @@ body {
     color: #FFFFFF;
     margin: 0 0 10px 0;
     text-align: center;
+    font-family: 'Raceline', sans-serif;
 }
 
 .page-subtitle {
@@ -232,6 +233,7 @@ body {
     margin: 40px 0 20px 0;
     text-align: center;
     font-weight: 600;
+    font-family: 'Raceline', sans-serif;
 }
 
 .category-grid {
@@ -291,6 +293,7 @@ body {
 .category-card-title {
   margin: 0 0 10px 0;
   color: #F4E9D7;
+  font-family: 'Raceline', sans-serif;
 }
 
 .category-card-description {
@@ -318,14 +321,14 @@ body {
     border-radius: 12px;
     padding: 20px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
+    transition: all 0.3s ease, transform 0.3s ease;
     cursor: pointer;
     color: white;
 }
 
 .product-card:hover {
     transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5), 0 0 15px rgba(191, 9, 47, 0.4);
 }
 
 .product-image {
@@ -664,7 +667,7 @@ body {
 }
 
 .service-card {
-    background: #252525;
+    background: linear-gradient(135deg, #132440 50%, #BF092F 100%);
     padding: 25px;
     border-radius: 15px;
     text-align: center;
@@ -678,8 +681,8 @@ body {
 }
 
 .service-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(191, 9, 47, 0.4);
     border-color: var(--secondary-color);
 }
 
@@ -717,7 +720,7 @@ body {
     width: 100%;
     border-collapse: collapse;
     margin: 25px 0;
-    background-color: #252525;
+    background: linear-gradient(135deg, #132440 50%, #BF092F 100%);
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
@@ -825,13 +828,14 @@ body {
 
 .product-details-image {
     width: 100%;
-    max-width: 400px;
-    height: auto;
+    max-width: 350px;
+    height: 350px;
     aspect-ratio: 1 / 1;
     background: var(--background-color);
     border-radius: 8px;
     margin: 0 auto 20px;
     overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .product-details-image img {

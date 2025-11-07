@@ -496,7 +496,7 @@ function renderSearchHistory() {
     if (historyContainer) {
         historyContainer.innerHTML = `
                 <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center;">
-                    <span style="font-weight: 500; color: white;">${t("recentSearches")}</span>
+                    <span style="font-weight: 500; color: white;">Recent Searches</span>
                     ${searchHistory.map(term => `<button class="search-history-btn" onclick="performSearchFromHistory('${term}')">${term}</button>`).join('')}
                 </div>
             `;
@@ -571,10 +571,6 @@ function renderAboutPage() {
 function renderHomePage() {
     const mainContent = document.getElementById('main-content');
     mainContent.innerHTML = `
-  const mainContent = document.getElementById('main-content');
-  const featuredProducts = Object.keys(products).flatMap(category => products[category].slice(0, 2));
-
-  mainContent.innerHTML = `
     <h1 class="page-title">Welcome to ${config.store_name || defaultConfig.store_name}</h1>
     <p class="page-subtitle">Browse our extensive collection of quality auto parts</p>
     <div class="category-grid">
@@ -621,24 +617,8 @@ function renderHomePage() {
         <p class="category-card-description">Book your Toyota Corolla service</p>
       </div>
     </div>
-
-    <h2 class="section-title">Featured Products</h2>
-    <div class="products-grid">
-      ${featuredProducts.map(product => `
-        <div class="product-card" data-product-id="${product.id}">
-          <div class="product-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
-          <div class="product-brand">${product.brand}</div>
-          <h3 class="product-name">${product.name}</h3>
-          <div class="product-price">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
-          <button class="view-details-btn" data-product-id="${product.id}">View Details</button>
-          <button class="add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
-        </div>
-      `).join('')}
-    </div>
   `;
     observeElements('[data-category]');
-  observeElements('[data-category]');
-  observeElements('.product-card');
 }
 
 function renderCategoryPage(category) {
@@ -1117,34 +1097,7 @@ function showProductDetails(productId) {
         <div class="spec-row">
           <span class="spec-label">Category:</span>
           <span class="spec-value">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span>
-  const mainContent = document.getElementById('main-content');
-  mainContent.innerHTML = `
-    <div class="product-detail-view" style="background: linear-gradient(135deg, #132440 50%, #BF092F 100%);">
-      <button class="back-btn" data-category="${currentCategory}">Back to Products</button>
-      <div class="product-details-content">
-        <div class="product-details-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
-        <h2>${product.name}</h2>
-        <div class="product-brand">${product.brand}</div>
-        <div class="product-price">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
-        <p>${product.description}</p>
-        <div class="product-specs">
-          <h4>Product Specifications</h4>
-          <div class="spec-row">
-            <span class="spec-label">Part Number:</span>
-            <span class="spec-value">${product.partNumber}</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-label">Compatibility:</span>
-            <span class="spec-value">${product.compatibility}</span>
-          </div>
-          <div class="spec-row">
-            <span class="spec-label">Category:</span>
-            <span class="spec-value">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span>
-          </div>
         </div>
-        <button class="add-to-cart-btn" data-product-id="${product.id}">
-          Add to Cart - ${product.price.toFixed(2)} <span class="currency-symbol">EGP</span>
-        </button>
       </div>
     </div>
   `;
@@ -1435,14 +1388,6 @@ async function submitServiceBooking(event) {
         submitBtn.disabled = false;
         submitBtn.textContent = 'Book Service Appointment';
     }
-    setTimeout(() => {
-      showCategory('home');
-    }, 3000);
-  } else {
-    showToast("Failed to book service appointment", '#e74c3c');
-    submitBtn.disabled = false;
-    submitBtn.textContent = "Book Service Appointment";
-  }
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
@@ -1481,10 +1426,15 @@ function flyToCart(element) {
 }
 
 document.addEventListener('click', (e) => {
-    if (e.target.matches('[data-category]')) {
-        showCategory(e.target.dataset.category);
+    const categoryButton = e.target.closest('[data-category]');
+    if (categoryButton) {
+        showCategory(categoryButton.dataset.category);
     }
     if (e.target.matches('.add-to-cart-btn')) {
+        const productCard = e.target.closest('.product-card');
+        if (productCard) {
+            flyToCart(productCard);
+        }
         addToCart(e.target.dataset.productId);
     }
     if (e.target.matches('.view-details-btn')) {
@@ -1511,35 +1461,6 @@ document.addEventListener('click', (e) => {
     if (e.target.matches('.part-item input[type="checkbox"]')) {
         togglePart(e.target.value, parseFloat(e.target.dataset.price), e.target.checked);
     }
-  const categoryButton = e.target.closest('[data-category]');
-  if (categoryButton) {
-    showCategory(categoryButton.dataset.category);
-  }
-  if (e.target.matches('.add-to-cart-btn')) {
-    const productCard = e.target.closest('.product-card');
-    if (productCard) {
-      flyToCart(productCard);
-    }
-    addToCart(e.target.dataset.productId);
-  }
-  if (e.target.matches('.view-details-btn')) {
-    showProductDetails(e.target.dataset.productId);
-  }
-  if (e.target.matches('.qty-btn')) {
-    updateQuantity(e.target.dataset.backendId, parseInt(e.target.dataset.quantity));
-  }
-  if (e.target.matches('.remove-btn')) {
-    removeFromCart(e.target.dataset.backendId);
-  }
-  if (e.target.matches('[data-service-index]')) {
-    selectService(parseInt(e.target.dataset.serviceIndex));
-  }
-  if (e.target.matches('#include-parts-checkbox')) {
-    togglePartsSelection(e.target.checked);
-  }
-  if (e.target.matches('.part-item input[type="checkbox"]')) {
-    togglePart(e.target.value, parseFloat(e.target.dataset.price), e.target.checked);
-  }
 });
 
 document.addEventListener('submit', (e) => {
