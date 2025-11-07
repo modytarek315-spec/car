@@ -1109,28 +1109,33 @@ function renderProductDetailsPage() {
     }
 
     document.getElementById('product-details-container').innerHTML = `
-    <div class="product-details-content">
-      <div class="product-details-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
-      <h2 style="margin: 0 0 10px 0; color: #2c3e50; font-size: 28px;">${product.name}</h2>
-      <div class="product-brand" style="font-size: 16px; margin-bottom: 15px;">${product.brand}</div>
-      <div class="product-price" style="font-size: 32px; margin-bottom: 20px;">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
-      <p style="color: #7f8c8d; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">${product.description}</p>
-      <div class="product-specs">
-        <h4>Product Specifications</h4>
-        <div class="spec-row">
-          <span class="spec-label">Part Number:</span>
-          <span class="spec-value">${product.partNumber}</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-label">Compatibility:</span>
-          <span class="spec-value">${product.compatibility}</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-label">Category:</span>
-          <span class="spec-value">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span>
-        </div>
+    <button onclick="history.back()" style="margin-bottom: 20px; padding: 10px; background: #ddd; border: none; cursor: pointer;">Back</button>
+    <div class="product-details-content" style="display: flex; gap: 20px;">
+      <div class="product-details-image" style="flex: 1;">
+        <img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';" style="max-width: 100%;">
       </div>
-      <button class="add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
+      <div class="product-details-info" style="flex: 1;">
+        <h2 style="margin: 0 0 10px 0; color: #2c3e50; font-size: 28px;">${product.name}</h2>
+        <div class="product-brand" style="font-size: 16px; margin-bottom: 15px;">${product.brand}</div>
+        <div class="product-price" style="font-size: 32px; margin-bottom: 20px;">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
+        <p style="color: #7f8c8d; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">${product.description}</p>
+        <div class="product-specs">
+          <h4>Product Specifications</h4>
+          <div class="spec-row">
+            <span class="spec-label">Part Number:</span>
+            <span class="spec-value">${product.partNumber}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Compatibility:</span>
+            <span class="spec-value">${product.compatibility}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Category:</span>
+            <span class="spec-value">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span>
+          </div>
+        </div>
+        <button class="add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
+      </div>
     </div>
   `;
 }
