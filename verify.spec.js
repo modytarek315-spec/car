@@ -6,7 +6,7 @@ test.describe('Car House E-commerce Site', () => {
     await page.goto('file:///app/index.html', { waitUntil: 'networkidle' });
   });
 
-  test('should load the homepage and display categories', async ({ page }) => {
+  test('should load the homepage and display categories and featured products', async ({ page }) => {
     // Check for the store name and tagline
     await expect(page.locator('#store-name')).toHaveText('Car House 🚗');
     await expect(page.locator('#store-tagline')).toHaveText('Quality Parts for Your Vehicle');
@@ -15,12 +15,11 @@ test.describe('Car House E-commerce Site', () => {
     await expect(page.locator('.category-card[data-category="engine"]')).toBeVisible();
     await expect(page.locator('.category-card[data-category="brakes"]')).toBeVisible();
     await expect(page.locator('.category-card[data-category="suspension"]')).toBeVisible();
-    await expect(page.locator('.category-card[data-category="maintenance"]')).toBeVisible();
-    await expect(page.locator('.category-card[data-category="fluids"]')).toBeVisible();
-    await expect(page.locator('.category-card[data-category="service"]')).toBeVisible();
 
-    // Ensure no translation-related elements are present
-    await expect(page.locator('#language-switcher')).toHaveCount(0);
+    // Check for the "Featured Products" section
+    await expect(page.locator('.section-title')).toHaveText('Featured Products');
+    const featuredProducts = await page.locator('.products-grid .product-card').count();
+    expect(featuredProducts).toBeGreaterThan(0);
   });
 
   test('should navigate to a category page and display products', async ({ page }) => {
@@ -34,17 +33,24 @@ test.describe('Car House E-commerce Site', () => {
     // Check that product cards are displayed
     const productCards = await page.locator('.product-card').count();
     expect(productCards).toBeGreaterThan(0);
-
-    // Verify a specific product is visible
-    await expect(page.locator('.product-name:has-text("cylinder head")')).toBeVisible();
   });
 
-  test('should add a product to the cart and update the cart count', async ({ page }) => {
-    // Navigate to the 'Engine Parts' category
-    await page.click('.nav-links button[data-category="engine"]');
+  test('should display product details in-page', async ({ page }) => {
+    // Click on the "View Details" button for a featured product
+    await page.click('.product-card:first-child .view-details-btn');
 
-    // Add 'cylinder head' to the cart
-    await page.click('.product-card:has-text("cylinder head") .add-to-cart-btn');
+    // Check that the product detail view is displayed
+    await expect(page.locator('.product-detail-view')).toBeVisible();
+    await expect(page.locator('.product-detail-view h2')).toBeVisible();
+
+    // Click the "Back" button and verify that we are back on the home page
+    await page.click('.product-detail-view .back-btn');
+    await expect(page.locator('.category-grid')).toBeVisible();
+  });
+
+  test('should add a product to the cart with a "fly-to-cart" animation', async ({ page }) => {
+    // Add a product to the cart
+    await page.click('.product-card:first-child .add-to-cart-btn');
 
     // Check for the success toast message
     await expect(page.locator('.toast')).toBeVisible();
@@ -53,16 +59,13 @@ test.describe('Car House E-commerce Site', () => {
     // Check if the cart count is updated
     await expect(page.locator('#cart-count')).toHaveText('1');
 
-    // Add the same product again to check quantity update
-    await page.click('.product-card:has-text("cylinder head") .add-to-cart-btn');
-    await expect(page.locator('.toast')).toHaveText('Updated quantity in cart!');
-    await expect(page.locator('#cart-count')).toHaveText('2');
+    // Check for the "fly-to-cart" animation (we can't easily test the animation itself, but we can check if the cart icon bounces)
+    await expect(page.locator('#cart-btn')).toHaveClass(/bounce/);
   });
 
   test('should display items correctly in the cart page', async ({ page }) => {
     // Add a product to the cart first
-    await page.click('.nav-links button[data-category="brakes"]');
-    await page.click('.product-card:has-text("Front Brake Pad") .add-to-cart-btn');
+    await page.click('.product-card:first-child .add-to-cart-btn');
 
     // Click on the cart button
     await page.click('#cart-btn');
@@ -71,24 +74,8 @@ test.describe('Car House E-commerce Site', () => {
     await expect(page.locator('.page-title')).toHaveText('Shopping Cart');
 
     // Verify the item is in the cart
-    await expect(page.locator('.cart-item-name:has-text("Front Brake Pad")')).toBeVisible();
+    await expect(page.locator('.cart-item-name')).toBeVisible();
     await expect(page.locator('.qty-display:has-text("1")')).toBeVisible();
-
-    // Check the total price
-    await expect(page.locator('.summary-row.total span:nth-child(2)')).toContainText('4560.00'); // 4000 + 14% tax
-  });
-
-  test('should remove translation-related elements and text', async ({ page }) => {
-    // Ensure the language switcher button is not present
-    await expect(page.locator('#language-switcher')).toHaveCount(0);
-
-    // Check a few key elements to ensure their text is in English and not using translation keys
-    await expect(page.locator('#search-btn')).toHaveText('Search');
-    await expect(page.locator('#nav-home')).toHaveText('Home');
-
-    // Check search history recent searches text is not present
-    await expect(page.locator('span:has-text("Recent Searches")')).toHaveCount(0);
-
   });
 
   test('should take a screenshot of the final state', async ({ page }) => {

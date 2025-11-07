@@ -570,6 +570,8 @@ function renderAboutPage() {
 
 function renderHomePage() {
   const mainContent = document.getElementById('main-content');
+  const featuredProducts = Object.keys(products).flatMap(category => products[category].slice(0, 2));
+
   mainContent.innerHTML = `
     <h1 class="page-title">Welcome to ${config.store_name || defaultConfig.store_name}</h1>
     <p class="page-subtitle">Browse our extensive collection of quality auto parts</p>
@@ -617,8 +619,23 @@ function renderHomePage() {
         <p class="category-card-description">Book your Toyota Corolla service</p>
       </div>
     </div>
+
+    <h2 class="section-title">Featured Products</h2>
+    <div class="products-grid">
+      ${featuredProducts.map(product => `
+        <div class="product-card" data-product-id="${product.id}">
+          <div class="product-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
+          <div class="product-brand">${product.brand}</div>
+          <h3 class="product-name">${product.name}</h3>
+          <div class="product-price">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
+          <button class="view-details-btn" data-product-id="${product.id}">View Details</button>
+          <button class="add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
+        </div>
+      `).join('')}
+    </div>
   `;
   observeElements('[data-category]');
+  observeElements('.product-card');
 }
 
 function renderCategoryPage(category) {
@@ -1074,45 +1091,37 @@ function showProductDetails(productId) {
 
   if (!product) return;
 
-  const modal = document.createElement('div');
-  modal.className = 'product-details-modal';
-  modal.innerHTML = `
-    <div class="product-details-content">
-      <button class="close-modal">&times;</button>
-      <div class="product-details-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
-      <h2 style="margin: 0 0 10px 0; color: #2c3e50; font-size: 28px;">${product.name}</h2>
-      <div class="product-brand" style="font-size: 16px; margin-bottom: 15px;">${product.brand}</div>
-      <div class="product-price" style="font-size: 32px; margin-bottom: 20px;">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
-      <p style="color: #7f8c8d; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">${product.description}</p>
-      <div class="product-specs">
-        <h4>Product Specifications</h4>
-        <div class="spec-row">
-          <span class="spec-label">Part Number:</span>
-          <span class="spec-value">${product.partNumber}</span>
+  const mainContent = document.getElementById('main-content');
+  mainContent.innerHTML = `
+    <div class="product-detail-view" style="background: linear-gradient(135deg, #132440 50%, #BF092F 100%);">
+      <button class="back-btn" data-category="${currentCategory}">Back to Products</button>
+      <div class="product-details-content">
+        <div class="product-details-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
+        <h2>${product.name}</h2>
+        <div class="product-brand">${product.brand}</div>
+        <div class="product-price">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
+        <p>${product.description}</p>
+        <div class="product-specs">
+          <h4>Product Specifications</h4>
+          <div class="spec-row">
+            <span class="spec-label">Part Number:</span>
+            <span class="spec-value">${product.partNumber}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Compatibility:</span>
+            <span class="spec-value">${product.compatibility}</span>
+          </div>
+          <div class="spec-row">
+            <span class="spec-label">Category:</span>
+            <span class="spec-value">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span>
+          </div>
         </div>
-        <div class="spec-row">
-          <span class="spec-label">Compatibility:</span>
-          <span class="spec-value">${product.compatibility}</span>
-        </div>
-        <div class="spec-row">
-          <span class="spec-label">Category:</span>
-          <span class="spec-value">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span>
-        </div>
+        <button class="add-to-cart-btn" data-product-id="${product.id}">
+          Add to Cart - ${product.price.toFixed(2)} <span class="currency-symbol">EGP</span>
+        </button>
       </div>
-      <button class="add-to-cart-btn" data-product-id="${product.id}" style="margin-top: 25px;">
-        Add to Cart - ${product.price.toFixed(2)} <span class="currency-symbol">EGP</span>
-      </button>
     </div>
   `;
-
-  document.body.appendChild(modal);
-}
-
-function closeProductModal() {
-  const modal = document.querySelector('.product-details-modal');
-  if (modal) {
-    modal.remove();
-  }
 }
 
 function selectService(index) {
@@ -1395,22 +1404,53 @@ async function submitServiceBooking(event) {
 
 document.addEventListener('DOMContentLoaded', initApp);
 
+function flyToCart(element) {
+    const img = element.querySelector('img');
+    if (!img) return;
+
+    const flyingImage = img.cloneNode();
+    const rect = img.getBoundingClientRect();
+
+    flyingImage.style.position = 'fixed';
+    flyingImage.style.left = `${rect.left}px`;
+    flyingImage.style.top = `${rect.top}px`;
+    flyingImage.style.width = `${rect.width}px`;
+    flyingImage.style.height = `${rect.height}px`;
+    flyingImage.style.transition = 'all 1s ease-in-out';
+    flyingImage.style.zIndex = '10000';
+
+    document.body.appendChild(flyingImage);
+
+    const cartIcon = document.getElementById('cart-btn');
+    const cartRect = cartIcon.getBoundingClientRect();
+
+    requestAnimationFrame(() => {
+        flyingImage.style.left = `${cartRect.left + cartRect.width / 2}px`;
+        flyingImage.style.top = `${cartRect.top + cartRect.height / 2}px`;
+        flyingImage.style.width = '0px';
+        flyingImage.style.height = '0px';
+        flyingImage.style.opacity = '0';
+    });
+
+    setTimeout(() => {
+        flyingImage.remove();
+    }, 1000);
+}
+
 document.addEventListener('click', (e) => {
   const categoryButton = e.target.closest('[data-category]');
   if (categoryButton) {
     showCategory(categoryButton.dataset.category);
   }
   if (e.target.matches('.add-to-cart-btn')) {
+    const productCard = e.target.closest('.product-card');
+    if (productCard) {
+      flyToCart(productCard);
+    }
     addToCart(e.target.dataset.productId);
   }
   if (e.target.matches('.view-details-btn')) {
     showProductDetails(e.target.dataset.productId);
-  }
-  if (e.target.matches('.close-modal')) {
-    closeProductModal();
-  }
-  if (e.target.matches('.product-details-modal')) {
-    closeProductModal();
   }
   if (e.target.matches('.qty-btn')) {
     updateQuantity(e.target.dataset.backendId, parseInt(e.target.dataset.quantity));
