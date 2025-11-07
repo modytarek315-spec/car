@@ -1,6 +1,6 @@
 const translations = {
   en: {
-    storeName: "Auto Parts Pro",
+    storeName: "Car House 🚗",
     storeTagline: "Quality Parts for Your Vehicle",
     contactPhoneLabel: "Phone:",
     contactEmailLabel: "Email:",
@@ -20,6 +20,9 @@ const translations = {
     aboutUsWelcome: "Welcome to Auto Parts Pro, your one-stop shop for high-quality auto parts. We are passionate about cars and dedicated to providing our customers with the best parts and service in the industry.",
     aboutUsMission: "Our mission is to make it easy and affordable for you to keep your vehicle in top condition. We offer a wide selection of parts for all makes and models, backed by our expert team and commitment to customer satisfaction.",
     aboutUsThanks: "Thank you for choosing Auto Parts Pro. We look forward to serving you!",
+    aboutUsWelcome: "Welcome to Car House 🚗, your one-stop shop for high-quality auto parts. We are passionate about cars and dedicated to providing our customers with the best parts and service in the industry.",
+    aboutUsMission: "Our mission is to make it easy and affordable for you to keep your vehicle in top condition. We offer a wide selection of parts for all makes and models, backed by our expert team and commitment to customer satisfaction.",
+    aboutUsThanks: "Thank you for choosing Car House 🚗. We look forward to serving you!",
     welcomeMessage: "Welcome to",
     browseCollection: "Browse our extensive collection of quality auto parts",
     engineParts: "Engine Parts",
@@ -252,8 +255,11 @@ function setLanguage(lang) {
   showCategory(currentCategory);
 }
 
+  },
+};
+
 const defaultConfig = {
-  store_name: "Auto Parts Pro",
+  store_name: "Car House 🚗",
   store_tagline: "Quality Parts for Your Vehicle",
   contact_phone: "+1 (555) 123-4567",
   contact_email: "info@autoparts.com",
@@ -718,7 +724,20 @@ async function initApp() {
   }
 
   applyConfig(defaultConfig); // Apply the initial configuration
-  setLanguage(currentLanguage);
+
+  // Set static text content
+  document.getElementById('cart-btn-label').textContent = "Cart";
+  document.getElementById('search-btn').textContent = "Search";
+  document.getElementById('nav-home').textContent = "Home";
+  document.getElementById('nav-engine').textContent = "Engine Parts";
+  document.getElementById('nav-brakes').textContent = "Brakes";
+  document.getElementById('nav-suspension').textContent = "Suspension";
+  document.getElementById('nav-maintenance').textContent = "Maintenance Parts";
+  document.getElementById('nav-fluids').textContent = "Maintenance Fluids";
+  document.getElementById('nav-service').textContent = "Service Booking";
+  document.getElementById('nav-about').textContent = "About Us";
+  document.getElementById('search-input').placeholder = "Search for parts, brands, or categories...";
+
   showCategory('home');
   loadSearchHistory();
   renderSearchHistory();
@@ -804,6 +823,9 @@ function renderAboutPage() {
                 <p>${t("aboutUsWelcome")}</p>
                 <p>${t("aboutUsMission")}</p>
                 <p>${t("aboutUsThanks")}</p>
+                <p>Welcome to Car House 🚗, your one-stop shop for high-quality auto parts. We are passionate about cars and dedicated to providing our customers with the best parts and service in the industry.</p>
+                <p>Our mission is to make it easy and affordable for you to keep your vehicle in top condition. We offer a wide selection of parts for all makes and models, backed by our expert team and commitment to customer satisfaction.</p>
+                <p>Thank you for choosing Car House 🚗. We look forward to serving you!</p>
             </div>
         `;
 }
@@ -855,6 +877,50 @@ function renderHomePage() {
         </div>
         <h3 style="margin: 0 0 10px 0;">${t("serviceBooking")}</h3>
         <p style="margin: 0; opacity: 0.9;">${t("serviceBookingDesc")}</p>
+    <h1 class="page-title">Welcome to ${config.store_name || defaultConfig.store_name}</h1>
+    <p class="page-subtitle">Browse our extensive collection of quality auto parts</p>
+    <div class="category-grid">
+      <div class="category-card" data-category="engine">
+        <div class="category-card-image-wrapper">
+          <img src="https://media.hswstatic.com/eyJidWNrZXQiOiJjb250ZW50Lmhzd3N0YXRpYy5jb20iLCJrZXkiOiJnaWZcL2VuZ2luZS1xdWl6LWEtb2cuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo4Mjh9fX0=" alt="Engine Parts" class="category-card-image" onerror="this.src=''; this.alt='Engine Parts'; this.style.display='none';">
+        </div>
+        <h3 class="category-card-title">Engine Parts</h3>
+        <p class="category-card-description">Essential engine components</p>
+      </div>
+      <div class="category-card" data-category="brakes">
+        <div class="category-card-image-wrapper">
+          <img src="https://img.freepik.com/free-photo/car-repair-garage_1170-1497.jpg?semt=ais_hybrid&w=740&q=80" alt="Brakes" class="category-card-image" onerror="this.src=''; this.alt='Brakes'; this.style.display='none';">
+        </div>
+        <h3 class="category-card-title">Brakes</h3>
+        <p class="category-card-description">Brake pads, rotors & more</p>
+      </div>
+      <div class="category-card" data-category="suspension">
+        <div class="category-card-image-wrapper">
+          <img src="https://static.pakwheels.com/2015/08/2014-Toyota-Corolla-Suspension.jpg" alt="Suspension" class="category-card-image" onerror="this.src=''; this.alt='Suspension'; this.style.display='none';">
+        </div>
+        <h3 class="category-card-title">Suspension</h3>
+        <p class="category-card-description">Tires, wheels & accessories</p>
+      </div>
+      <div class="category-card" data-category="maintenance">
+        <div class="category-card-image-wrapper">
+          <img src="https://toyota.com.eg/storage/6592/image-3-(4).png.png" alt="Maintenance Parts" class="category-card-image" onerror="this.src=''; this.alt='Maintenance Parts'; this.style.display='none';">
+        </div>
+        <h3 class="category-card-title">Maintenance Parts</h3>
+        <p class="category-card-description">Lighting & electrical parts</p>
+      </div>
+      <div class="category-card" data-category="fluids">
+        <div class="category-card-image-wrapper">
+          <img src="https://rsauto.ca/wp-content/uploads/2021/08/fluid-flush-North-York.png" alt="Maintenance Fluids" class="category-card-image" onerror="this.src=''; this.alt='Maintenance Fluids'; this.style.display='none';">
+        </div>
+        <h3 class="category-card-title">Maintenance Oils and Lubricants</h3>
+        <p class="category-card-description">Oils, coolants & fluids</p>
+      </div>
+      <div class="category-card" data-category="service">
+        <div class="category-card-image-wrapper">
+          <img src="https://toyotacorporate.sitedemo.com.my/wp-content/uploads/2022/01/v2-services-image4.jpg" alt="Service Booking" class="category-card-image" onerror="this.src=''; this.alt='Service Booking'; this.style.display='none';">
+        </div>
+        <h3 class="category-card-title">Service Booking</h3>
+        <p class="category-card-description">Book your Toyota Corolla service</p>
       </div>
     </div>
   `;
@@ -868,6 +934,11 @@ function renderCategoryPage(category) {
     suspension: t("suspension"),
     maintenance: t("maintenanceParts"),
     fluids: t("maintenanceFluids")
+    engine: "Engine Parts",
+    brakes: "Brakes",
+    suspension: "Suspension",
+    maintenance: "Maintenance Parts",
+    fluids: "Maintenance Fluids",
   };
 
   const mainContent = document.getElementById('main-content');
@@ -929,6 +1000,7 @@ function renderProducts(category) {
       <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
         <div style="width: 80px; height: 80px; margin: 0 auto 20px auto; border-radius: 8px; overflow: hidden; opacity: 0.5;">
           <img src="no-results.jpg" alt="${t("noProductsFound")}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='${t("noProductsFound")}'; this.style.display='none';">
+          <img src="no-results.jpg" alt="No products found" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='No products found'; this.style.display='none';">
         </div>
         <h3 style="font-size: 24px; color: #2c3e50; margin: 0 0 10px 0;">${t("noProductsFound")}</h3>
         <p style="font-size: 16px; color: #7f8c8d;">${t("tryAdjustingFilters")}</p>
@@ -983,6 +1055,7 @@ function performSearch() {
         <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
           <div style="width: 80px; height: 80px; margin: 0 auto 20px auto; border-radius: 8px; overflow: hidden; opacity: 0.5;">
             <img src="no-results.jpg" alt="${t("noProductsFound")}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='${t("noProductsFound")}'; this.style.display='none';">
+            <img src="no-results.jpg" alt="No products found" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='No products found'; this.style.display='none';">
           </div>
           <h3 style="font-size: 24px; color: #2c3e50; margin: 0 0 10px 0;">${t("noProductsFound")}</h3>
           <p style="font-size: 16px; color: #7f8c8d;">${t("tryDifferentSearch")}</p>
@@ -1009,6 +1082,7 @@ async function addToCart(productId) {
 
   if (cart.length >= 999) {
     showToast(t("maxCartLimit"), '#e74c3c');
+    showToast("Maximum limit of 999 items reached. Please remove some items first.", '#e74c3c');
     return;
   }
 
@@ -1022,6 +1096,10 @@ async function addToCart(productId) {
       bounceCartIcon();
     } else {
       showToast(t("failedUpdateCart"), '#e74c3c');
+      showToast("Updated quantity in cart!");
+      bounceCartIcon();
+    } else {
+      showToast("Failed to update cart", '#e74c3c');
     }
   } else {
     const createResult = await window.dataSdk.create({
@@ -1037,6 +1115,10 @@ async function addToCart(productId) {
       bounceCartIcon();
     } else {
       showToast(t("failedAddToCart"), '#e74c3c');
+      showToast("Added to cart!");
+      bounceCartIcon();
+    } else {
+      showToast("Failed to add to cart", '#e74c3c');
     }
   }
 }
@@ -1103,6 +1185,7 @@ function renderCartPage() {
         <div class="empty-state">
           <div style="width: 120px; height: 120px; margin: 0 auto 20px auto; border-radius: 8px; overflow: hidden; opacity: 0.5;">
             <img src="empty-cart.jpg" alt="${t("cartEmpty")}" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='${t("cartEmpty")}'; this.style.display='none';">
+            <img src="empty-cart.jpg" alt="Your cart is empty" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Your cart is empty'; this.style.display='none';">
           </div>
           <h3>${t("cartEmpty")}</h3>
           <p>${t("addProductsToStart")}</p>
@@ -1176,6 +1259,7 @@ async function updateQuantity(backendId, newQuantity) {
 
   if (!updateResult.isOk) {
     showToast(t("failedUpdateCart"), '#e74c3c');
+    showToast("Failed to update cart", '#e74c3c');
   }
 }
 
@@ -1189,6 +1273,9 @@ async function removeFromCart(backendId) {
     showToast(t("removedFromCart"));
   } else {
     showToast(t("failedRemoveItem"), '#e74c3c');
+    showToast("Removed from cart");
+  } else {
+    showToast("Failed to remove item", '#e74c3c');
   }
 }
 
@@ -1245,6 +1332,20 @@ function renderCheckoutPage() {
           <div class="summary-row total">
             <span>${t("total")}</span>
             <span>${total.toFixed(2)} ${t("currency")}</span>
+              <span>${(item.product.price * item.quantity).toFixed(2)} EGP</span>
+            </div>
+          `).join('')}
+          <div class="summary-row">
+            <span>Subtotal:</span>
+            <span>${subtotal.toFixed(2)} EGP</span>
+          </div>
+          <div class="summary-row">
+            <span>Tax (14%):</span>
+            <span>${tax.toFixed(2)} EGP</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total:</span>
+            <span>${total.toFixed(2)} EGP</span>
           </div>
           <button type="button" class="continue-shopping-btn" data-category="cart">${t("backToCart")}</button>
           <button type="submit" class="checkout-btn" id="submit-order-btn">${t("placeOrder")}</button>
@@ -1260,6 +1361,7 @@ async function submitOrder(event) {
   const submitBtn = document.getElementById('submit-order-btn');
   submitBtn.disabled = true;
   submitBtn.textContent = t("processing");
+  submitBtn.textContent = "Processing...";
 
   const name = document.getElementById('customer-name').value;
   const email = document.getElementById('customer-email').value;
@@ -1341,6 +1443,7 @@ function showProductDetails(productId) {
       </div>
       <button class="add-to-cart-btn" data-product-id="${product.id}" style="margin-top: 25px;">
         ${t("addToCartPrice", { price: product.price.toFixed(2) })} <span class="currency-symbol">${t("currency")}</span>
+        Add to Cart - ${product.price.toFixed(2)}
       </button>
     </div>
   `;
@@ -1397,6 +1500,7 @@ function renderServiceDetailsPage() {
               <tr>
                 <td><strong>${item.name}</strong></td>
                 <td>${item.required ? `<span style="color: #e74c3c; font-weight: 600;">${t("required")}</span>` : `<span style="color: #7f8c8d;">${t("optional")}</span>`}</td>
+                <td>${item.required ? `<span style="color: #e74c3c; font-weight: 600;">Required</span>` : `<span style="color: #7f8c8d;">Optional</span>`}</td>
                 <td style="color: #7f8c8d; font-size: 14px;">${getServiceDescription(item.name)}</td>
               </tr>
             `).join('')}
@@ -1587,12 +1691,14 @@ async function submitServiceBooking(event) {
 
   if (cart.length >= 999) {
     showToast(t("maxCartLimit"), '#e74c3c');
+    showToast("Maximum limit of 999 bookings reached. Please contact support.", '#e74c3c');
     return;
   }
 
   const submitBtn = document.getElementById('book-service-btn');
   submitBtn.disabled = true;
   submitBtn.textContent = t("booking");
+  submitBtn.textContent = "Booking...";
 
   const pkg = servicePackages[selectedService];
   const name = document.getElementById('service-customer-name').value;
@@ -1679,7 +1785,3 @@ document.addEventListener('submit', (e) => {
 
 document.getElementById('search-btn').addEventListener('click', performSearch);
 document.getElementById('cart-btn').addEventListener('click', showCart);
-document.getElementById('lang-btn').addEventListener('click', () => {
-  const newLang = currentLanguage === 'en' ? 'ar' : 'en';
-  setLanguage(newLang);
-});
