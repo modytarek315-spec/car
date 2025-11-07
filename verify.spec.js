@@ -43,6 +43,9 @@ test.describe('Car House E-commerce Site', () => {
     await expect(page.locator('.product-detail-view')).toBeVisible();
     await expect(page.locator('.product-detail-view h2')).toBeVisible();
 
+    // Take a screenshot for visual verification
+    await page.screenshot({ path: 'product-detail-view.png' });
+
     // Click the "Back" button and verify that we are back on the home page
     await page.click('.product-detail-view .back-btn');
     await expect(page.locator('.category-grid')).toBeVisible();
@@ -79,7 +82,7 @@ test.describe('Car House E-commerce Site', () => {
   });
 
   test('should take a screenshot of the final state', async ({ page }) => {
-    // Take a screenshot for visual verification
-    await page.screenshot({ path: 'final-screenshot.png' });
+    // Take a screenshot of the product cards for visual verification
+    await page.screenshot({ path: 'product-cards.png' });
   });
 });
