@@ -4,13 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Car House 🚗</title>
+  <title>Product Details - Car House 🚗</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    @view-transition {
-      navigation: auto;
-    }
-  </style>
   <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
   <script src="script.js" defer></script>
 </head>
@@ -46,28 +41,16 @@
         </button>
       </div>
     </div>
-    <div class="search-bar">
-      <div class="search-input-wrapper">
-        <input type="text" class="search-input" id="search-input" placeholder="Search for parts, brands, or categories...">
-        <button class="search-btn" id="search-btn">Search</button>
-      </div>
-      <div id="search-history-container"></div>
-    </div>
   </header>
   <nav class="nav">
     <ul class="nav-links">
-      <li><button data-category="home" class="active" id="nav-home">Home</button></li>
-      <li><button data-category="engine" id="nav-engine">Engine Parts</button></li>
-      <li><button data-category="brakes" id="nav-brakes">Brakes</button></li>
-      <li><button data-category="suspension" id="nav-suspension">Suspension</button></li>
-      <li><button data-category="maintenance" id="nav-maintenance">Maintenance Parts</button></li>
-      <li><button data-category="fluids" id="nav-fluids">Maintenance Fluids</button></li>
-      <li><button data-category="service" id="nav-service">Service Booking</button></li>
-      <li><button data-category="about" id="nav-about">About Us</button></li>
+        <li><a href="index.html" class="nav-link">Home</a></li>
     </ul>
   </nav>
   <div class="container">
-    <div id="main-content"></div>
+    <div id="product-details-container">
+      <!-- Product details will be rendered here by script.js -->
+    </div>
   </div>
 </body>
 

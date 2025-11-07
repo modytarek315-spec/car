@@ -504,6 +504,21 @@ body {
     object-fit: cover;
 }
 
+#product-details-container {
+    background: linear-gradient(135deg, #132440 50%, #BF092F 100%);
+    padding: 30px;
+    border-radius: 12px;
+    color: white;
+    margin-top: 30px;
+}
+
+#product-details-container .product-details-image {
+    width: 100%;
+    max-width: 450px;
+    height: 450px;
+    margin: 0 auto 30px;
+}
+
 .cart-item-details {
     flex: 1;
 }
