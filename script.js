@@ -103,6 +103,111 @@ const translations = {
     currency: "EGP"
   },
   ar: {},
+
+  },
+  ar: {
+    storeName: "برو قطع غيار السيارات",
+    storeTagline: "قطع غيار عالية الجودة لسيارتك",
+    contactPhoneLabel: "الهاتف:",
+    contactEmailLabel: "البريد الإلكتروني:",
+    cartBtnLabel: "السلة",
+    searchInputPlaceholder: "البحث عن قطع غيار أو ماركات أو فئات...",
+    searchBtn: "بحث",
+    navHome: "الرئيسية",
+    navEngine: "أجزاء المحرك",
+    navBrakes: "الفرامل",
+    navSuspension: "التعليق",
+    navMaintenance: "أجزاء الصيانة",
+    navFluids: "سوائل الصيانة",
+    navService: "حجز خدمة",
+    navAbout: "معلومات عنا",
+    aboutUsTitle: "معلومات عنا",
+    aboutUsSubtitle: "مصدرك الموثوق لقطع غيار السيارات عالية الجودة",
+    aboutUsWelcome: "مرحبًا بك في Auto Parts Pro، متجرك الشامل لقطع غيار السيارات عالية الجودة. نحن متحمسون للسيارات وملتزمون بتزويد عملائنا بأفضل القطع والخدمات في هذا المجال.",
+    aboutUsMission: "مهمتنا هي أن نجعل من السهل والميسور لك الحفاظ على سيارتك في أفضل حالة. نحن نقدم مجموعة واسعة من قطع الغيار لجميع الماركات والموديلات، مدعومة بفريق من الخبراء والتزامنا برضا العملاء.",
+    aboutUsThanks: "شكرًا لاختيارك Auto Parts Pro. نتطلع إلى خدمتك!",
+    welcomeMessage: "مرحبًا بك في",
+    browseCollection: "تصفح مجموعتنا الواسعة من قطع غيار السيارات عالية الجودة",
+    engineParts: "أجزاء المحرك",
+    enginePartsDesc: "مكونات المحرك الأساسية",
+    brakes: "الفرامل",
+    brakesDesc: "وسادات الفرامل والأقراص والمزيد",
+    suspension: "التعليق",
+    suspensionDesc: "الإطارات والعجلات والملحقات",
+    maintenanceParts: "أجزاء الصيانة",
+    maintenancePartsDesc: "الإضاءة والأجزاء الكهربائية",
+    maintenanceFluids: "زيوت التشحيم والصيانة",
+    maintenanceFluidsDesc: "الزيوت والمبردات والسوائل",
+    serviceBooking: "حجز خدمة",
+    serviceBookingDesc: "احجز خدمة تويوتا كورولا الخاصة بك",
+    highQualityParts: "قطع غيار عالية الجودة لسيارتك",
+    noProductsFound: "لم يتم العثور على منتجات",
+    tryAdjustingFilters: "حاول تعديل الفلاتر أو مصطلح البحث",
+    viewDetails: "عرض التفاصيل",
+    addToCart: "أضف إلى السلة",
+    searchResults: "نتائج البحث",
+    foundProducts: "تم العثور على {count} منتجًا لـ \"{term}\"",
+    tryDifferentSearch: "حاول مصطلح بحث مختلف",
+    updatedCart: "تم تحديث الكمية في السلة!",
+    failedUpdateCart: "فشل تحديث السلة",
+    addedToCart: "تمت الإضافة إلى السلة!",
+    failedAddToCart: "فشل الإضافة إلى السلة",
+    maxCartLimit: "تم الوصول إلى الحد الأقصى البالغ 999 عنصرًا. يرجى إزالة بعض العناصر أولاً.",
+    removedFromCart: "تمت الإزالة من السلة",
+    failedRemoveItem: "فشل إزالة العنصر",
+    shoppingCart: "سلة التسوق",
+    itemsInCart: "{count} عنصر(عناصر) في سلتك",
+    cartEmpty: "سلتك فارغة",
+    addProductsToStart: "أضف بعض المنتجات للبدء",
+    continueShopping: "مواصلة التسوق",
+    remove: "إزالة",
+    subtotal: "المجموع الفرعي:",
+    tax: "الضريبة (14٪):",
+    total: "المجموع:",
+    proceedToCheckout: "الانتقال إلى الدفع",
+    checkout: "الدفع",
+    completeYourOrder: "أكمل طلبك",
+    fullName: "الاسم الكامل *",
+    emailAddress: "عنوان البريد الإلكتروني *",
+    phoneNumber: "رقم الهاتف *",
+    shippingAddress: "عنوان الشحن *",
+    orderSummary: "ملخص الطلب",
+    backToCart: "العودة إلى السلة",
+    placeOrder: "إتمام الطلب",
+    processing: "جارٍ المعالجة...",
+    orderPlaced: "تم تقديم الطلب بنجاح!",
+    orderConfirmation: "شكرًا لطلبك، {name}. سنرسل تأكيدًا بالبريد الإلكتروني إلى {email}.",
+    serviceBookingTitle: "حجز خدمة تويوتا كورولا",
+    serviceBookingSubtitle: "حدد خدمة الصيانة الخاصة بك بناءً على عدد الكيلومترات",
+    serviceItems: "{count}รายการบริการ",
+    productSpecs: "مواصفات المنتج",
+    partNumber: "رقم القطعة:",
+    compatibility: "التوافق:",
+    category: "الفئة:",
+    addToCartPrice: "أضف إلى السلة - {price}",
+    backToServices: "العودة إلى الخدمات",
+    kmService: "خدمة {km} كم - {title}",
+    completePackage: "باقة صيانة كاملة لسيارتك تويوتا كورولا",
+    recommendedAt: "موصى به عند {km} كيلومتر",
+    serviceItem: "عنصر الخدمة",
+    status: "الحالة",
+    description: "الوصف",
+    required: "مطلوب",
+    optional: "اختياري",
+    includeParts: "تضمين استبدال قطع الغيار مع هذه الخدمة",
+    bookAppointment: "احجز موعدك",
+    preferredDate: "التاريخ المفضل *",
+    servicePackage: "باقة الخدمة:",
+    partsCost: "تكلفة قطع الغيار:",
+    totalCost: "التكلفة الإجمالية:",
+    bookServiceAppointment: "حجز موعد الخدمة",
+    selectParts: "حدد قطع الغيار لتضمينها:",
+    booking: "جارٍ الحجز...",
+    serviceBooked: "تم حجز موعد الخدمة بنجاح!",
+    serviceConfirmation: "تم تحديد موعد خدمة {km} كم لسيارتك تويوتا كورولا في {date}. سنرسل تأكيدًا إلى {email}.",
+    recentSearches: "عمليات البحث الأخيرة:",
+    currency: "جنيه مصري"
+  },
 };
 
 let currentLanguage = localStorage.getItem("language") || "en";
@@ -120,6 +225,8 @@ function t(key, replacements = {}) {
     translation = translations[currentLanguage][key] || key;
   }
 
+function t(key, replacements = {}) {
+  let translation = translations[currentLanguage][key] || key;
   for (const placeholder in replacements) {
     translation = translation.replace(`{${placeholder}}`, replacements[placeholder]);
   }
@@ -147,6 +254,20 @@ function setLanguage(lang) {
     "nav-fluids": t("navFluids"),
     "nav-service": t("navService"),
     "nav-about": t("navAbout"),
+    "store-name": "storeName",
+    "store-tagline": "storeTagline",
+    "contact-phone-label": "contactPhoneLabel",
+    "contact-email-label": "contactEmailLabel",
+    "cart-btn-label": "cartBtnLabel",
+    "search-btn": "searchBtn",
+    "nav-home": "navHome",
+    "nav-engine": "navEngine",
+    "nav-brakes": "navBrakes",
+    "nav-suspension": "navSuspension",
+    "nav-maintenance": "navMaintenance",
+    "nav-fluids": "navFluids",
+    "nav-service": "navService",
+    "nav-about": "navAbout",
   };
 
   for (const id in elements) {
@@ -159,6 +280,12 @@ function setLanguage(lang) {
   document.getElementById("search-input").placeholder = t("searchInputPlaceholder");
   document.getElementById("lang-btn").textContent = lang === "en" ? "AR" : "EN";
   showCategory(currentCategory);
+      element.textContent = translations[lang][elements[id]];
+    }
+  }
+
+  document.getElementById("search-input").placeholder = translations[lang].searchInputPlaceholder;
+  document.getElementById("lang-btn").textContent = lang === "en" ? "AR" : "EN";
 }
 
 const defaultConfig = {
@@ -646,6 +773,7 @@ function renderSearchHistory() {
     historyContainer.innerHTML = `
                 <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center;">
                     <span style="font-weight: 500; color: white;">${t("recentSearches")}</span>
+                    <span style="font-weight: 500; color: white;">Recent Searches:</span>
                     ${searchHistory.map(term => `<button class="search-history-btn" onclick="performSearchFromHistory('${term}')">${term}</button>`).join('')}
                 </div>
             `;
@@ -713,6 +841,12 @@ function renderAboutPage() {
                 <p>${t("aboutUsWelcome")}</p>
                 <p>${t("aboutUsMission")}</p>
                 <p>${t("aboutUsThanks")}</p>
+            <h1 class="page-title">About Us</h1>
+            <p class="page-subtitle">Your trusted source for quality auto parts</p>
+            <div style="background: black; padding: 80px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+                <p>Welcome to Auto Parts Pro, your one-stop shop for high-quality auto parts. We are passionate about cars and dedicated to providing our customers with the best parts and service in the industry.</p>
+                <p>Our mission is to make it easy and affordable for you to keep your vehicle in top condition. We offer a wide selection of parts for all makes and models, backed by our expert team and commitment to customer satisfaction.</p>
+                <p>Thank you for choosing Auto Parts Pro. We look forward to serving you!</p>
             </div>
         `;
 }
@@ -768,6 +902,53 @@ function renderHomePage() {
     </div>
   `;
   observeElements('[data-category]');
+    <h1 class="page-title">Welcome to ${config.store_name || defaultConfig.store_name}</h1>
+    <p class="page-subtitle">Browse our extensive collection of quality auto parts</p>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 30px;">
+      <div style="background: linear-gradient(135deg, #132440 50%, 	#BF092F 100%); padding: 30px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: white;" data-category="engine">
+        <div style="width: 220px; height: 120px; margin: 0 auto 15px auto; border-radius: 8px; overflow: hidden;">
+          <img src="https://media.hswstatic.com/eyJidWNrZXQiOiJjb250ZW50Lmhzd3N0YXRpYy5jb20iLCJrZXkiOiJnaWZcL2VuZ2luZS1xdWl6LWEtb2cuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo4Mjh9fX0=" alt="Engine Parts" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Engine Parts'; this.style.display='none';">
+        </div>
+        <h3 style="margin: 0 0 10px 0; color: #F4E9D7">Engine Parts</h3>
+        <p style="color: #F4E9D7" margin: 0;">Essential engine components</p>
+      </div>
+      <div style="background: linear-gradient(135deg, #132440 50%, 	#BF092F 100%); padding: 30px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: white;" data-category="brakes">
+        <div style="width: 220px; height: 120px; margin: 0 auto 15px auto; border-radius: 8px; overflow: hidden;">
+          <img src="https://img.freepik.com/free-photo/car-repair-garage_1170-1497.jpg?semt=ais_hybrid&w=740&q=80" alt="Brakes" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Brakes'; this.style.display='none';">
+        </div>
+        <h3 style="margin: 0 0 10px 0; color: #F4E9D7;">Brakes</h3>
+        <p style="color: #F4E9D7; margin: 0;">Brake pads, rotors & more</p>
+      </div>
+      <div style="background: linear-gradient(135deg, #132440 50%, 	#BF092F 100%); padding: 30px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: white;" data-category="suspension">
+        <div style="width: 220px; height: 120px; margin: 10 auto 15px auto; border-radius: 8px; overflow: hidden;">
+          <img src="https://static.pakwheels.com/2015/08/2014-Toyota-Corolla-Suspension.jpg" alt="suspension" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='suspension'; this.style.display='none';">
+        </div>
+        <h3 style="margin: 0 0 10px 0; color: #F4E9D7;">Suspension</h3>
+        <p style="color: #F4E9D7; margin: 0;">Tires, wheels & accessories</p>
+      </div>
+      <div style="background: linear-gradient(135deg,#132440 50%, 	#BF092F 100%); padding: 30px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: white;" data-category="maintenance">
+        <div style="width: 220px; height: 120px; margin: 10 auto 15px auto; border-radius: 8px; overflow: hidden;">
+          <img src="https://toyota.com.eg/storage/6592/image-3-(4).png.png" alt="maintenance_parts" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Maintenance Parts'; this.style.display='none';">
+        </div>
+        <h3 style="margin: 0 0 10px 0; color:#F4E9D7;">Maintenance Parts</h3>
+        <p style="color: #F4E9D7; margin: 0;">Lighting & electrical parts</p>
+      </div>
+      <div style="background: linear-gradient(135deg, #132440 50%, 	#BF092F 100%); padding: 30px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: white;" data-category="fluids">
+        <div style="width: 220px; height: 120px; margin: 0 auto 15px auto; border-radius: 8px; overflow: hidden;">
+          <img src="https://rsauto.ca/wp-content/uploads/2021/08/fluid-flush-North-York.png" alt="Maintenance Oils and Lubricants" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Maintenance Fluids'; this.style.display='none';">
+        </div>
+        <h3 style="margin: 0 0 10px 0; color: #F4E9D7;">Maintenance Oils and Lubricants</h3>
+        <p style="color: #F4E9D7; margin: 0;">Oils, coolants & fluids</p>
+      </div>
+      <div style="background: linear-gradient(135deg, #132440 50%, 	#BF092F 100%); padding: 30px; border-radius: 12px; text-align: center; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 2px 8px rgba(0,0,0,0.05); color: white;" data-category="service">
+        <div style="width: 220px; height: 120px; margin: 0 auto 15px auto; border-radius: 8px; overflow: hidden;">
+          <img src="https://toyotacorporate.sitedemo.com.my/wp-content/uploads/2022/01/v2-services-image4.jpg" alt="Service Booking" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Service Booking'; this.style.display='none';">
+        </div>
+        <h3 style="margin: 0 0 10px 0;">Service Booking</h3>
+        <p style="margin: 0; opacity: 0.9;">Book your Toyota Corolla service</p>
+      </div>
+    </div>
+  `;
 }
 
 function renderCategoryPage(category) {
@@ -777,12 +958,18 @@ function renderCategoryPage(category) {
     suspension: t("suspension"),
     maintenance: t("maintenanceParts"),
     fluids: t("maintenanceFluids")
+    engine: 'Engine Parts',
+    brakes: 'Brakes',
+    suspension: 'suspension',
+    maintenance: 'Maintenance Parts',
+    fluids: 'Maintenance Oils and Lubricants'
   };
 
   const mainContent = document.getElementById('main-content');
   mainContent.innerHTML = `
     <h1 class="page-title">${categoryNames[category]}</h1>
     <p class="page-subtitle">${t("highQualityParts")}</p>
+    <p class="page-subtitle">High-quality parts for your vehicle</p>
     <div class="products-grid" id="products-grid"></div>
   `;
 
@@ -841,6 +1028,10 @@ function renderProducts(category) {
         </div>
         <h3 style="font-size: 24px; color: #2c3e50; margin: 0 0 10px 0;">${t("noProductsFound")}</h3>
         <p style="font-size: 16px; color: #7f8c8d;">${t("tryAdjustingFilters")}</p>
+          <img src="no-results.jpg" alt="No Results" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='No Results'; this.style.display='none';">
+        </div>
+        <h3 style="font-size: 24px; color: #2c3e50; margin: 0 0 10px 0;">No products found</h3>
+        <p style="font-size: 16px; color: #7f8c8d;">Try adjusting your filters or search term</p>
       </div>
     `;
     return;
@@ -857,6 +1048,11 @@ function renderProducts(category) {
     </div>
   `).join('');
   observeElements('.product-card');
+      <div class="product-price">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
+      <button class="view-details-btn" data-product-id="${product.id}">View Details</button>
+      <button class="add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
+    </div>
+  `).join('');
 }
 
 function performSearch() {
@@ -887,6 +1083,10 @@ function performSearch() {
   mainContent.innerHTML = `
     <h1 class="page-title">${t("searchResults")}</h1>
     <p class="page-subtitle">${t("foundProducts", { count: results.length, term: currentSearchTerm })}</p>
+      <h1 class="page-title">${t("searchResults")}</h1>
+    <p class="page-subtitle">${t("foundProducts", { count: results.length, term: currentSearchTerm })}</p>
+    <h1 class="page-title">Search Results</h1>
+    <p class="page-subtitle">Found ${results.length} products for "${currentSearchTerm}"</p>
     <div class="products-grid">
       ${results.length === 0 ? `
         <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
@@ -895,6 +1095,10 @@ function performSearch() {
           </div>
           <h3 style="font-size: 24px; color: #2c3e50; margin: 0 0 10px 0;">${t("noProductsFound")}</h3>
           <p style="font-size: 16px; color: #7f8c8d;">${t("tryDifferentSearch")}</p>
+            <img src="no-results.jpg" alt="No Results" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='No Results'; this.style.display='none';">
+          </div>
+          <h3 style="font-size: 24px; color: #2c3e50; margin: 0 0 10px 0;">No products found</h3>
+          <p style="font-size: 16px; color: #7f8c8d;">Try a different search term</p>
         </div>
       ` : results.map(product => `
         <div class="product-card">
@@ -903,6 +1107,8 @@ function performSearch() {
           <h3 class="product-name">${product.name}</h3>
           <div class="product-price">${product.price.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></div>
           <button class="add-to-cart-btn" data-product-id="${product.id}">${t("addToCart")}</button>
+          <div class="product-price">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
+          <button class="add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
         </div>
       `).join('')}
     </div>
@@ -918,6 +1124,7 @@ async function addToCart(productId) {
 
   if (cart.length >= 999) {
     showToast(t("maxCartLimit"), '#e74c3c');
+    showToast('Maximum limit of 999 items reached. Please remove some items first.', '#e74c3c');
     return;
   }
 
@@ -931,6 +1138,9 @@ async function addToCart(productId) {
       bounceCartIcon();
     } else {
       showToast(t("failedUpdateCart"), '#e74c3c');
+      showToast('Updated quantity in cart!');
+    } else {
+      showToast('Failed to update cart', '#e74c3c');
     }
   } else {
     const createResult = await window.dataSdk.create({
@@ -946,6 +1156,9 @@ async function addToCart(productId) {
       bounceCartIcon();
     } else {
       showToast(t("failedAddToCart"), '#e74c3c');
+      showToast('Added to cart!');
+    } else {
+      showToast('Failed to add to cart', '#e74c3c');
     }
   }
 }
@@ -1016,6 +1229,11 @@ function renderCartPage() {
           <h3>${t("cartEmpty")}</h3>
           <p>${t("addProductsToStart")}</p>
           <button class="back-btn" data-category="home">${t("continueShopping")}</button>
+            <img src="empty-cart.jpg" alt="Empty Cart" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Empty Cart'; this.style.display='none';">
+          </div>
+          <h3>Your cart is empty</h3>
+          <p>Add some products to get started</p>
+          <button class="back-btn" data-category="home">Continue Shopping</button>
         </div>
       </div>
     `;
@@ -1036,6 +1254,8 @@ function renderCartPage() {
     <div class="cart-page">
       <h1 class="page-title">${t("shoppingCart")}</h1>
       <p class="page-subtitle">${t("itemsInCart", { count: cart.length })}</p>
+      <h1 class="page-title">Shopping Cart</h1>
+      <p class="page-subtitle">${cart.length} item(s) in your cart</p>
       <div>
         ${cartItems.map(item => `
           <div class="cart-item">
@@ -1044,12 +1264,14 @@ function renderCartPage() {
               <h3 class="cart-item-name">${item.product.name}</h3>
               <p class="cart-item-brand">${item.product.brand}</p>
               <div class="cart-item-price">${item.product.price.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></div>
+              <div class="cart-item-price">${item.product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
             </div>
             <div class="cart-item-actions">
               <button class="qty-btn" data-backend-id="${item.__backendId}" data-quantity="${item.quantity - 1}">-</button>
               <span class="qty-display">${item.quantity}</span>
               <button class="qty-btn" data-backend-id="${item.__backendId}" data-quantity="${item.quantity + 1}">+</button>
               <button class="remove-btn" data-backend-id="${item.__backendId}">${t("remove")}</button>
+              <button class="remove-btn" data-backend-id="${item.__backendId}">Remove</button>
             </div>
           </div>
         `).join('')}
@@ -1069,6 +1291,19 @@ function renderCartPage() {
         </div>
         <button class="continue-shopping-btn" data-category="home">${t("continueShopping")}</button>
         <button class="checkout-btn" data-category="checkout">${t("proceedToCheckout")}</button>
+          <span>Subtotal:</span>
+          <span>${subtotal.toFixed(2)} <span class="currency-symbol">EGP</span></span>
+        </div>
+        <div class="summary-row">
+          <span>Tax (14%):</span>
+          <span>${tax.toFixed(2)} <span class="currency-symbol">EGP</span></span>
+        </div>
+        <div class="summary-row total">
+          <span>Total:</span>
+          <span>${total.toFixed(2)} <span class="currency-symbol">EGP</span></span>
+        </div>
+        <button class="continue-shopping-btn" data-category="home">Continue Shopping</button>
+        <button class="checkout-btn" data-category="checkout">Proceed to Checkout</button>
       </div>
     </div>
   `;
@@ -1085,6 +1320,7 @@ async function updateQuantity(backendId, newQuantity) {
 
   if (!updateResult.isOk) {
     showToast(t("failedUpdateCart"), '#e74c3c');
+    showToast('Failed to update quantity', '#e74c3c');
   }
 }
 
@@ -1098,6 +1334,9 @@ async function removeFromCart(backendId) {
     showToast(t("removedFromCart"));
   } else {
     showToast(t("failedRemoveItem"), '#e74c3c');
+    showToast('Removed from cart');
+  } else {
+    showToast('Failed to remove item', '#e74c3c');
   }
 }
 
@@ -1157,6 +1396,48 @@ function renderCheckoutPage() {
           </div>
           <button type="button" class="continue-shopping-btn" data-category="cart">${t("backToCart")}</button>
           <button type="submit" class="checkout-btn" id="submit-order-btn">${t("placeOrder")}</button>
+      <h1 class="page-title">Checkout</h1>
+      <p class="page-subtitle">Complete your order</p>
+      <div id="checkout-message"></div>
+      <form id="checkout-form">
+        <div class="form-group">
+          <label for="customer-name">Full Name *</label>
+          <input type="text" id="customer-name" required>
+        </div>
+        <div class="form-group">
+          <label for="customer-email">Email Address *</label>
+          <input type="email" id="customer-email" required>
+        </div>
+        <div class="form-group">
+          <label for="customer-phone">Phone Number *</label>
+          <input type="tel" id="customer-phone" required>
+        </div>
+        <div class="form-group">
+          <label for="customer-address">Shipping Address *</label>
+          <textarea id="customer-address" required></textarea>
+        </div>
+        <div class="cart-summary">
+          <h3 style="margin: 0 0 15px 0;">Order Summary</h3>
+          ${cartItems.map(item => `
+            <div class="summary-row">
+              <span>${item.product.name} x ${item.quantity}</span>
+              <span>$${(item.product.price * item.quantity).toFixed(2)}</span>
+            </div>
+          `).join('')}
+          <div class="summary-row">
+            <span>Subtotal:</span>
+            <span>$${subtotal.toFixed(2)}</span>
+          </div>
+          <div class="summary-row">
+            <span>Tax (14%):</span>
+            <span>$${tax.toFixed(2)}</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total:</span>
+            <span>$${total.toFixed(2)}</span>
+          </div>
+          <button type="button" class="continue-shopping-btn" data-category="cart">Back to Cart</button>
+          <button type="submit" class="checkout-btn" id="submit-order-btn">Place Order</button>
         </div>
       </form>
     </div>
@@ -1169,6 +1450,7 @@ async function submitOrder(event) {
   const submitBtn = document.getElementById('submit-order-btn');
   submitBtn.disabled = true;
   submitBtn.textContent = t("processing");
+  submitBtn.textContent = 'Processing...';
 
   const name = document.getElementById('customer-name').value;
   const email = document.getElementById('customer-email').value;
@@ -1186,6 +1468,8 @@ async function submitOrder(event) {
     <div class="success-message">
       <strong>${t("orderPlaced")}</strong><br>
       ${t("orderConfirmation", { name, email })}
+      <strong>Order placed successfully!</strong><br>
+      Thank you for your order, ${name}. We'll send a confirmation email to ${email}.
     </div>
   `;
 
@@ -1202,6 +1486,8 @@ function renderServicePage() {
     <div class="service-page">
       <h1 class="page-title">${t("serviceBookingTitle")}</h1>
       <p class="page-subtitle">${t("serviceBookingSubtitle")}</p>
+      <h1 class="page-title">Toyota Corolla Service Booking</h1>
+      <p class="page-subtitle">Schedule your maintenance service based on mileage</p>
       <div class="service-grid">
         ${servicePackages.map((pkg, index) => `
           <div class="service-card ${selectedService === index ? 'selected' : ''}" data-service-index="${index}">
@@ -1209,6 +1495,8 @@ function renderServicePage() {
             <div class="service-title">${pkg.title}</div>
             <div class="service-price">${pkg.price.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></div>
             <p style="margin: 10px 0 0 0; color: #7f8c8d; font-size: 14px;">${t("serviceItems", { count: pkg.items.length })}</p>
+            <div class="service-price">${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
+            <p style="margin: 10px 0 0 0; color: #7f8c8d; font-size: 14px;">${pkg.items.length} service items</p>
           </div>
         `).join('')}
       </div>
@@ -1245,11 +1533,26 @@ function showProductDetails(productId) {
         </div>
         <div class="spec-row">
           <span class="spec-label">${t("category")}</span>
+      <div class="product-price" style="font-size: 32px; margin-bottom: 20px;">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
+      <p style="color: #7f8c8d; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">${product.description}</p>
+      <div class="product-specs">
+        <h4>Product Specifications</h4>
+        <div class="spec-row">
+          <span class="spec-label">Part Number:</span>
+          <span class="spec-value">${product.partNumber}</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Compatibility:</span>
+          <span class="spec-value">${product.compatibility}</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Category:</span>
           <span class="spec-value">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span>
         </div>
       </div>
       <button class="add-to-cart-btn" data-product-id="${product.id}" style="margin-top: 25px;">
         ${t("addToCartPrice", { price: product.price.toFixed(2) })} <span class="currency-symbol">${t("currency")}</span>
+        Add to Cart - ${product.price.toFixed(2)} <span class="currency-symbol">EGP</span>
       </button>
     </div>
   `;
@@ -1285,6 +1588,9 @@ function renderServiceDetailsPage() {
       <button class="back-btn" data-category="service" style="margin-bottom: 20px;">${t("backToServices")}</button>
       <h1 class="page-title">${t("kmService", { km: pkg.km, title: pkg.title })}</h1>
       <p class="page-subtitle">${t("completePackage")}</p>
+      <button class="back-btn" data-category="service" style="margin-bottom: 20px;">Back to Services</button>
+      <h1 class="page-title">${pkg.km} KM Service - ${pkg.title}</h1>
+      <p class="page-subtitle">Complete maintenance package for your Toyota Corolla</p>
       <div style="background: #252525; padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
           <div>
@@ -1292,6 +1598,9 @@ function renderServiceDetailsPage() {
             <p style="margin: 5px 0 0 0; color: #7f8c8d;">${t("recommendedAt", { km: pkg.km })}</p>
           </div>
           <div class="service-price" style="margin: 0;">${pkg.price.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></div>
+            <p style="margin: 5px 0 0 0; color: #7f8c8d;">Recommended at ${pkg.km} kilometers</p>
+          </div>
+          <div class="service-price" style="margin: 0;">${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
         </div>
         <table class="service-table">
           <thead>
@@ -1299,6 +1608,9 @@ function renderServiceDetailsPage() {
               <th>${t("serviceItem")}</th>
               <th>${t("status")}</th>
               <th>${t("description")}</th>
+              <th>Service Item</th>
+              <th>Status</th>
+              <th>Description</th>
             </tr>
           </thead>
           <tbody>
@@ -1306,6 +1618,7 @@ function renderServiceDetailsPage() {
               <tr>
                 <td><strong>${item.name}</strong></td>
                 <td>${item.required ? `<span style="color: #e74c3c; font-weight: 600;">${t("required")}</span>` : `<span style="color: #7f8c8d;">${t("optional")}</span>`}</td>
+                <td>${item.required ? '<span style="color: #e74c3c; font-weight: 600;">Required</span>' : '<span style="color: #7f8c8d;">Optional</span>'}</td>
                 <td style="color: #7f8c8d; font-size: 14px;">${getServiceDescription(item.name)}</td>
               </tr>
             `).join('')}
@@ -1316,6 +1629,7 @@ function renderServiceDetailsPage() {
         <label>
           <input type="checkbox" id="include-parts-checkbox">
           <span>${t("includeParts")}</span>
+          <span>Include parts replacement with this service</span>
         </label>
       </div>
       <div id="parts-selection-container"></div>
@@ -1336,6 +1650,22 @@ function renderServiceDetailsPage() {
           </div>
           <div class="form-group">
             <label for="service-appointment-date">${t("preferredDate")}</label>
+        <h3>Book Your Appointment</h3>
+        <form id="service-booking-form">
+          <div class="form-group">
+            <label for="service-customer-name">Full Name *</label>
+            <input type="text" id="service-customer-name" required>
+          </div>
+          <div class="form-group">
+            <label for="service-customer-phone">Phone Number *</label>
+            <input type="tel" id="service-customer-phone" required>
+          </div>
+          <div class="form-group">
+            <label for="service-customer-email">Email Address *</label>
+            <input type="email" id="service-customer-email" required>
+          </div>
+          <div class="form-group">
+            <label for="service-appointment-date">Preferred Date *</label>
             <input type="date" id="service-appointment-date" required min="${new Date().toISOString().split('T')[0]}">
           </div>
           <div class="cart-summary">
@@ -1360,6 +1690,26 @@ function renderServiceDetailsPage() {
               <span id="total-cost">${(pkg.price * 1.14).toFixed(2)} <span class="currency-symbol">${t("currency")}</span></span>
             </div>
             <button type="submit" class="checkout-btn" id="book-service-btn">${t("bookServiceAppointment")}</button>
+              <span>Service Package:</span>
+              <span>${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></span>
+            </div>
+            <div class="summary-row" id="parts-cost-row" style="display: none;">
+              <span>Parts Cost:</span>
+              <span id="parts-cost">0.00 <span class="currency-symbol">EGP</span></span>
+            </div>
+            <div class="summary-row">
+              <span>Subtotal:</span>
+              <span id="subtotal-cost">${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></span>
+            </div>
+            <div class="summary-row">
+              <span>Tax (14%):</span>
+              <span id="tax-cost">${(pkg.price * 0.14).toFixed(2)} <span class="currency-symbol">EGP</span></span>
+            </div>
+            <div class="summary-row total">
+              <span>Total Cost:</span>
+              <span id="total-cost">${(pkg.price * 1.14).toFixed(2)} <span class="currency-symbol">EGP</span></span>
+            </div>
+            <button type="submit" class="checkout-btn" id="book-service-btn">Book Service Appointment</button>
           </div>
         </form>
       </div>
@@ -1444,6 +1794,7 @@ function renderPartsSelection() {
   container.innerHTML = `
     <div class="parts-selection">
       <h4 style="margin: 0 0 15px 0; color: #2c3e50;">${t("selectParts")}</h4>
+      <h4 style="margin: 0 0 15px 0; color: #2c3e50;">Select Parts to Include:</h4>
       ${availableParts.map(item => `
         <div class="part-item">
           <label>
@@ -1451,6 +1802,7 @@ function renderPartsSelection() {
             <span>${item.product.name} (${item.product.brand})</span>
           </label>
           <span class="part-price">${item.product.price.toFixed(2)} <span class="currency-symbol">${t("currency")}</span></span>
+          <span class="part-price">${item.product.price.toFixed(2)} <span class="currency-symbol">EGP</span></span>
         </div>
       `).join('')}
     </div>
@@ -1482,6 +1834,7 @@ function updateServiceTotal() {
   if (partsCost > 0) {
     partsCostRow.style.display = 'flex';
     partsCostSpan.innerHTML = `${partsCost.toFixed(2)} <span class="currency-symbol">${t("currency")}</span>`;
+    partsCostSpan.innerHTML = `${partsCost.toFixed(2)} <span class="currency-symbol">EGP</span>`;
   } else {
     partsCostRow.style.display = 'none';
   }
@@ -1489,6 +1842,9 @@ function updateServiceTotal() {
   subtotalCostSpan.innerHTML = `${subtotal.toFixed(2)} <span class="currency-symbol">${t("currency")}</span>`;
   taxCostSpan.innerHTML = `${tax.toFixed(2)} <span class="currency-symbol">${t("currency")}</span>`;
   totalCostSpan.innerHTML = `${total.toFixed(2)} <span class="currency-symbol">${t("currency")}</span>`;
+  subtotalCostSpan.innerHTML = `${subtotal.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+  taxCostSpan.innerHTML = `${tax.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+  totalCostSpan.innerHTML = `${total.toFixed(2)} <span class="currency-symbol">EGP</span>`;
 }
 
 async function submitServiceBooking(event) {
@@ -1496,12 +1852,14 @@ async function submitServiceBooking(event) {
 
   if (cart.length >= 999) {
     showToast(t("maxCartLimit"), '#e74c3c');
+    showToast('Maximum limit of 999 bookings reached. Please contact support.', '#e74c3c');
     return;
   }
 
   const submitBtn = document.getElementById('book-service-btn');
   submitBtn.disabled = true;
   submitBtn.textContent = t("booking");
+  submitBtn.textContent = 'Booking...';
 
   const pkg = servicePackages[selectedService];
   const name = document.getElementById('service-customer-name').value;
@@ -1529,6 +1887,9 @@ async function submitServiceBooking(event) {
       <div class="success-message">
         <strong>${t("serviceBooked")}</strong><br>
         ${t("serviceConfirmation", { km: pkg.km, date, email })}
+        <strong>Service appointment booked successfully!</strong><br>
+        Your ${pkg.km} KM service for Toyota Corolla has been scheduled for ${date}.<br>
+        We'll send a confirmation to ${email}.
       </div>
     `;
 
@@ -1539,6 +1900,9 @@ async function submitServiceBooking(event) {
     showToast(t("failedBookService"), '#e74c3c');
     submitBtn.disabled = false;
     submitBtn.textContent = t("bookServiceAppointment");
+    showToast('Failed to book service. Please try again.', '#e74c3c');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Book Service Appointment';
   }
 }
 
