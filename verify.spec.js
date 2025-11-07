@@ -45,10 +45,9 @@ test.describe('Car House Website', () => {
   test('should show product details', async ({ page }) => {
     await page.click('div.category-card[data-category="engine"]');
     await page.locator('.view-details-btn').first().click();
-    await expect(page.locator('.product-details-modal')).toBeVisible();
+    await page.waitForURL('**/product.html?id=e7');
+    await expect(page.locator('#product-details-container')).toBeVisible();
     await expect(page.locator('.product-details-content h2')).toContainText('Alternator');
-    await page.click('.close-modal');
-    await expect(page.locator('.product-details-modal')).not.toBeVisible();
   });
 
   test('should navigate to service booking page', async ({ page }) => {

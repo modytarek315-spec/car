@@ -467,19 +467,44 @@ async function initApp() {
     applyConfig(defaultConfig); // Apply the initial configuration
 
     // Set static text content
-    document.getElementById('cart-btn-label').textContent = "Cart";
-    document.getElementById('search-btn').textContent = "Search";
-    document.getElementById('nav-home').textContent = "Home";
-    document.getElementById('nav-engine').textContent = "Engine Parts";
-    document.getElementById('nav-brakes').textContent = "Brakes";
-    document.getElementById('nav-suspension').textContent = "Suspension";
-    document.getElementById('nav-maintenance').textContent = "Maintenance Parts";
-    document.getElementById('nav-fluids').textContent = "Maintenance Fluids";
-    document.getElementById('nav-service').textContent = "Service Booking";
-    document.getElementById('nav-about').textContent = "About Us";
-    document.getElementById('search-input').placeholder = "Search for parts, brands, or categories...";
+    const cartBtnLabel = document.getElementById('cart-btn-label');
+    if (cartBtnLabel) cartBtnLabel.textContent = "Cart";
 
-    showCategory('home');
+    const searchBtn = document.getElementById('search-btn');
+    if (searchBtn) searchBtn.textContent = "Search";
+
+    const navHome = document.getElementById('nav-home');
+    if (navHome) navHome.textContent = "Home";
+
+    const navEngine = document.getElementById('nav-engine');
+    if (navEngine) navEngine.textContent = "Engine Parts";
+
+    const navBrakes = document.getElementById('nav-brakes');
+    if (navBrakes) navBrakes.textContent = "Brakes";
+
+    const navSuspension = document.getElementById('nav-suspension');
+    if (navSuspension) navSuspension.textContent = "Suspension";
+
+    const navMaintenance = document.getElementById('nav-maintenance');
+    if (navMaintenance) navMaintenance.textContent = "Maintenance Parts";
+
+    const navFluids = document.getElementById('nav-fluids');
+    if (navFluids) navFluids.textContent = "Maintenance Fluids";
+
+    const navService = document.getElementById('nav-service');
+    if (navService) navService.textContent = "Service Booking";
+
+    const navAbout = document.getElementById('nav-about');
+    if (navAbout) navAbout.textContent = "About Us";
+
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) searchInput.placeholder = "Search for parts, brands, or categories...";
+
+    if (window.location.pathname.endsWith('product.html')) {
+        renderProductDetailsPage();
+    } else {
+        showCategory('home');
+    }
     loadSearchHistory();
     renderSearchHistory();
 }
@@ -1069,16 +1094,22 @@ function renderServicePage() {
 }
 
 function showProductDetails(productId) {
+    window.location.href = `product.html?id=${productId}`;
+}
+
+function renderProductDetailsPage() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
     const allProducts = Object.values(products).flat();
     const product = allProducts.find(p => p.id === productId);
 
-    if (!product) return;
+    if (!product) {
+        document.getElementById('product-details-container').innerHTML = '<h2>Product not found</h2>';
+        return;
+    }
 
-    const modal = document.createElement('div');
-    modal.className = 'product-details-modal';
-    modal.innerHTML = `
+    document.getElementById('product-details-container').innerHTML = `
     <div class="product-details-content">
-      <button class="close-modal">&times;</button>
       <div class="product-details-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
       <h2 style="margin: 0 0 10px 0; color: #2c3e50; font-size: 28px;">${product.name}</h2>
       <div class="product-brand" style="font-size: 16px; margin-bottom: 15px;">${product.brand}</div>
@@ -1099,17 +1130,9 @@ function showProductDetails(productId) {
           <span class="spec-value">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span>
         </div>
       </div>
+      <button class="add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
     </div>
   `;
-
-    document.body.appendChild(modal);
-}
-
-function closeProductModal() {
-    const modal = document.querySelector('.product-details-modal');
-    if (modal) {
-        modal.remove();
-    }
 }
 
 function selectService(index) {
