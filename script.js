@@ -170,154 +170,157 @@ const products = {
 };
 
 const servicePackages = [
-    {
-        km: '10,000',
-        title: 'Basic Service',
-        price: 149.99,
-        items: [
-            { name: 'Engine Oil Change', part: 'f1', required: true },
-            { name: 'Oil Filter Replacement', part: 'l1', required: true },
-            { name: 'Cleaners', part: 'f8', required: true },
-            { name: 'Tire Rotation', part: null, required: true },
-            { name: 'Brake Inspection', part: null, required: false },
-            { name: 'Fluid Level Check', part: null, required: false }
-        ]
-    },
-    {
-        km: '20,000',
-        title: 'Standard Service',
-        price: 249.99,
-        items: [
-            { name: 'Engine Oil Change', part: 'f1', required: true },
-            { name: 'Oil Filter Replacement', part: 'e1', required: true },
-            { name: 'Air Filter Replacement', part: 'e2', required: true },
-            { name: 'Cabin Air Filter', part: null, required: false },
-            { name: 'Tire Rotation & Balance', part: null, required: false },
-            { name: 'Brake Fluid Check', part: 'b5', required: false },
-            { name: 'Battery Test', part: null, required: false }
-        ]
-    },
-    {
-        km: '30,000',
-        title: 'Major Service',
-        price: 399.99,
-        items: [
-            { name: 'Engine Oil Change', part: 'f1', required: true },
-            { name: 'Oil Filter Replacement', part: 'e1', required: true },
-            { name: 'Air Filter Replacement', part: 'e2', required: true },
-            { name: 'Spark Plugs Replacement', part: 'e3', required: true },
-            { name: 'Transmission Fluid Change', part: 'f2', required: true },
-            { name: 'Coolant Flush', part: 'f3', required: true },
-            { name: 'Brake Pads Inspection', part: null, required: false },
-            { name: 'Tire Rotation', part: null, required: false }
-        ]
-    },
-    {
-        km: '40,000',
-        title: 'Standard Service Plus',
-        price: 279.99,
-        items: [
-            { name: 'Engine Oil Change', part: 'f1', required: true },
-            { name: 'Oil Filter Replacement', part: 'e1', required: true },
-            { name: 'Air Filter Replacement', part: 'e2', required: true },
-            { name: 'Brake Fluid Replacement', part: 'b5', required: true },
-            { name: 'Power Steering Fluid', part: 'f4', required: false },
-            { name: 'Tire Rotation', part: null, required: false },
-            { name: 'Suspension Check', part: null, required: false }
-        ]
-    },
-    {
-        km: '50,000',
-        title: 'Comprehensive Service',
-        price: 499.99,
-        items: [
-            { name: 'Engine Oil Change', part: 'f1', required: true },
-            { name: 'Oil Filter Replacement', part: 'e1', required: true },
-            { name: 'Air Filter Replacement', part: 'e2', required: true },
-            { name: 'Spark Plugs Replacement', part: 'e3', required: true },
-            { name: 'Timing Belt Inspection', part: 'e4', required: false },
-            { name: 'Water Pump Check', part: 'e5', required: false },
-            { name: 'Brake Pads Front', part: 'b1', required: true },
-            { name: 'Brake Fluid Flush', part: 'b5', required: true },
-            { name: 'Coolant Replacement', part: 'f3', required: true }
-        ]
-    },
-    {
-        km: '60,000',
-        title: 'Major Service',
-        price: 449.99,
-        items: [
-            { name: 'Engine Oil Change', part: 'f1', required: true },
-            { name: 'Oil Filter Replacement', part: 'e1', required: true },
-            { name: 'Air Filter Replacement', part: 'e2', required: true },
-            { name: 'Transmission Fluid Change', part: 'f2', required: true },
-            { name: 'Differential Oil Change', part: 'f7', required: true },
-            { name: 'Spark Plugs Check', part: null, required: false },
-            { name: 'Tire Rotation', part: null, required: false },
-            { name: 'Brake Inspection', part: null, required: false }
-        ]
-    },
-    {
-        km: '70,000',
-        title: 'Standard Service',
-        price: 269.99,
-        items: [
-            { name: 'Engine Oil Change', part: 'f1', required: true },
-            { name: 'Oil Filter Replacement', part: 'e1', required: true },
-            { name: 'Air Filter Replacement', part: 'e2', required: true },
-            { name: 'Coolant Check', part: 'f3', required: false },
-            { name: 'Brake Fluid Check', part: 'b5', required: false },
-            { name: 'Battery Test', part: null, required: false },
-            { name: 'Tire Rotation', part: null, required: false }
-        ]
-    },
-    {
-        km: '80,000',
-        title: 'Major Service Plus',
-        price: 549.99,
-        items: [
-            { name: 'Engine Oil Change', part: 'f1', required: true },
-            { name: 'Oil Filter Replacement', part: 'e1', required: true },
-            { name: 'Air Filter Replacement', part: 'e2', required: true },
-            { name: 'Spark Plugs Replacement', part: 'e3', required: true },
-            { name: 'Timing Belt Replacement', part: 'e4', required: true },
-            { name: 'Water Pump Replacement', part: 'e5', required: true },
-            { name: 'Fuel Filter Replacement', part: 'e6', required: true },
-            { name: 'Coolant Flush', part: 'f3', required: true },
-            { name: 'Brake Pads All Around', part: 'b1', required: true }
-        ]
-    },
-    {
-        km: '90,000',
-        title: 'Standard Service',
-        price: 289.99,
-        items: [
-            { name: 'Engine Oil Change', part: 'f1', required: true },
-            { name: 'Oil Filter Replacement', part: 'e1', required: true },
-            { name: 'Air Filter Replacement', part: 'e2', required: true },
-            { name: 'Transmission Fluid Check', part: 'f2', required: false },
-            { name: 'Brake Fluid Replacement', part: 'b5', required: true },
-            { name: 'Power Steering Fluid', part: 'f4', required: false },
-            { name: 'Tire Rotation', part: null, required: false }
-        ]
-    },
-    {
-        km: '100,000',
-        title: 'Major Milestone Service',
-        price: 699.99,
-        items: [
-            { name: 'Engine Oil Change', part: 'f1', required: true },
-            { name: 'Oil Filter Replacement', part: 'e1', required: true },
-            { name: 'Air Filter Replacement', part: 'e2', required: true },
-            { name: 'Spark Plugs Replacement', part: 'e3', required: true },
-            { name: 'Transmission Fluid Change', part: 'f2', required: true },
-            { name: 'Coolant Flush', part: 'f3', required: true },
-            { name: 'Brake Pads & Rotors Front', part: 'b1', required: true },
-            { name: 'Brake Pads & Rotors Rear', part: 'b2', required: true },
-            { name: 'Fuel System Cleaning', part: 'f8', required: true },
-            { name: 'Complete Inspection', part: null, required: false }
-        ]
-    },
+  {
+    km: '10,000',
+    title: '10 KM Service',
+    price: 824,
+    items: [
+      { name: 'Engine Oil Change', part: 'f1', required: true },
+      { name: 'Oil Filter Replacement', part: 'l1', required: true },
+      { name: 'Cleaners', part: 'f8', required: true },
+      { name: 'Tire Rotation', part: null, required: true },
+      { name: 'Brake Pads Inspection', part: null, required: false },
+      { name: 'Fluid Level Check', part: null, required: false }
+    ]
+  },
+  {
+    km: '20,000',
+    title: '20KM Service',
+    price: 824,
+    items: [
+      { name: 'Engine Oil Change', part: 'f1', required: true },
+      { name: 'Oil Filter Replacement', part: 'l1', required: true },
+      { name: 'AC Filter Replacement', part: 'l3', required: true },
+      { name: 'Cleaners', part: 'f8', required: true },
+      { name: 'Tire Rotation & Balance', required: true },
+      { name: 'Fluid Check', required: false },
+      { name: 'Brake Pads Inspection', part: null, required: false },
+      { name: 'Battery Test', part: null, required: false }
+
+    ]
+  },
+  {
+    km: '30,000',
+    title: '30 KM Service',
+    price: 824,
+    items: [
+      { name: 'Engine Oil Change', part: 'f1', required: true },
+      { name: 'Oil Filter Replacement', part: 'l1', required: true },
+      { name: 'Air Filter Replacement', part: 'l2', required: true },
+      { name: 'Cleaners', part: 'f8', required: true },
+      { name: 'Tire Rotation & Balance', required: true },
+      { name: 'Fluid Check', required: false },
+      { name: 'Brake Pads Inspection', part: null, required: false },
+      { name: 'Tire Rotation', part: null, required: false }
+    ]
+  },
+  {
+    km: '40,000',
+    title: '40 KM Service',
+    price: 1133,
+    items: [
+      { name: 'Engine Oil Change', part: 'f1', required: true },
+      { name: 'Oil Filter Replacement', part: 'l1', required: true },
+      { name: 'AC Filter Replacement', part: 'l3', required: true },
+      { name: 'Brake Fluid Replacement', part: 'f2', required: true },
+      { name: 'Colant Replacment', part: 'f4', required: true },
+      { name: 'V Belt Replacment', part: "l3", required: true },
+      { name: 'Cleaners', part: 'f8', required: true },
+      { name: 'Tire Rotation & Balance', part: null, required: true },
+      { name: 'Brake Pads Inspection', part: null, required: false },
+      { name: 'Battery Test', part: null, required: false }
+    ]
+  },
+  {
+    km: '50,000',
+    title: '50 KM Service',
+    price: 1287.5,
+    items: [
+      { name: 'Engine Oil Change', part: 'f1', required: true },
+      { name: 'Oil Filter Replacement', part: 'l1', required: true },
+      { name: 'CVT Change (7.5L)', part: 'f3', required: true },
+      { name: 'Cleaners', part: 'f8', required: true },
+      { name: 'Tire Rotation & Balance', part: null, required: true },
+      { name: 'Brake Pads Inspection', part: null, required: false },
+      { name: 'Battery Test', part: null, required: false }
+    ]
+  },
+  {
+    km: '60,000',
+    title: '60 KM Service',
+    price: 824,
+    items: [
+      { name: 'Engine Oil Change', part: 'f1', required: true },
+      { name: 'Oil Filter Replacement', part: 'l1', required: true },
+      { name: 'Air Filter Replacement', part: 'l2', required: true },
+      { name: 'AC Filter Replacement', part: 'l3', required: true },
+      { name: 'Cleaners', part: 'f8', required: true },
+      { name: 'Tire Rotation & Balance', part: null, required: true },
+      { name: 'Brake Pads Inspection', part: null, required: false },
+      { name: 'Battery Test', part: null, required: false }
+    ]
+  },
+  {
+    km: '70,000',
+    title: '70 KM Service',
+    price: 927,
+    items: [
+      { name: 'Engine Oil Change', part: 'f1', required: true },
+      { name: 'Oil Filter Replacement', part: 'l1', required: true },
+      { name: 'Cleaners', part: 'f8', required: true },
+      { name: 'Tire Rotation & Balance', part: null, required: true },
+      { name: 'Brake Pads Inspection', part: null, required: false },
+      { name: 'Battery Test', part: null, required: false }
+    ]
+  },
+  {
+    km: '80,000',
+    title: '80 KM Service',
+    price: 1751,
+    items: [
+      { name: 'Engine Oil Change', part: 'f1', required: true },
+      { name: 'Oil Filter Replacement', part: 'l1', required: true },
+      { name: 'AC Filter Replacement', part: 'l3', required: true },
+      { name: 'V Belt Replacement', part: 'l5', required: true },
+      { name: 'Fuel Filter Replacement', part: 'l4', required: true },
+      { name: 'Colant Chenge', part: 'f4', required: true },
+      { name: 'Brake Fluid Replacement', part: 'f2', required: true },
+      { name: 'Cleaners', part: 'f8', required: true },
+      { name: 'Tire Rotation & Balance', part: null, required: true },
+      { name: 'Brake Pads Inspection', part: null, required: false },
+      { name: 'Battery Test', part: null, required: false }
+
+    ]
+  },
+  {
+    km: '90,000',
+    title: '90 KM Service',
+    price: 978,
+    items: [
+      { name: 'Engine Oil Change', part: 'f1', required: true },
+      { name: 'Oil Filter Replacement', part: 'l1', required: true },
+      { name: 'Air Filter Replacement', part: 'l2', required: true },
+      { name: 'Cleaners', part: 'f8', required: true },
+      { name: 'Tire Rotation & Balance', part: null, required: true },
+      { name: 'Brake Pads Inspection', part: null, required: false },
+      { name: 'Battery Test', part: null, required: false }
+    ]
+  },
+  {
+    km: '100,000',
+    title: '100 KM Service',
+    price: 1287.5,
+    items: [
+      { name: 'Engine Oil Change', part: 'f1', required: true },
+      { name: 'Oil Filter Replacement', part: 'l1', required: true },
+      { name: 'Spark Pluges Replacment', part: 'l5', required: true },
+      { name: 'CVT Change (7.5L)', part: 'f3', required: true },
+      { name: 'Cleaners', part: 'f8', required: true },
+      { name: 'Tire Rotation & Balance', part: null, required: true },
+      { name: 'Brake Pads Inspection', part: null, required: false },
+      { name: 'Battery Test', part: null, required: false }
+    ]
+  },
 
 ];
 
@@ -608,14 +611,14 @@ function renderHomePage() {
       </div>
       <div class="category-card" data-category="brakes">
         <div class="category-card-image-wrapper">
-          <img src="https://img.freepik.com/free-photo/car-repair-garage_1170-1497.jpg?semt=ais_hybrid&w=740&q=80" alt="Brakes" class="category-card-image" onerror="this.src=''; this.alt='Brakes'; this.style.display='none';">
+          <img src="https://i.pinimg.com/736x/3e/c6/d6/3ec6d61b7497514a4ca6a9626e06fa38.jpg" alt="Brakes" class="category-card-image" onerror="this.src=''; this.alt='Brakes'; this.style.display='none';">
         </div>
         <h3 class="category-card-title">Brakes</h3>
         <p class="category-card-description">Brake pads, rotors & more</p>
       </div>
       <div class="category-card" data-category="suspension">
         <div class="category-card-image-wrapper">
-          <img src="https://static.pakwheels.com/2015/08/2014-Toyota-Corolla-Suspension.jpg" alt="Suspension" class="category-card-image" onerror="this.src=''; this.alt='Suspension'; this.style.display='none';">
+          <img src="https://i.pinimg.com/736x/2c/90/bb/2c90bbf432f9a81978e4d7adb6c19030.jpg" alt="Suspension" class="category-card-image" onerror="this.src=''; this.alt='Suspension'; this.style.display='none';">
         </div>
         <h3 class="category-card-title">Suspension</h3>
         <p class="category-card-description">Tires, wheels & accessories</p>
