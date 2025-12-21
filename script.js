@@ -599,7 +599,7 @@ function renderAboutPage() {
 function renderHomePage() {
     const mainContent = document.getElementById('main-content');
     mainContent.innerHTML = `
-    <h1 class="page-title">Welcome to ${config.store_name || defaultConfig.store_name}</h1>
+   <h1 class="page-title">Welcome to ${config.store_name || defaultConfig.store_name}</h1>
     <p class="page-subtitle">Browse our extensive collection of quality auto parts</p>
     <div class="category-grid">
       <div class="category-card" data-category="engine">
@@ -607,46 +607,46 @@ function renderHomePage() {
           <img src="https://media.hswstatic.com/eyJidWNrZXQiOiJjb250ZW50Lmhzd3N0YXRpYy5jb20iLCJrZXkiOiJnaWZcL2VuZ2luZS1xdWl6LWEtb2cuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo4Mjh9fX0=" alt="Engine Parts" class="category-card-image" onerror="this.src=''; this.alt='Engine Parts'; this.style.display='none';">
         </div>
         <h3 class="category-card-title">Engine Parts</h3>
-        <p class="category-card-description">Essential engine components</p>
+        <p class="category-card-description">Power Performance Reliability</p>
       </div>
       <div class="category-card" data-category="brakes">
         <div class="category-card-image-wrapper">
           <img src="https://i.pinimg.com/736x/3e/c6/d6/3ec6d61b7497514a4ca6a9626e06fa38.jpg" alt="Brakes" class="category-card-image" onerror="this.src=''; this.alt='Brakes'; this.style.display='none';">
         </div>
         <h3 class="category-card-title">Brakes</h3>
-        <p class="category-card-description">Brake pads, rotors & more</p>
+        <p class="category-card-description">Safety Control Stopping</p>
       </div>
       <div class="category-card" data-category="suspension">
         <div class="category-card-image-wrapper">
           <img src="https://i.pinimg.com/736x/2c/90/bb/2c90bbf432f9a81978e4d7adb6c19030.jpg" alt="Suspension" class="category-card-image" onerror="this.src=''; this.alt='Suspension'; this.style.display='none';">
         </div>
         <h3 class="category-card-title">Suspension</h3>
-        <p class="category-card-description">Tires, wheels & accessories</p>
+        <p class="category-card-description">Comfort Stability Control</p>
       </div>
       <div class="category-card" data-category="maintenance">
         <div class="category-card-image-wrapper">
           <img src="https://toyota.com.eg/storage/6592/image-3-(4).png.png" alt="Maintenance Parts" class="category-card-image" onerror="this.src=''; this.alt='Maintenance Parts'; this.style.display='none';">
         </div>
         <h3 class="category-card-title">Maintenance Parts</h3>
-        <p class="category-card-description">Lighting & electrical parts</p>
+        <p class="category-card-description">Service Repair Replacement</p>
       </div>
       <div class="category-card" data-category="fluids">
         <div class="category-card-image-wrapper">
           <img src="https://rsauto.ca/wp-content/uploads/2021/08/fluid-flush-North-York.png" alt="Maintenance Fluids" class="category-card-image" onerror="this.src=''; this.alt='Maintenance Fluids'; this.style.display='none';">
         </div>
-        <h3 class="category-card-title">Maintenance Oils and Lubricants</h3>
-        <p class="category-card-description">Oils, coolants & fluids</p>
+        <h3 class="category-card-title">Maintenance Oils</h3>
+        <p class="category-card-description">Lubrication Protection Efficiency</p>
       </div>
       <div class="category-card" data-category="service">
         <div class="category-card-image-wrapper">
           <img src="https://toyotacorporate.sitedemo.com.my/wp-content/uploads/2022/01/v2-services-image4.jpg" alt="Service Booking" class="category-card-image" onerror="this.src=''; this.alt='Service Booking'; this.style.display='none';">
         </div>
         <h3 class="category-card-title">Service Booking</h3>
-        <p class="category-card-description">Book your Toyota Corolla service</p>
+        <p class="category-card-description">Inspection Repair Scheduling Book your Toyota Corolla service</p>
       </div>
     </div>
   `;
-    observeElements('[data-category]');
+  observeElements('[data-category]');
 }
 
 function renderCategoryPage(category) {
