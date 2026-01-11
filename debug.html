@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car House Connection Debugger</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        body {
+            font-family: monospace;
+            padding: 20px;
+            background: #222;
+            color: #eee;
+        }
+
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+
+        .success {
+            background: #27ae60;
+            color: white;
+        }
+
+        .error {
+            background: #c0392b;
+            color: white;
+        }
+
+        .warning {
+            background: #f39c12;
+            color: black;
+        }
+
+        pre {
+            background: #333;
+            padding: 10px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🔧 Connection Debugger</h1>
+    <div id="logs">Initializing...</div>
+
+    <script>
+        const log = (msg, type = 'info') => {
+            const div = document.createElement('div');
+            div.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+            if (type === 'error') div.className = 'status error';
+            if (type === 'success') div.className = 'status success';
+            if (type === 'warning') div.className = 'status warning';
+            document.getElementById('logs').appendChild(div);
+        };
+
+        // 1. Check Supabase Library
+        if (typeof supabase === 'undefined') {
+            log('CRITICAL: Supabase JS SDK not loaded. Check your internet connection or CDN URL.', 'error');
+        } else {
+            log('Supabase JS SDK loaded.', 'success');
+        }
+
+        // 2. Load Config from supabase-client.js (manually for isolation)
+        // Note: You must match these to your file
+        const SUPABASE_URL = 'https://bzbximgipjziqrwkctop.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ6YnhpbWdpcGp6aXFyd2tjdG9wIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ0MzI2MzMsImV4cCI6MjA4MDAwODYzM30.F6-CCUPgJodPAOJl9rKRSSXmjb2UY_RDwPBqICniSMM';
+
+        log(`Checking connection to: ${SUPABASE_URL}`, 'info');
+
+        try {
+            const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+            // 3. Test Connection & Data
+            async function testConnection() {
+                log('Attempting to fetch 1 product...', 'info');
+
+                const { data, error, status, statusText } = await client
+                    .from('products')
+                    .select('*')
+                    .limit(1);
+
+                if (error) {
+                    log(`QUERY FAILED: ${error.message}`, 'error');
+                    log(`Details: Code ${error.code} | Hint: ${error.hint || 'None'}`, 'warning');
+
+                    if (error.message.includes('Network request failed') || error.message.includes('Failed to fetch')) {
+                        log('POTENTIAL CAUSE: CORS / Network Block', 'warning');
+                        log('1. Go to Supabase Dashboard > Settings > API > Authentication.', 'info');
+                        log('2. Ensure "127.0.0.1" (and "localhost") is in "Allowed Origins".', 'info');
+                    }
+                } else {
+                    log('Connection Successful!', 'success');
+                    log(`Rows returned: ${data.length}`, 'info');
+                    if (data.length === 0) {
+                        log('WARNING: Table "products" is empty. The website will show nothing.', 'warning');
+                    } else {
+                        log('Data looks good.', 'success');
+                        log(JSON.stringify(data[0], null, 2));
+                    }
+                }
+            }
+
+            testConnection();
+
+        } catch (e) {
+            log(`CRASH: ${e.message}`, 'error');
+        }
+    </script>
+</body>
+
+</html>

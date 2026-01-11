@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Car House 🚗</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+
+    <!-- Supabase & Services -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/services/auth.service.js"></script>
+    <script src="js/app.integration.js" defer></script>
+</head>
+
+<body class="bg-[#1A1A1A]">
+    <header class="header">
+        <div class="header-top">
+            <div class="logo-section">
+                <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                    <img src="logo.png" alt="Car House Logo" style="height: 50px; width: auto; object-fit: contain;">
+                    <div class="logo-text">
+                        <h1 id="store-name" style="margin: 0; font-size: 24px; color: white;">Car House</h1>
+                        <p id="store-tagline" style="margin: 0; font-size: 12px; opacity: 0.8; color: #ccc;">Quality
+                            Parts for Your Vehicle</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <ul class="nav-links">
+            <li><a href="index.html"><button>Back to Shop</button></a></li>
+        </ul>
+    </nav>
+
+    <div class="container mx-auto px-4 flex justify-center items-center min-h-[70vh] mt-10">
+        <div class="w-full max-w-lg bg-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-gray-700 relative">
+            <div class="p-8">
+                <div class="text-center mb-8">
+                    <h2 class="text-3xl font-bold text-white mb-2">Join the Club</h2>
+                    <p class="text-gray-400">Create your account to track orders and save favorites</p>
+                </div>
+
+                <form id="register-form" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="full-name" class="block text-sm font-medium text-gray-300 mb-1">Full
+                                Name</label>
+                            <input type="text" id="full-name" name="full-name" required
+                                class="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition sm:text-sm"
+                                placeholder="John Doe">
+                        </div>
+                        <div>
+                            <label for="phone" class="block text-sm font-medium text-gray-300 mb-1">Phone
+                                (Optional)</label>
+                            <input type="tel" id="phone" name="phone"
+                                class="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition sm:text-sm"
+                                placeholder="+20 123 456 7890">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+                        <input type="email" id="email" name="email" required
+                            class="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition sm:text-sm"
+                            placeholder="you@example.com">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="password" class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                            <input type="password" id="password" name="password" required minlength="6"
+                                class="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition sm:text-sm"
+                                placeholder="••••••••">
+                        </div>
+                        <div>
+                            <label for="confirm-password" class="block text-sm font-medium text-gray-300 mb-1">Confirm
+                                Password</label>
+                            <input type="password" id="confirm-password" name="confirm-password" required
+                                class="block w-full px-4 py-3 border border-gray-600 rounded-lg bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 transition sm:text-sm"
+                                placeholder="••••••••">
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit"
+                            class="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-lg text-black bg-yellow-500 hover:bg-yellow-400 focus:outline-none transition transform hover:-translate-y-0.5 shadow-lg">
+                            Create Account
+                        </button>
+                    </div>
+                </form>
+
+                <div class="mt-6 text-center">
+                    <p class="text-gray-400">
+                        Already have an account?
+                        <a href="login.html" class="font-medium text-yellow-500 hover:text-yellow-400 transition">
+                            Sign In
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

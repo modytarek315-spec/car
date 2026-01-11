@@ -1,16 +1,16 @@
 
 const defaultConfig = {
-    store_name: "Car House 🚗",
-    store_tagline: "Quality Parts for Your Vehicle",
-    contact_phone: "+1 (555) 123-4567",
-    contact_email: "info@autoparts.com",
-    primary_color: "#2C2C2C",
-    secondary_color: "#FFC700",
-    accent_color: "#FFC700",
-    success_color: "#FFD700",
-    background_color: "#1A1A1A",
-    font_family: "Segoe UI",
-    font_size: 16
+  store_name: "Car House 🚗",
+  store_tagline: "Quality Parts for Your Vehicle",
+  contact_phone: "+1 (555) 123-4567",
+  contact_email: "info@autoparts.com",
+  primary_color: "#2C2C2C",
+  secondary_color: "#FFC700",
+  accent_color: "#FFC700",
+  success_color: "#FFD700",
+  background_color: "#1A1A1A",
+  font_family: "Segoe UI",
+  font_size: 16
 };
 
 let config = { ...defaultConfig };
@@ -21,749 +21,606 @@ let currentSortBy = 'name';
 let currentFilterBrand = 'all';
 let searchHistory = [];
 
-// Mock element_sdk.js
-(function () {
-    let configHandler;
-    let config = {};
 
-    window.elementSdk = {
-        init: function (handler) {
-            configHandler = handler;
-            if (configHandler && typeof configHandler.onConfigChange === 'function') {
-                configHandler.onConfigChange(config);
-            }
-        },
-        setConfig: function (newConfig) {
-            config = { ...config, ...newConfig };
-            if (configHandler && typeof configHandler.onConfigChange === 'function') {
-                configHandler.onConfigChange(config);
-            }
-        }
-    };
-})();
+// Data store - Populated from Supabase
 
-// Mock data_sdk.js
-(function () {
-    let dataHandler;
-    let data = [];
+// Data store - Populated from Supabase
+let products = {}; // Dynamic keys based on DB categories
+let categories = []; // Dynamic categories list
+let servicePackages = [];
 
-    function persistData() {
-        try {
-            localStorage.setItem('sdk_data', JSON.stringify(data));
-        } catch (e) {
-            console.error("Could not persist data to localStorage", e);
-        }
+
+// ==========================================
+// EMERGENCY SERVICE WORKER CLEANUP
+// ==========================================
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistrations().then(function (registrations) {
+    if (registrations.length > 0) console.log('Found', registrations.length, 'SWs. Unregistering to clean environment...');
+    for (let registration of registrations) {
+      registration.unregister().then(success => {
+        console.log('Service Worker unregistered:', success);
+        // We don't auto-reload here to avoid loops, but user will see log
+      });
     }
+  });
+}
 
-    function notifyDataChange() {
-        if (dataHandler && typeof dataHandler.onDataChanged === 'function') {
-            dataHandler.onDataChanged(JSON.parse(JSON.stringify(data)));
-        }
-    }
+// Helper to map Supabase product to UI format
 
-    window.dataSdk = {
-        init: function (handler) {
-            dataHandler = handler;
-            try {
-                const storedData = localStorage.getItem('sdk_data');
-                if (storedData) {
-                    data = JSON.parse(storedData);
-                }
-            } catch (e) {
-                console.error("Could not load data from localStorage", e);
-                data = [];
-            }
-            notifyDataChange();
-            return Promise.resolve({ isOk: true });
-        },
-        create: function (item) {
-            item.__backendId = `mock_${Date.now()}_${Math.random()}`;
-            data.push(item);
-            persistData();
-            notifyDataChange();
-            return Promise.resolve({ isOk: true });
-        },
-        update: function (item) {
-            const index = data.findIndex(d => d.__backendId === item.__backendId);
-            if (index !== -1) {
-                data[index] = item;
-                persistData();
-                notifyDataChange();
-                return Promise.resolve({ isOk: true });
-            }
-            return Promise.resolve({ isOk: false });
-        },
-        delete: function (item) {
-            const index = data.findIndex(d => d.__backendId === item.__backendId);
-            if (index !== -1) {
-                data.splice(index, 1);
-                persistData();
-                notifyDataChange();
-                return Promise.resolve({ isOk: true });
-            }
-            return Promise.resolve({ isOk: false });
-        }
-    };
-})();
 
-const products = {
-    engine: [
-        { id: 'e1', name: 'cylinder head', brand: 'TOYOTA', price: 52200, icon: 'https://sc04.alicdn.com/kf/H829fc649d8f14231ade029b992ce2008L.jpg', category: 'engine', description: 'Essential engine component that seals the combustion chamber and ensures efficient performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-        { id: 'e2', name: 'comprisor', brand: 'TOYOTA', price: 67850, icon: 'https://m.media-amazon.com/images/I/71Qzw4LqSQL.jpg_BO30,255,255,255_UF900,850_SR1910,1000,0,C_QL100_.jpg', category: 'engine', description: 'Delivers pressurized air for the AC system, ensuring efficient cooling performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-        { id: 'e3', name: 'Ignition coil', brand: 'TOYOTA', price: 4425.5, icon: 'https://www.energizedcustoms.co.uk/cdn/shop/files/a248cc8a-f1b2-473e-9ea4-c8335c2f0424.jpg?v=1761067911', category: 'engine', description: 'Converts battery power into high voltage to ignite the engine’s fuel mixture efficiently', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'NGK-7090' },
-        { id: 'e4', name: 'Injectors', brand: 'TOYOTA', price: 7980, icon: 'https://www.maxspeedparts.com/wp-content/uploads/23250-0D030-3.jpg', category: 'engine', description: 'Deliver precise amounts of fuel into the engine for optimal combustion and performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'GAT-T295' },
-        { id: 'e5', name: 'Water Pump', brand: 'TOYOTA', price: 5160, icon: 'https://i.ebayimg.com/images/g/RdMAAOSwozhhVEAE/s-l400.jpg', category: 'engine', description: 'Circulates coolant through the engine to prevent overheating and ensure smooth performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'ACD-251-712' },
-        { id: 'e6', name: 'Turbo', brand: 'TOYOTA', price: 28540, icon: 'https://gturbo.com.au/wp-content/uploads/2019/01/1kd-STD-Turbo-1-scaled.jpg', category: 'engine', description: 'Boosts engine power by forcing more air into the combustion chamber for higher performance', compatibility: 'Toyota CHR 2020-2025', partNumber: 'DEL-FE0442' },
-        { id: 'e7', name: 'Alternator', brand: 'TOYOTA', price: 34950, icon: 'https://gbdirect.co.za/cdn/shop/products/ALT6191_A_580x.png?v=1667551585', category: 'engine', description: 'Generates electrical power to charge the battery and run the vehicle’s electrical systems', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'DEN-210-4317' },
-        { id: 'e8', name: 'Starter Motor', brand: 'TOYOTA', price: 15500, icon: 'https://www.seg-automotive.com/image/editorial-pictures/high-res/1440x1440/seg-automotive_starter-motors_pc_sc70.jpg', category: 'engine', description: 'Cranks the engine to start the vehicle quickly and reliably', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'VAL-458178' },
-        { id: 'e9', name: 'Radiator', brand: 'TOYOTA', price: 26143.4, icon: 'https://allautomotiveparts.com.au/cdn/shop/products/toyota-corolla-radiator-inlet-left-2007-2019.png?v=1670270270', category: 'engine', description: 'Dissipates engine heat to maintain optimal operating temperature and prevent overheating', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'MSH-R2363' },
-        { id: 'e10', name: 'Thermostat', brand: 'TOYOTA', price: 980, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQEnzlhkVpnTeezdgFkvajBjNlxAjH2BCisJSMoPPp_Lr_jw8yMCWUntxo_X-0cka3MvsE&usqp=CAU', category: 'engine', description: 'Regulates engine temperature by controlling coolant flow between the engine and radiator.', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'STN-14538' }
-    ],
-    brakes: [
-        { id: 'b1', name: 'Front Brake Pad', brand: 'Brembo', price: 4000, icon: 'https://m.media-amazon.com/images/I/61hKZ8+0vFL.jpg', category: 'brakes', description: 'Provides reliable stopping power and ensures safe, smooth braking performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-        { id: 'b2', name: 'Brake Shoe', brand: 'Brembo', price: 3670, icon: 'https://epc-images.toyota.com/04495-02212.jpg', category: 'brakes', category: 'brakes', description: 'Presses against the brake drum to slow or stop the vehicle efficiently', compatibility: 'Toyota Fortuner 2021-2025', partNumber: 'BOF-1234' },
-        { id: 'b3', name: 'Brake Disc', brand: 'EBC', price: 6475, icon: 'https://picdn.trodo.com/media/m2_catalog_cache/1440x1440/Vendor/febi_bilstein/44039/44039_1.jpg', category: 'brakes', description: 'Works with brake pads to provide smooth, consistent braking performance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-        { id: 'b4', name: 'Rear Brake Drum', brand: 'EBC', price: 6100, icon: 'https://m.media-amazon.com/images/I/61qsLar9Z5L.jpg', category: 'brakes', description: 'Houses the brake shoes and provides effective braking for the rear wheels', compatibility: 'Toyota Hiace 2015-2019', partNumber: 'BOF-1234' },
-        { id: 'b5', name: 'Caliper Rebuild Kit', brand: 'Castrol', price: 3000, icon: 'https://d38d04rlvwt0bd.cloudfront.net/images/detailed/7/04479-12230.jpg?t=1511853534', category: 'brakes', description: 'Includes essential parts to restore brake caliper function and prevent fluid leaks', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-        { id: 'b6', name: 'Front Brake Caliper', brand: 'Cardone', price: 11100, icon: 'https://contentinfo.autozone.com/znetcs/additional-prod-images/en/US/c19/99-01524A/3/image/10/', category: 'brakes', description: 'Applies pressure to the brake pads, ensuring strong and consistent front-wheel braking', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-        { id: 'b7', name: 'Brake Booster', brand: 'Cardone', price: 20140, icon: 'https://m.media-amazon.com/images/I/61zYocap-nL.jpg', category: 'brakes', description: 'Uses vacuum pressure to enhance braking power and reduce pedal effort', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-        { id: 'b8', name: 'Master Cylinder', brand: 'Russell', price: 10984, icon: 'https://www.wheel-cylinder.com/uploads/202523293/brake-master-cylinder-for-toyota-cb0c2a6f6-d1b1-45cd-8b26-ac13ed8b3f33.jpg', category: 'brakes', description: 'Converts pedal force into hydraulic pressure to operate the vehicle’s braking system', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-        { id: 'b9', name: 'Tire', brand: 'ATE', price: 4600, icon: 'https://cdn-api.ridestyler.net/Tire/image?TireModel=8496d768-f846-440f-be35-43d2406543e7&Format=1&PositionX=1&PositionY=1&IncludeShadow=True&Key=61d95d2a-0b82-4aff-8156-2032af58dcff&cacheKey=181553&TireFitmentResourceType=Side&Width=1000&Height=500', category: 'brakes', description: 'Provides traction, stability, and a smooth ride on all road conditions', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' },
-        { id: 'b10', name: 'Rims', brand: 'Wagner', price: 35102, icon: 'https://i.ebayimg.com/images/g/RYgAAOSwN3FmQcZL/s-l1200.jpg', category: 'brakes', description: 'Support the tires and enhance the vehicle’s stability and appearance', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'BOF-1234' }
-    ],
-    suspension: [
-        { id: 't1', name: 'Front Absorbers Shock', brand: 'Michelin', price: 7300, icon: 'https://www.fredauto.com.au/assets/full/48510-02660.png?20250804181753', category: 'suspension', description: 'Absorb road impact to ensure a smooth and stable front suspension ride', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-        { id: 't2', name: 'rear Absorbers Shock', brand: 'Pirelli', price: 2500, icon: 'https://www.shockwarehouse.com/cdn/shop/products/341448.jpg?v=1695269106', category: 'suspension', description: 'Reduce vibrations and improve stability for a comfortable rear suspension ride', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-        { id: 't3', name: 'Front Control Arm', brand: 'Bridgestone', price: 8012, icon: 'https://tgq-auto.com/wp-content/uploads/2023/10/58805801A.png', category: 'suspension', description: 'Connects the suspension to the frame, ensuring smooth steering and stable handling', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-        { id: 't4', name: 'Ball Joint FR Lower', brand: 'Enkei', price: 2900, icon: 'https://m.media-amazon.com/images/I/61--smNgROL._UF894,1000_QL80_.jpg', category: 'suspension', description: 'Allows smooth movement of the front suspension while maintaining precise wheel alignment', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-        { id: 't5', name: 'Front Drive Shaft', brand: 'OEM', price: 24000, icon: 'https://media.pkwteile.de/360_photos/15208518/preview.jpg', category: 'suspension', description: 'Transfers power from the transmission to the front wheels for smooth acceleration', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-        { id: 't6', name: 'Engine Mount', brand: 'Gorilla', price: 6455, icon: 'https://m.media-amazon.com/images/I/61ej5H0g-XL.jpg', category: 'suspension', description: 'Secures the engine to the chassis and absorbs vibrations for a smoother ride', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-        { id: 't7', name: 'Front Stabilizer Link', brand: 'Schrader', price: 3500, icon: 'https://image.made-in-china.com/202f0j00flJpLqmzlMkF/Stabilizer-Link-for-Toyota-RAV4-Corolla-Zre152-OEM-48820-02080.webp', category: 'suspension', description: '', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-        { id: 't8', name: 'Steering Linkage', brand: 'Slime', price: 22750, icon: 'https://image.made-in-china.com/202f0j00uzToYjehnncO/Power-Steering-Gear-Rack-and-Pinion-for-Toyota-Rush-J200-J210-Rhd-45510-B4012-45510b4011-45510b4010-45510b4012.webp', category: 'suspension', description: 'Connects the steering wheel to the wheels, ensuring precise control and smooth handling', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-        { id: 't9', name: 'Steering Knuckle', brand: 'OEM', price: 8000, icon: 'https://m.media-amazon.com/images/I/61Ob3YSzzPL.jpg', category: 'suspension', description: 'Connects the wheel hub to the suspension and allows smooth steering movement', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' },
-        { id: 't10', name: 'Front Suspension Crossmember', brand: 'Slime', price: 47500, icon: 'https://i.ebayimg.com/images/g/kiYAAOSwmghnGw5G/s-l1200.jpg', category: 'suspension', description: 'Provides structural support for the front suspension and helps maintain vehicle stability', compatibility: 'Toyota Corolla 2020-2025', partNumber: 'KN-33-2435' }
-    ],
-    maintenance: [
-        { id: 'l1', name: 'Oil Filter', brand: 'Toyota', price: 500, icon: 'https://direct.toyota-indus.com/media/catalog/product/i/m/img_1026_1_8.png?quality=80&bg-color=255,255,255&fit=bounds&height=700&width=700&canvas=700:700', category: 'maintenance', description: 'High-quality oil filter for optimal engine protection', compatibility: 'Toyota Corolla 2020-2025', warranty: '12 months', partNumber: 'BOF-1234', backgroundimage: 'https://t3.ftcdn.net/jpg/03/11/16/14/360_F_311161460_0Uw0qieFHNarQfTU5OR9MKdYAETt13Rs.jpg' },
-        { id: 'l2', name: 'Air Filter', brand: 'Toyota', price: 2500, icon: 'https://img.lazcdn.com/g/p/332266575e67c9c1e041764b88ef2048.jpg_720x720q80.jpg', category: 'maintenance', description: 'Performance air filter for improved airflow and engine efficiency', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/air_filter_bg.jpg')" },
-        { id: 'l3', name: 'Ac Filter', brand: 'Toyota', price: 2000, icon: 'https://static.tudo.lk/uploads/2022/03s3/a181cd6cc9dc5ceaf04b1c768a02a2f2.webp', category: 'maintenance', description: 'Filters dust and pollutants from the air to ensure clean, fresh cabin airflow', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/ac_filter_bg.jpg')" },
-        { id: 'l4', name: 'Fuel Filter', brand: 'Toyota', price: 1500, icon: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTGHrSiyCHG20j9unDfbuxrNjHLpjMEgaO8Q&sturn-signal.jpg', category: 'maintenance', description: 'Removes impurities from fuel to protect the engine and ensure smooth performance', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/fuel_filter_bg.jpg')" },
-        { id: 'l5', name: 'Spark Plug', brand: 'Toyota', price: 1000, icon: 'https://s3.amazonaws.com/rp-part-images/assets/c1f8eb0ace46cd9493704051694ab673.webp', category: 'maintenance', description: 'Ignites the air-fuel mixture to ensure efficient engine combustion and performance', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/spark_plug_bg.jpg')" },
-        { id: 'l6', name: 'V Belt', brand: 'Toyota', price: 3000, icon: 'https://media.autodoc.de/360_photos/21852959/preview.jpg', category: 'maintenance', description: 'Transfers power between engine components, ensuring efficient performance and reliability', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/v_belt_bg.jpg')" },
-        { id: 'l7', name: 'crankshaft rear seal', brand: 'Toyota', price: 1500, icon: 'https://auto-drives.com/wp-content/uploads/2023/02/%D8%A3%D9%88%D9%8A%D9%84-%D8%B3%D9%8A%D9%84-%D9%A1-%D8%A7%D9%84%D9%83%D8%B1%D9%86%D9%83.jpeg', category: 'maintenance', description: 'Prevents oil leaks from the rear of the crankshaft, ensuring smooth engine operation', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/crankshaft_seal_bg.jpg')" },
-        { id: 'l8', name: 'Battery', brand: 'Toyota', price: 3800, icon: 'https://cdn.spareto.com/variants/images/001/030/884/medium/converted-20230218-3832547-1ckrpe8.jpg?1676751782', category: 'maintenance', description: 'Provides electrical power to start the engine and support all vehicle electronics', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/battery_bg.jpg')" },
-        { id: 'l9', name: 'Rubber Blade', brand: 'Toyota', price: 700, icon: 'https://m.media-amazon.com/images/I/41TCNk5M9RL._UF894,1000_QL80_.jpg', category: 'maintenance', description: 'Ensures clear visibility by wiping rain, dirt, and debris from the windshield', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/rubber_blade_bg.jpg')" },
-        { id: 'l10', name: 'Headlight', brand: 'Toyota', price: 2000, icon: 'https://cdn.lemona.lt/display?url=https://www.lemona.lt/media/catalog/product/9/0/9005PRB1-APP-global-001_3_33.jpg&q=80', category: 'maintenance', description: 'EProvides bright, clear illumination for safe driving at night and in low visibility', compatibility: 'Toyota Corolla 2020-2025', warranty: '24 months', partNumber: 'KN-33-2435', 'background-image': "url('https://example.com/headlight_bg.jpg')" }
-    ],
-    fluids: [
-        { id: 'f1', name: 'Engine Oil 5W-30 ( 4L)', brand: 'TOYOTA', price: 1800, icon: 'https://p.turbosquid.com/ts-thumb/Vm/cql4oQ/EU/toyota_motor_oil_metal_can_360/jpg/1660367001/1920x1080/turn_fit_q99/87d20a72ef72f94507ddc0aad1188b693af55cb7/toyota_motor_oil_metal_can_360-1.jpg', category: 'fluids' },
-        { id: 'f2', name: 'Brake Fluid DOT 3 (1L)', brand: 'TOYOTA', price: 250, icon: 'https://m.media-amazon.com/images/I/71ZYOtgMp+L.jpg', category: 'fluids' },
-        { id: 'f3', name: 'CVT Oil (4L)', brand: 'TOYOTA', price: 3050, icon: 'https://m.media-amazon.com/images/I/51yfwgPvNJL.jpg_BO30,255,255,255_UF900,850_SR1910,1000,0,C_QL100_.jpg', category: 'fluids' },
-        { id: 'f4', name: 'Coolant (4L)', brand: 'TOYOTA', price: 800, icon: 'https://static-01.daraz.com.bd/p/8f96178805ca37338d89b373b99c43f9.jpg', category: 'fluids' },
-        { id: 'f5', name: 'Differential Oil (1L)', brand: 'TOYOTA', price: 400, icon: 'https://i0.wp.com/zarouniauto.ae/wp-content/uploads/2021/10/WhatsApp_Image_2021-10-06_at_19.21.43__1_-removebg-preview.png?fit=433%2C577&ssl=1', category: 'fluids' },
-        { id: 'f6', name: 'Engine Oil 15W-40 (6L)', brand: 'TOYOTA', price: 1200, icon: 'https://vroomdeals.com/wp-content/uploads/2024/05/353ec2ce-35f7-4175-9d92-a453440bb47e-1.jpg', category: 'fluids' },
-        { id: 'f7', name: 'Fome Cleaner', brand: 'Gunk', price: 150, icon: 'https://m.media-amazon.com/images/I/71+U5VJnb6L.jpg_BO30,255,255,255_UF900,850_SR1910,1000,0,C_QL100_.jpg', category: 'fluids' },
-        { id: 'f8', name: 'Brake Cleaner', brand: 'TOYOTA', price: 200, icon: 'https://s3.amazonaws.com/rp-part-images/assets/f8b3735f57cba0c3b300660a82cd186d.webp', category: 'fluids' },
-        { id: 'f9', name: 'Windshield Washer Fluid', brand: 'TOYOTA', price: 60, icon: 'https://www.autobros.in/cdn/shop/files/Windshield.png?v=1692705161', category: 'fluids' },
-        { id: 'f10', name: 'T-IV ATF Oil (5L)', brand: 'TOYOTA', price: 3500, icon: 'https://s13emagst.akamaized.net/products/48063/48062787/images/res_c6f64981fde00e4d9508f9177a556b4e.jpg', category: 'fluids' }
-    ]
-};
 
-const servicePackages = [
-  {
-    km: '10,000',
-    title: '10 KM Service',
-    price: 824,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'l1', required: true },
-      { name: 'Cleaners', part: 'f8', required: true },
-      { name: 'Tire Rotation', part: null, required: true },
-      { name: 'Brake Pads Inspection', part: null, required: false },
-      { name: 'Fluid Level Check', part: null, required: false }
-    ]
-  },
-  {
-    km: '20,000',
-    title: '20KM Service',
-    price: 824,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'l1', required: true },
-      { name: 'AC Filter Replacement', part: 'l3', required: true },
-      { name: 'Cleaners', part: 'f8', required: true },
-      { name: 'Tire Rotation & Balance', required: true },
-      { name: 'Fluid Check', required: false },
-      { name: 'Brake Pads Inspection', part: null, required: false },
-      { name: 'Battery Test', part: null, required: false }
 
-    ]
-  },
-  {
-    km: '30,000',
-    title: '30 KM Service',
-    price: 824,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'l1', required: true },
-      { name: 'Air Filter Replacement', part: 'l2', required: true },
-      { name: 'Cleaners', part: 'f8', required: true },
-      { name: 'Tire Rotation & Balance', required: true },
-      { name: 'Fluid Check', required: false },
-      { name: 'Brake Pads Inspection', part: null, required: false },
-      { name: 'Tire Rotation', part: null, required: false }
-    ]
-  },
-  {
-    km: '40,000',
-    title: '40 KM Service',
-    price: 1133,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'l1', required: true },
-      { name: 'AC Filter Replacement', part: 'l3', required: true },
-      { name: 'Brake Fluid Replacement', part: 'f2', required: true },
-      { name: 'Colant Replacment', part: 'f4', required: true },
-      { name: 'V Belt Replacment', part: "l3", required: true },
-      { name: 'Cleaners', part: 'f8', required: true },
-      { name: 'Tire Rotation & Balance', part: null, required: true },
-      { name: 'Brake Pads Inspection', part: null, required: false },
-      { name: 'Battery Test', part: null, required: false }
-    ]
-  },
-  {
-    km: '50,000',
-    title: '50 KM Service',
-    price: 1287.5,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'l1', required: true },
-      { name: 'CVT Change (7.5L)', part: 'f3', required: true },
-      { name: 'Cleaners', part: 'f8', required: true },
-      { name: 'Tire Rotation & Balance', part: null, required: true },
-      { name: 'Brake Pads Inspection', part: null, required: false },
-      { name: 'Battery Test', part: null, required: false }
-    ]
-  },
-  {
-    km: '60,000',
-    title: '60 KM Service',
-    price: 824,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'l1', required: true },
-      { name: 'Air Filter Replacement', part: 'l2', required: true },
-      { name: 'AC Filter Replacement', part: 'l3', required: true },
-      { name: 'Cleaners', part: 'f8', required: true },
-      { name: 'Tire Rotation & Balance', part: null, required: true },
-      { name: 'Brake Pads Inspection', part: null, required: false },
-      { name: 'Battery Test', part: null, required: false }
-    ]
-  },
-  {
-    km: '70,000',
-    title: '70 KM Service',
-    price: 927,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'l1', required: true },
-      { name: 'Cleaners', part: 'f8', required: true },
-      { name: 'Tire Rotation & Balance', part: null, required: true },
-      { name: 'Brake Pads Inspection', part: null, required: false },
-      { name: 'Battery Test', part: null, required: false }
-    ]
-  },
-  {
-    km: '80,000',
-    title: '80 KM Service',
-    price: 1751,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'l1', required: true },
-      { name: 'AC Filter Replacement', part: 'l3', required: true },
-      { name: 'V Belt Replacement', part: 'l5', required: true },
-      { name: 'Fuel Filter Replacement', part: 'l4', required: true },
-      { name: 'Colant Chenge', part: 'f4', required: true },
-      { name: 'Brake Fluid Replacement', part: 'f2', required: true },
-      { name: 'Cleaners', part: 'f8', required: true },
-      { name: 'Tire Rotation & Balance', part: null, required: true },
-      { name: 'Brake Pads Inspection', part: null, required: false },
-      { name: 'Battery Test', part: null, required: false }
+function mapProductToUI(p) {
+  // Handle unaliased relations or raw category_id lookup
+  let catSlug = p.categories?.slug || p.category?.slug;
 
-    ]
-  },
-  {
-    km: '90,000',
-    title: '90 KM Service',
-    price: 978,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'l1', required: true },
-      { name: 'Air Filter Replacement', part: 'l2', required: true },
-      { name: 'Cleaners', part: 'f8', required: true },
-      { name: 'Tire Rotation & Balance', part: null, required: true },
-      { name: 'Brake Pads Inspection', part: null, required: false },
-      { name: 'Battery Test', part: null, required: false }
-    ]
-  },
-  {
-    km: '100,000',
-    title: '100 KM Service',
-    price: 1287.5,
-    items: [
-      { name: 'Engine Oil Change', part: 'f1', required: true },
-      { name: 'Oil Filter Replacement', part: 'l1', required: true },
-      { name: 'Spark Pluges Replacment', part: 'l5', required: true },
-      { name: 'CVT Change (7.5L)', part: 'f3', required: true },
-      { name: 'Cleaners', part: 'f8', required: true },
-      { name: 'Tire Rotation & Balance', part: null, required: true },
-      { name: 'Brake Pads Inspection', part: null, required: false },
-      { name: 'Battery Test', part: null, required: false }
-    ]
-  },
+  // If relation is missing (Safe Mode), try lookup by ID from global categories
+  if (!catSlug && p.category_id && typeof categories !== 'undefined') {
+    const found = categories.find(c => c.id === p.category_id);
+    if (found) catSlug = found.slug;
+  }
 
-];
+  const categorySlug = catSlug || 'parts';
+  const imageData = p.images || p.product_images || [];
+
+  return {
+    id: p.id,
+    sku: p.sku,
+    name: p.title || p.name,
+    brand: p.brand || 'Generic',
+    price: p.price,
+    stock: p.stock !== undefined ? p.stock : 10,
+    icon: imageData?.[0]?.url || p.image_url || 'https://via.placeholder.com/200',
+    category: categorySlug,
+    description: p.description,
+    specifications: p.specifications || {},
+    'background-image': imageData?.[0]?.url ? `url('${imageData[0].url}')` : 'none'
+  };
+}
+
+
+
 
 let selectedService = null;
 let includeParts = false;
 let selectedParts = [];
 
-const dataHandler = {
-    onDataChanged(data) {
-        cart = data.filter(item => item.type === 'cart');
-        updateCartCount();
 
-        if (currentCategory === 'cart') {
-            renderCartPage();
-        }
-    }
+// Data Sync Handler (Legacy support for UI)
+const dataHandler = {
+  onDataChanged(data) {
+    // Cart updates are now handled by CartService events, 
+    // but we keep this if anything calls legacy notifyDataChange
+    updateCartCount();
+    if (currentCategory === 'cart') renderCartPage();
+  }
 };
 
-async function initApp() {
-    const initResult = await window.dataSdk.init(dataHandler);
-    if (!initResult.isOk) {
-        console.error('Failed to initialize data SDK');
-        return;
-    }
 
-    function applyConfig(newConfig) {
-        config = { ...newConfig };
-        const root = document.documentElement;
+// ==========================================
+// UX HELPERS
+// ==========================================
 
-        // Set CSS variables for colors
-        root.style.setProperty('--primary-color', config.primary_color || defaultConfig.primary_color);
-        root.style.setProperty('--secondary-color', config.secondary_color || defaultConfig.secondary_color);
-        root.style.setProperty('--accent-color', config.accent_color || defaultConfig.accent_color);
-        root.style.setProperty('--success-color', config.success_color || defaultConfig.success_color);
-        root.style.setProperty('--background-color', config.background_color || defaultConfig.background_color);
+// Helper for Breadcrumbs
+function updateBreadcrumb(items = []) {
+  const container = document.getElementById('breadcrumb');
+  if (!container) return;
 
-        // Update text content
-        const storeName = document.getElementById('store-name');
-        const storeTagline = document.getElementById('store-tagline');
-        const contactPhone = document.getElementById('contact-phone');
-        const contactEmail = document.getElementById('contact-email');
+  const homeItem = { label: 'Home', action: () => window.showCategory('home') };
+  const allItems = [homeItem, ...items];
 
-        if (storeName) storeName.textContent = config.store_name || defaultConfig.store_name;
-        if (storeTagline) storeTagline.textContent = config.store_tagline || defaultConfig.store_tagline;
-        if (contactPhone) contactPhone.textContent = config.contact_phone || defaultConfig.contact_phone;
-        if (contactEmail) contactEmail.textContent = config.contact_email || defaultConfig.contact_email;
+  container.innerHTML = allItems.map((item, index) => {
+    const isActive = index === allItems.length - 1;
+    if (isActive) return `<span class="breadcrumb-item active">${item.label}</span>`;
+    return `
+      <span class="breadcrumb-item" data-breadcrumb-index="${index}">
+        ${item.label}
+      </span>
+      <span class="breadcrumb-separator">/</span>
+    `;
+  }).join('');
 
-        // Update font styles
-        const customFont = config.font_family || defaultConfig.font_family;
-        const baseFontStack = 'Tahoma, Geneva, Verdana, sans-serif';
-        document.body.style.fontFamily = `${customFont}, ${baseFontStack}`;
-
-        const baseSize = config.font_size || defaultConfig.font_size;
-        document.body.style.fontSize = `${baseSize}px`;
-
-        // Update dynamic font sizes
-        const pageTitles = document.querySelectorAll('.page-title');
-        pageTitles.forEach(title => {
-            title.style.fontSize = `${baseSize * 2}px`;
-        });
-
-        const pageSubtitles = document.querySelectorAll('.page-subtitle');
-        pageSubtitles.forEach(subtitle => {
-            subtitle.style.fontSize = `${baseSize}px`;
-        });
-
-        const productNames = document.querySelectorAll('.product-name');
-        productNames.forEach(name => {
-            name.style.fontSize = `${baseSize * 1.125}px`;
-        });
-
-        const productPrices = document.querySelectorAll('.product-price');
-        productPrices.forEach(price => {
-            price.style.fontSize = `${baseSize * 1.5}px`;
-        });
-    }
-
-    if (window.elementSdk) {
-        window.elementSdk.init({
-            defaultConfig,
-            onConfigChange: async (newConfig) => {
-                applyConfig(newConfig);
-            },
-            mapToCapabilities: (cfg) => ({
-                recolorables: [
-                    {
-                        get: () => cfg.primary_color || defaultConfig.primary_color,
-                        set: (value) => {
-                            cfg.primary_color = value;
-                            if (window.elementSdk) window.elementSdk.setConfig({ primary_color: value });
-                        }
-                    },
-                    {
-                        get: () => cfg.secondary_color || defaultConfig.secondary_color,
-                        set: (value) => {
-                            cfg.secondary_color = value;
-                            if (window.elementSdk) window.elementSdk.setConfig({ secondary_color: value });
-                        }
-                    },
-                    {
-                        get: () => cfg.accent_color || defaultConfig.accent_color,
-                        set: (value) => {
-                            cfg.accent_color = value;
-                            if (window.elementSdk) window.elementSdk.setConfig({ accent_color: value });
-                        }
-                    },
-                    {
-                        get: () => cfg.success_color || defaultConfig.success_color,
-                        set: (value) => {
-                            cfg.success_color = value;
-                            if (window.elementSdk) window.elementSdk.setConfig({ success_color: value });
-                        }
-                    },
-                    {
-                        get: () => cfg.background_color || defaultConfig.background_color,
-                        set: (value) => {
-                            cfg.background_color = value;
-                            if (window.elementSdk) window.elementSdk.setConfig({ background_color: value });
-                        }
-                    }
-                ],
-                borderables: [],
-                fontEditable: {
-                    get: () => cfg.font_family || defaultConfig.font_family,
-                    set: (value) => {
-                        cfg.font_family = value;
-                        if (window.elementSdk) window.elementSdk.setConfig({ font_family: value });
-                    }
-                },
-                fontSizeable: {
-                    get: () => cfg.font_size || defaultConfig.font_size,
-                    set: (value) => {
-                        cfg.font_size = value;
-                        if (window.elementSdk) window.elementSdk.setConfig({ font_size: value });
-                    }
-                }
-            }),
-            mapToEditPanelValues: (cfg) => new Map([
-                ['store_name', cfg.store_name || defaultConfig.store_name],
-                ['store_tagline', cfg.store_tagline || defaultConfig.store_tagline],
-                ['contact_phone', cfg.contact_phone || defaultConfig.contact_phone],
-                ['contact_email', cfg.contact_email || defaultConfig.contact_email]
-            ])
-        });
-    }
-
-    applyConfig(defaultConfig); // Apply the initial configuration
-
-    // Set static text content
-    const cartBtnLabel = document.getElementById('cart-btn-label');
-    if (cartBtnLabel) cartBtnLabel.textContent = "Cart";
-
-    const searchBtn = document.getElementById('search-btn');
-    if (searchBtn) searchBtn.textContent = "Search";
-
-    const navHome = document.getElementById('nav-home');
-    if (navHome) navHome.textContent = "Home";
-
-    const navEngine = document.getElementById('nav-engine');
-    if (navEngine) navEngine.textContent = "Engine Parts";
-
-    const navBrakes = document.getElementById('nav-brakes');
-    if (navBrakes) navBrakes.textContent = "Brakes";
-
-    const navSuspension = document.getElementById('nav-suspension');
-    if (navSuspension) navSuspension.textContent = "Suspension";
-
-    const navMaintenance = document.getElementById('nav-maintenance');
-    if (navMaintenance) navMaintenance.textContent = "Maintenance Parts";
-
-    const navFluids = document.getElementById('nav-fluids');
-    if (navFluids) navFluids.textContent = "Maintenance Fluids";
-
-    const navService = document.getElementById('nav-service');
-    if (navService) navService.textContent = "Service Booking";
-
-    const navAbout = document.getElementById('nav-about');
-    if (navAbout) navAbout.textContent = "About Us";
-
-    const searchInput = document.getElementById('search-input');
-    if (searchInput) searchInput.placeholder = "Search for parts, brands, or categories...";
-
-    if (window.location.pathname.endsWith('product.html')) {
-        renderProductDetailsPage();
-    } else {
-        showCategory('home');
-    }
-    loadSearchHistory();
-    renderSearchHistory();
+  container.querySelectorAll('.breadcrumb-item[data-breadcrumb-index]').forEach(el => {
+    el.onclick = () => {
+      const idx = el.getAttribute('data-breadcrumb-index');
+      allItems[idx].action();
+    };
+  });
 }
 
-function loadSearchHistory() {
-    const storedHistory = localStorage.getItem('searchHistory');
-    if (storedHistory) {
-        searchHistory = JSON.parse(storedHistory);
+// Helper for Skeletons
+function renderProductSkeletons() {
+  const mainContent = document.getElementById('main-content');
+  if (!mainContent) return;
+
+  const title = mainContent.querySelector('.page-title')?.textContent || 'Loading...';
+  mainContent.innerHTML = `
+    <h1 class="page-title">${title}</h1>
+    <p class="page-subtitle">Finding the best parts for you...</p>
+    <div class="products-grid" id="products-grid">
+      ${Array(8).fill(0).map(() => `
+        <div class="product-card" style="background: #252525; border: 1px solid #333;">
+          <div class="skeleton-img skeleton" style="height: 180px; width: 100%;"></div>
+          <div class="skeleton skeleton-text" style="width: 40%; height: 12px; margin-top: 10px;"></div>
+          <div class="skeleton skeleton-text" style="width: 80%; height: 20px;"></div>
+          <div class="skeleton skeleton-text" style="width: 30%; height: 25px;"></div>
+          <div class="skeleton skeleton-text" style="width: 100%; height: 40px; border-radius: 6px; margin-top: 10px;"></div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderCategorySkeletons() {
+  const mainContent = document.getElementById('main-content');
+  if (!mainContent) return;
+
+  mainContent.innerHTML = `
+    <div class="flex flex-col items-center">
+      <div class="skeleton skeleton-text" style="width: 300px; height: 40px; margin-bottom: 15px;"></div>
+      <div class="skeleton skeleton-text" style="width: 200px; height: 20px; margin-bottom: 40px;"></div>
+    </div>
+    <div class="category-grid">
+      ${Array(4).fill(0).map(() => `
+        <div class="category-card" style="background: #252525; border: 1px solid #333;">
+          <div class="category-card-image-wrapper skeleton" style="background: #333; height: 120px; width: 100%;"></div>
+          <div class="skeleton skeleton-text" style="width: 60%; margin: 15px auto 10px;"></div>
+          <div class="skeleton skeleton-text" style="width: 40%; margin: 0 auto;"></div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+
+
+async function initApp() {
+  console.log('Initializing App with Supabase Services...');
+
+  // 1. Show skeletons immediately so user sees something is happening
+  renderCategorySkeletons();
+  updateBreadcrumb([]);
+
+  try {
+    // 2. Fetch categories FIRST to build the core navigation structure
+    const categoriesResponse = await window.ProductsService.getCategories();
+    categories = categoriesResponse.categories || [];
+
+    if (typeof renderDynamicNavigation === 'function') {
+      renderDynamicNavigation();
     }
+
+    // 3. Parallel fetch for products and services
+    const [productsResponse, serviceTypes] = await Promise.all([
+      window.ProductsService.getProducts({ limit: 40 }), // Fetch first 40 for initial load
+      window.BookingsService.getServiceTypes()
+    ]);
+
+    const allProducts = (productsResponse.products || []).filter(p => p && p.id);
+
+    // 4. Map products to categories
+    products = {};
+    categories.forEach(c => products[c.slug] = []);
+    allProducts.forEach(p => {
+      const uiProduct = mapProductToUI(p);
+      const cat = uiProduct.category;
+      if (!products[cat]) products[cat] = [];
+      products[cat].push(uiProduct);
+    });
+
+    // 5. Build Service Packages
+    if (serviceTypes.success) {
+      servicePackages = serviceTypes.services.map(s => {
+        const dynamicItems = s.items || s.service_type_products || [];
+        // Map products for the service summary and parts section
+        const serviceProducts = dynamicItems.map(i => i.product).filter(p => !!p);
+
+        return {
+          id: s.id,
+          title: s.name,
+          km: s.name.replace(/[^0-9]/g, '') || "0",
+          price: s.base_price || 0,
+          products: serviceProducts, // Needed for summary calculation
+          items: dynamicItems.map(i => ({
+            name: (i.product || i.products)?.name || 'Unknown Part',
+            part: (i.product || i.products)?.id || null,
+            required: i.is_required !== false
+          }))
+        };
+      });
+    }
+
+
+    // 6. Initial Render
+    applyInitialStyles();
+
+    if (window.location.pathname.endsWith('product.html')) {
+      renderProductDetailsPage();
+    } else {
+      showCategory('home');
+    }
+
+  } catch (e) {
+    console.error('Initialization error:', e);
+    window.CarHouseSupabase.showToast('Failed to load application data', 'info');
+  }
+
+
+  // Final touches
+  cart = window.CartService.getCart();
+  updateCartCount();
+
+  window.addEventListener('cartUpdated', (e) => {
+    cart = e.detail.cart;
+    updateCartCount();
+    if (currentCategory === 'cart') renderCartPage();
+  });
+  loadSearchHistory();
+  renderSearchHistory();
+
+}
+
+function applyInitialStyles() {
+  const root = document.documentElement;
+  root.style.setProperty('--primary-color', config.primary_color || defaultConfig.primary_color);
+  root.style.setProperty('--secondary-color', config.secondary_color || defaultConfig.secondary_color);
+  root.style.setProperty('--accent-color', config.accent_color || defaultConfig.accent_color);
+  root.style.setProperty('--success-color', config.success_color || defaultConfig.success_color);
+  root.style.setProperty('--background-color', config.background_color || defaultConfig.background_color);
+
+  const storeName = document.getElementById('store-name');
+  if (storeName) storeName.textContent = config.store_name || defaultConfig.store_name;
+
+  document.body.style.fontFamily = `${config.font_family || defaultConfig.font_family}, sans-serif`;
+
+  const cartBtnLabel = document.getElementById('cart-btn-label');
+  if (cartBtnLabel) cartBtnLabel.textContent = "Cart";
+  const navHome = document.getElementById('nav-home');
+  if (navHome) navHome.textContent = "Home";
+  const navAbout = document.getElementById('nav-about');
+  if (navAbout) navAbout.textContent = "About Us";
+}
+
+
+function loadSearchHistory() {
+  const storedHistory = localStorage.getItem('searchHistory');
+  if (storedHistory) {
+    searchHistory = JSON.parse(storedHistory);
+  }
 }
 
 function renderSearchHistory() {
-    const historyContainer = document.getElementById('search-history-container');
-    if (historyContainer) {
-        historyContainer.innerHTML = `
+  const historyContainer = document.getElementById('search-history-container');
+  if (historyContainer) {
+    historyContainer.innerHTML = `
                 <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center;">
                     <span style="font-weight: 500; color: white;">Recent Searches</span>
                     ${searchHistory.map(term => `<button class="search-history-btn" onclick="performSearchFromHistory('${term}')">${term}</button>`).join('')}
                 </div>
             `;
-    }
+  }
 }
 
 function performSearchFromHistory(term) {
-    document.getElementById('search-input').value = term;
-    performSearch();
+  document.getElementById('search-input').value = term;
+  performSearch();
 }
 
 function adjustColor(color, percent) {
-    const num = parseInt(color.replace('#', ''), 16);
-    const amt = Math.round(2.55 * percent);
-    const R = (num >> 16) + amt;
-    const G = (num >> 8 & 0x00FF) + amt;
-    const B = (num & 0x0000FF) + amt;
-    return '#' + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
-        (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
-        (B < 255 ? B < 1 ? 0 : B : 255))
-        .toString(16).slice(1);
+  const num = parseInt(color.replace('#', ''), 16);
+  const amt = Math.round(2.55 * percent);
+  const R = (num >> 16) + amt;
+  const G = (num >> 8 & 0x00FF) + amt;
+  const B = (num & 0x0000FF) + amt;
+  return '#' + (0x1000000 + (R < 255 ? R < 1 ? 0 : R : 255) * 0x10000 +
+    (G < 255 ? G < 1 ? 0 : G : 255) * 0x100 +
+    (B < 255 ? B < 1 ? 0 : B : 255))
+    .toString(16).slice(1);
 }
 
 function updateCartCount() {
-    const cartCount = document.getElementById('cart-count');
-    if (cartCount) {
-        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        cartCount.textContent = totalItems;
-    }
+  const cartCount = document.getElementById('cart-count');
+  if (cartCount) {
+    const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+    cartCount.textContent = totalItems;
+  }
 }
 
+
 function showCategory(category) {
-    currentCategory = category;
-    currentSearchTerm = '';
-    document.getElementById('search-input').value = '';
+  currentCategory = category;
+  currentSearchTerm = '';
+  document.getElementById('search-input').value = '';
 
-    document.querySelectorAll('.nav-links button').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    document.querySelector(`[data-category="${category}"]`).classList.add('active');
+  // Scroll to top for better UX
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    const mainContent = document.getElementById('main-content');
+  // Update logic
+  document.querySelectorAll('.nav-links button').forEach(btn => {
+    btn.classList.remove('active');
+  });
 
-    if (category === 'home') {
-        renderHomePage();
-    } else if (category === 'cart') {
-        renderCartPage();
-    } else if (category === 'checkout') {
-        renderCheckoutPage();
-    } else if (category === 'service') {
-        renderServicePage();
-    } else if (category === 'about') {
-        renderAboutPage();
-    } else {
-        renderCategoryPage(category);
-    }
+  const activeBtn = document.querySelector(`[data-category="${category}"]`);
+  if (activeBtn) activeBtn.classList.add('active');
+
+  const mainContent = document.getElementById('main-content');
+
+  // Reset content to trigger animation
+  mainContent.classList.remove('fade-in-up');
+  void mainContent.offsetWidth; // Force reflow
+  mainContent.classList.add('fade-in-up');
+
+  if (category === 'home') {
+    renderHomePage();
+  } else if (category === 'cart') {
+    updateBreadcrumb([{ label: 'Shopping Cart', action: () => showCategory('cart') }]);
+    renderCartPage();
+  } else if (category === 'checkout') {
+    updateBreadcrumb([
+      { label: 'Cart', action: () => showCategory('cart') },
+      { label: 'Checkout', action: () => showCategory('checkout') }
+    ]);
+    renderCheckoutPage();
+  } else if (category === 'service') {
+    updateBreadcrumb([{ label: 'Service Booking', action: () => showCategory('service') }]);
+    renderServicePage();
+  } else if (category === 'favorites') {
+    updateBreadcrumb([{ label: 'My Favorites', action: () => showCategory('favorites') }]);
+    renderFavoritesPage();
+  } else if (category === 'about') {
+    updateBreadcrumb([{ label: 'About Us', action: () => showCategory('about') }]);
+    renderAboutPage();
+  } else {
+    renderCategoryPage(category);
+  }
 }
 
 function renderAboutPage() {
-    const mainContent = document.getElementById('main-content');
-    mainContent.innerHTML = `
+  const mainContent = document.getElementById('main-content');
+  mainContent.innerHTML = `
             <h1 class="page-title">About Us</h1>
             <p class="page-subtitle">Your trusted source for quality auto parts</p>
             <div style="background: black; padding: 80px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-                <p>Welcome to Car House 🚗, your one-stop shop for high-quality auto parts. We are passionate about cars and dedicated to providing our customers with the best parts and service in the industry.</p>
+                <p>Welcome to Car House , your one-stop shop for high-quality auto parts. We are passionate about cars and dedicated to providing our customers with the best parts and service in the industry.</p>
                 <p>Our mission is to make it easy and affordable for you to keep your vehicle in top condition. We offer a wide selection of parts for all makes and models, backed by our expert team and commitment to customer satisfaction.</p>
-                <p>Thank you for choosing Car House 🚗. We look forward to serving you!</p>
+                <p>Thank you for choosing Car House . We look forward to serving you!</p>
             </div>
         `;
 }
 
+
+function renderDynamicNavigation() {
+  const navList = document.querySelector('.nav-links');
+  if (!navList) return;
+
+  // Build HTML
+  let html = '<li><button data-category="home" class="active" id="nav-home">Home</button></li>';
+
+  if (categories && categories.length > 0) {
+    categories.forEach(c => {
+      html += `<li><button data-category="${c.slug}">${c.name}</button></li>`;
+    });
+  }
+
+  html += '<li><button data-category="service" id="nav-service">Service Booking</button></li>';
+  html += '<li><button data-category="about" id="nav-about">About Us</button></li>';
+
+  navList.innerHTML = html;
+
+  // Attach Event Delegation
+  // Remove old listeners? The old buttons are gone, so their listeners are garbage collected.
+  // We need to ensure we don't add multiple listeners to navList if called multiple times.
+  // Ideally, use a named function or 'once' option, but for now assuming initApp runs once.
+
+  // Note: Existing code might assume specific IDs exist (e.g. applyConfig).
+  // Dynamic buttons won't have the hardcoded IDs like 'nav-engine' unless we add them,
+  // but applyConfig checks for existence. 
+
+  // We add a click listener to the UL
+  navList.onclick = (e) => {
+    const btn = e.target.closest('button');
+    if (btn && btn.dataset.category) {
+      showCategory(btn.dataset.category);
+    }
+  };
+}
+
+
 function renderHomePage() {
-    const mainContent = document.getElementById('main-content');
-    mainContent.innerHTML = `
-   <h1 class="page-title">Welcome to ${config.store_name || defaultConfig.store_name}</h1>
-    <p class="page-subtitle">Browse our extensive collection of quality auto parts</p>
-    <div class="category-grid">
-      <div class="category-card" data-category="engine">
+  const mainContent = document.getElementById('main-content');
+  updateBreadcrumb([]);
+
+  const categoryCards = categories.map((c, index) => `
+      <div class="category-card fade-in-up" data-category="${c.slug}" style="animation-delay: ${index * 0.1}s">
         <div class="category-card-image-wrapper">
-          <img src="https://media.hswstatic.com/eyJidWNrZXQiOiJjb250ZW50Lmhzd3N0YXRpYy5jb20iLCJrZXkiOiJnaWZcL2VuZ2luZS1xdWl6LWEtb2cuanBnIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo4Mjh9fX0=" alt="Engine Parts" class="category-card-image" onerror="this.src=''; this.alt='Engine Parts'; this.style.display='none';">
+          <img src="${c.image_url || c.icon || 'https://via.placeholder.com/300'}" alt="${c.name}" class="category-card-image" onerror="this.src='https://via.placeholder.com/300?text=${c.name}';">
         </div>
-        <h3 class="category-card-title">Engine Parts</h3>
-        <p class="category-card-description">Power Performance Reliability</p>
+        <h3 class="category-card-title">${c.name}</h3>
+        <p class="category-card-description">${c.description || 'Browse products'}</p>
       </div>
-      <div class="category-card" data-category="brakes">
-        <div class="category-card-image-wrapper">
-          <img src="https://i.pinimg.com/736x/3e/c6/d6/3ec6d61b7497514a4ca6a9626e06fa38.jpg" alt="Brakes" class="category-card-image" onerror="this.src=''; this.alt='Brakes'; this.style.display='none';">
-        </div>
-        <h3 class="category-card-title">Brakes</h3>
-        <p class="category-card-description">Safety Control Stopping</p>
-      </div>
-      <div class="category-card" data-category="suspension">
-        <div class="category-card-image-wrapper">
-          <img src="https://i.pinimg.com/736x/2c/90/bb/2c90bbf432f9a81978e4d7adb6c19030.jpg" alt="Suspension" class="category-card-image" onerror="this.src=''; this.alt='Suspension'; this.style.display='none';">
-        </div>
-        <h3 class="category-card-title">Suspension</h3>
-        <p class="category-card-description">Comfort Stability Control</p>
-      </div>
-      <div class="category-card" data-category="maintenance">
-        <div class="category-card-image-wrapper">
-          <img src="https://toyota.com.eg/storage/6592/image-3-(4).png.png" alt="Maintenance Parts" class="category-card-image" onerror="this.src=''; this.alt='Maintenance Parts'; this.style.display='none';">
-        </div>
-        <h3 class="category-card-title">Maintenance Parts</h3>
-        <p class="category-card-description">Service Repair Replacement</p>
-      </div>
-      <div class="category-card" data-category="fluids">
-        <div class="category-card-image-wrapper">
-          <img src="https://rsauto.ca/wp-content/uploads/2021/08/fluid-flush-North-York.png" alt="Maintenance Fluids" class="category-card-image" onerror="this.src=''; this.alt='Maintenance Fluids'; this.style.display='none';">
-        </div>
-        <h3 class="category-card-title">Maintenance Oils</h3>
-        <p class="category-card-description">Lubrication Protection Efficiency</p>
-      </div>
-      <div class="category-card" data-category="service">
+  `).join('');
+
+  // Add Service Booking Card manually
+  const serviceCard = `
+      <div class="category-card fade-in-up" data-category="service" style="animation-delay: ${categories.length * 0.1}s">
         <div class="category-card-image-wrapper">
           <img src="https://toyotacorporate.sitedemo.com.my/wp-content/uploads/2022/01/v2-services-image4.jpg" alt="Service Booking" class="category-card-image" onerror="this.src=''; this.alt='Service Booking'; this.style.display='none';">
         </div>
         <h3 class="category-card-title">Service Booking</h3>
-        <p class="category-card-description">Inspection Repair Scheduling Book your Toyota Corolla service</p>
+        <p class="category-card-description">Inspection Repair Scheduling</p>
       </div>
+  `;
+
+  mainContent.innerHTML = `
+    <h1 class="page-title">Welcome to ${config.store_name || defaultConfig.store_name}</h1>
+    <p class="page-subtitle">Expert parts and maintenance for your automotive needs</p>
+    <div class="category-grid">
+      ${categoryCards}
+      ${serviceCard}
     </div>
   `;
+
+  // Attach click listeners to cards (delegation or direct)
+  // script.js previously used observeElements, but click handling?
+  // It seems click handling for cards was missing in previous code or implicit?
+  // Wait, looking at currentCategory logic... 
+  // We need to add listeners to these cards to navigate!
+
+  mainContent.querySelectorAll('.category-card').forEach(card => {
+    card.addEventListener('click', () => {
+      showCategory(card.dataset.category);
+    });
+  });
+
   observeElements('[data-category]');
 }
 
-function renderCategoryPage(category) {
-    const categoryNames = {
-        engine: "Engine Parts",
-        brakes: "Brakes",
-        suspension: "Suspension",
-        maintenance: "Maintenance Parts",
-        fluids: "Maintenance Fluids",
-    };
 
-    const mainContent = document.getElementById('main-content');
-    mainContent.innerHTML = `
-    <h1 class="page-title">${categoryNames[category]}</h1>
-    <p class="page-subtitle">High-quality parts for your vehicle</p>
-    <div class="products-grid" id="products-grid"></div>
+
+function renderCategoryPage(category) {
+  const catObj = categories.find(c => c.slug === category);
+  const categoryName = catObj ? catObj.name : category.charAt(0).toUpperCase() + category.slice(1);
+
+  updateBreadcrumb([{ label: categoryName, action: () => showCategory(category) }]);
+
+  const mainContent = document.getElementById('main-content');
+  mainContent.innerHTML = `
+    <h1 class="page-title">${categoryName}</h1>
+    <p class="page-subtitle">Quality selection for your vehicle</p>
+    <div id="products-grid"></div>
   `;
 
+  renderProductSkeletons();
+
+  // Small delay to ensure smooth transition from skeleton
+  setTimeout(() => {
     renderProducts(category);
+  }, 300);
 }
 
 function getUniqueBrands(category) {
-    const brands = [...new Set(products[category].map(p => p.brand))];
-    return brands.sort();
+  const brands = [...new Set(products[category].map(p => p.brand))];
+  return brands.sort();
 }
 
 function updateSort(sortBy) {
-    currentSortBy = sortBy;
-    renderProducts(currentCategory);
+  currentSortBy = sortBy;
+  renderProducts(currentCategory);
 }
 
 function updateBrandFilter(brand) {
-    currentFilterBrand = brand;
-    renderProducts(currentCategory);
+  currentFilterBrand = brand;
+  renderProducts(currentCategory);
 }
 
 function renderProducts(category) {
-    let productList = [...products[category]];
+  if (!products[category]) {
+    products[category] = [];
+  }
+  let productList = [...products[category]];
 
-    if (currentSearchTerm) {
-        productList = productList.filter(p =>
-            p.name.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
-            p.brand.toLowerCase().includes(currentSearchTerm.toLowerCase())
-        );
-    }
+  if (currentSearchTerm) {
+    productList = productList.filter(p =>
+      p.name.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
+      p.brand.toLowerCase().includes(currentSearchTerm.toLowerCase())
+    );
+  }
 
-    if (currentFilterBrand !== 'all') {
-        productList = productList.filter(p => p.brand === currentFilterBrand);
-    }
+  if (currentFilterBrand !== 'all') {
+    productList = productList.filter(p => p.brand === currentFilterBrand);
+  }
 
-    switch (currentSortBy) {
-        case 'price-low':
-            productList.sort((a, b) => a.price - b.price);
-            break;
-        case 'price-high':
-            productList.sort((a, b) => b.price - a.price);
-            break;
-        case 'brand':
-            productList.sort((a, b) => a.brand.localeCompare(b.brand));
-            break;
-        default:
-            productList.sort((a, b) => a.name.localeCompare(b.name));
-    }
+  switch (currentSortBy) {
+    case 'price-low':
+      productList.sort((a, b) => a.price - b.price);
+      break;
+    case 'price-high':
+      productList.sort((a, b) => b.price - a.price);
+      break;
+    case 'brand':
+      productList.sort((a, b) => a.brand.localeCompare(b.brand));
+      break;
+    default:
+      productList.sort((a, b) => a.name.localeCompare(b.name));
+  }
 
-    const grid = document.getElementById('products-grid');
-    if (productList.length === 0) {
-        grid.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
-        <div style="width: 80px; height: 80px; margin: 0 auto 20px auto; border-radius: 8px; overflow: hidden; opacity: 0.5;">
-          <img src="no-results.jpg" alt="No products found" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='No products found'; this.style.display='none';">
-        </div>
-        <h3 style="font-size: 24px; color: #2c3e50; margin: 0 0 10px 0;">No products found</h3>
-        <p style="font-size: 16px; color: #7f8c8d;">Try adjusting your filters or search term</p>
+
+  const grid = document.getElementById('products-grid');
+  if (!grid) {
+    console.warn('Products grid element not found. Navigation might have changed.');
+    return;
+  }
+  if (productList.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state fade-in-up" style="grid-column: 1 / -1;">
+        <div class="empty-state-icon">🔍</div>
+        <h3>No products found</h3>
+        <p>Try adjusting your search or filters to find what you're looking for.</p>
+        <button class="back-btn" onclick="showCategory('${category}')">Clear All Filters</button>
       </div>
     `;
-        return;
-    }
+    return;
+  }
 
-    grid.innerHTML = productList.map(product => `
-    <div class="product-card" data-product-id="${product.id}" style="background-image: ${product['background-image'] || 'none'}">
-      <div class="product-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
+
+  grid.innerHTML = productList.map((product, index) => {
+    const isOutOfStock = product.stock <= 0;
+    return `
+    <div class="product-card fade-in-up ${isOutOfStock ? 'out-of-stock' : ''}" 
+         data-product-id="${product.id}" 
+         style="animation-delay: ${index * 0.05}s;">
+      <div class="product-image">
+        <img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';">
+        ${isOutOfStock ? '<span class="stock-badge" style="position: absolute; top: 10px; right: 10px; background: #e74c3c; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Out of Stock</span>' : ''}
+      </div>
       <div class="product-brand">${product.brand}</div>
       <h3 class="product-name">${product.name}</h3>
       <div class="product-price">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
-      <button class="view-details-btn" data-product-id="${product.id}">View Details</button>
-      <button class="add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
+      <div class="product-actions" style="display: flex; gap: 8px;">
+        <button class="view-details-btn" data-product-id="${product.id}" style="flex: 1;">View Details</button>
+        <button class="favorite-btn ${window.FavoritesService.isFavorite(product.id) ? 'active' : ''}" 
+                data-product-id="${product.id}" 
+                style="width: 44px; border-radius: 6px;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+            <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+          </svg>
+        </button>
+      </div>
+      <button class="add-to-cart-btn" data-product-id="${product.id}" ${isOutOfStock ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+        ${isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+      </button>
     </div>
-  `).join('');
-    observeElements('.product-card');
+  `}).join('');
+
+  observeElements('.product-card');
 }
 
 function performSearch() {
-    const searchInput = document.getElementById('search-input');
-    currentSearchTerm = searchInput.value.trim();
+  const searchInput = document.getElementById('search-input');
+  currentSearchTerm = searchInput.value.trim();
 
-    if (!currentSearchTerm) {
-        return;
+  if (!currentSearchTerm) {
+    return;
+  }
+
+  if (!searchHistory.includes(currentSearchTerm)) {
+    searchHistory.unshift(currentSearchTerm);
+    if (searchHistory.length > 5) {
+      searchHistory.pop();
     }
+    localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
+    renderSearchHistory();
+  }
 
-    if (!searchHistory.includes(currentSearchTerm)) {
-        searchHistory.unshift(currentSearchTerm);
-        if (searchHistory.length > 5) {
-            searchHistory.pop();
-        }
-        localStorage.setItem('searchHistory', JSON.stringify(searchHistory));
-        renderSearchHistory();
-    }
+  const allProducts = Object.values(products).flat();
+  const results = allProducts.filter(p =>
+    p.name.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
+    p.brand.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
+    p.category.toLowerCase().includes(currentSearchTerm.toLowerCase())
+  );
 
-    const allProducts = Object.values(products).flat();
-    const results = allProducts.filter(p =>
-        p.name.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
-        p.brand.toLowerCase().includes(currentSearchTerm.toLowerCase()) ||
-        p.category.toLowerCase().includes(currentSearchTerm.toLowerCase())
-    );
-
-    const mainContent = document.getElementById('main-content');
-    mainContent.innerHTML = `
+  const mainContent = document.getElementById('main-content');
+  mainContent.innerHTML = `
     <h1 class="page-title">Search Results</h1>
     <p class="page-subtitle">Found ${results.length} products for "${currentSearchTerm}"</p>
     <div class="products-grid">
@@ -775,147 +632,169 @@ function performSearch() {
           <h3 style="font-size: 24px; color: #2c3e50; margin: 0 0 10px 0;">No products found</h3>
           <p style="font-size: 16px; color: #7f8c8d;">Try a different search term</p>
         </div>
-      ` : results.map(product => `
-        <div class="product-card">
-          <div class="product-image"><img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
+
+      ` : results.map(product => {
+    const isOutOfStock = product.stock <= 0;
+    return `
+        <div class="product-card ${isOutOfStock ? 'out-of-stock' : ''}" data-product-id="${product.id}" style="background-image: ${product['background-image'] || 'none'}">
+          <div class="product-image">
+             <img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';">
+             ${isOutOfStock ? '<span class="stock-badge" style="position: absolute; top: 10px; right: 10px; background: #e74c3c; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold;">Out of Stock</span>' : ''}
+          </div>
           <div class="product-brand">${product.brand}</div>
           <h3 class="product-name">${product.name}</h3>
           <div class="product-price">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
-          <button class="add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
+          <button class="add-to-cart-btn" data-product-id="${product.id}" ${isOutOfStock ? 'disabled style="opacity: 0.5; cursor: not-allowed;"' : ''}>
+             ${isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+          </button>
         </div>
-      `).join('')}
+      `}).join('')}
+
     </div>
   `;
-    observeElements('.product-card');
+  observeElements('.product-card');
 }
 
+
 async function addToCart(productId) {
-    const allProducts = Object.values(products).flat();
-    const product = allProducts.find(p => p.id === productId);
+  if (!productId || productId === 'null' || productId === 'undefined') {
+    return;
+  }
 
-    if (!product) return;
+  // 1. Get product object (CartService.addToCart expects object)
+  const allProducts = Object.values(products).flat();
+  const product = allProducts.find(p => p.id === productId);
 
-    if (cart.length >= 999) {
-        showToast("Maximum limit of 999 items reached. Please remove some items first.", '#e74c3c');
-        return;
+  if (!product) {
+    console.error('Product not found in local state:', productId);
+    return;
+  }
+
+  const result = await window.CartService.addToCart(product, 1);
+
+  // 2. Sync Local State
+  if (result.success) {
+    cart = window.CartService.getCart();
+    updateCartCount();
+
+    // 3. UI Feedback (Bounce Animation)
+    const cartBtn = document.getElementById('cart-btn');
+    if (cartBtn) {
+      cartBtn.animate([
+        { transform: 'scale(1)' },
+        { transform: 'scale(1.2)' },
+        { transform: 'scale(1)' }
+      ], {
+        duration: 300,
+        easing: 'ease-out'
+      });
     }
-
-    const existingItem = cart.find(item => item.product_id === productId);
-
-    if (existingItem) {
-        existingItem.quantity += 1;
-        const updateResult = await window.dataSdk.update(existingItem);
-        if (updateResult.isOk) {
-            showToast("Updated quantity in cart!");
-            bounceCartIcon();
-        } else {
-            showToast("Failed to update cart", '#e74c3c');
-        }
-    } else {
-        const createResult = await window.dataSdk.create({
-            id: `cart_${Date.now()}_${Math.random()}`,
-            type: 'cart',
-            product_id: productId,
-            quantity: 1,
-            created_at: new Date().toISOString()
-        });
-
-        if (createResult.isOk) {
-            showToast("Added to cart!");
-            bounceCartIcon();
-        } else {
-            showToast("Failed to add to cart", '#e74c3c');
-        }
-    }
+  }
+}
+const existingToast = document.querySelector('.toast');
+if (existingToast) {
+  existingToast.remove();
 }
 
 function showToast(message, bgColor = '#27ae60') {
-    const existingToast = document.querySelector('.toast');
-    if (existingToast) {
-        existingToast.remove();
-    }
+  const existingToast = document.querySelector('.toast');
+  if (existingToast) {
+    existingToast.remove();
+  }
 
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    toast.textContent = message;
-    toast.style.background = bgColor;
-    document.body.appendChild(toast);
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.textContent = message;
+  toast.style.background = bgColor;
+  document.body.appendChild(toast);
 
-    setTimeout(() => {
-        toast.remove();
-    }, 3000);
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
 }
 
 // Add bounce animation to cart icon
 function bounceCartIcon() {
-    const cartBtn = document.getElementById('cart-btn');
-    if (cartBtn) {
-        cartBtn.classList.add('bounce');
-        setTimeout(() => {
-            cartBtn.classList.remove('bounce');
-        }, 500);
-    }
+  const cartBtn = document.getElementById('cart-btn');
+  if (cartBtn) {
+    cartBtn.classList.add('bounce');
+    setTimeout(() => {
+      cartBtn.classList.remove('bounce');
+    }, 500);
+  }
 }
 
 // Add Intersection Observer for fade-in effect
 function observeElements(selector) {
-    const elements = document.querySelectorAll(selector);
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('fade-in');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.1 });
-
-    elements.forEach(element => {
-        observer.observe(element);
+  const elements = document.querySelectorAll(selector);
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('fade-in');
+        observer.unobserve(entry.target);
+      }
     });
+  }, { threshold: 0.1 });
+
+  elements.forEach(element => {
+    observer.observe(element);
+  });
 }
 
 function showCart() {
-    currentCategory = 'cart';
-    document.querySelectorAll('.nav-links button').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    renderCartPage();
+  currentCategory = 'cart';
+  document.querySelectorAll('.nav-links button').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  renderCartPage();
 }
 
 function renderCartPage() {
-    const mainContent = document.getElementById('main-content');
+  const mainContent = document.getElementById('main-content');
 
-    if (cart.length === 0) {
-        mainContent.innerHTML = `
+
+  if (cart.length === 0) {
+    mainContent.innerHTML = `
       <div class="cart-page">
-        <div class="empty-state">
-          <div style="width: 120px; height: 120px; margin: 0 auto 20px auto; border-radius: 8px; overflow: hidden; opacity: 0.5;">
-            <img src="empty-cart.jpg" alt="Your cart is empty" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.src=''; this.alt='Your cart is empty'; this.style.display='none';">
-          </div>
+        <div class="empty-state fade-in-up">
+           <div class="empty-state-icon">🛒</div>
           <h3>Your cart is empty</h3>
-          <p>Add some products to get started</p>
-          <button class="back-btn" data-category="home">Continue Shopping</button>
+          <p>Explore our premium parts and add some products to get started</p>
+          <button class="back-btn" onclick="showCategory('home')">Continue Shopping</button>
         </div>
       </div>
     `;
-        return;
-    }
+    return;
+  }
 
-    const allProducts = Object.values(products).flat();
-    const cartItems = cart.map(item => {
-        const product = allProducts.find(p => p.id === item.product_id);
-        return { ...item, product };
-    });
+  const allProducts = Object.values(products).flat();
+  const cartItems = cart.map(item => {
+    // CartService uses productId (camelCase)
+    const pid = item.productId || item.product_id;
+    const product = allProducts.find(p => p.id === pid);
+    // Fallback to data stored in cart item if full product not found
+    return {
+      ...item,
+      product: product || {
+        id: pid,
+        name: item.name,
+        brand: item.brand,
+        price: item.price,
+        icon: item.image || item.icon
+      }
+    };
+  });
 
-    const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-    const tax = subtotal * 0.14;
-    const total = subtotal + tax;
+  const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+  const tax = subtotal * 0.14;
+  const total = subtotal + tax;
 
-    mainContent.innerHTML = `
+  mainContent.innerHTML = `
     <div class="cart-page">
       <h1 class="page-title">Shopping Cart</h1>
       <p class="page-subtitle">${cart.length} item(s) in your cart</p>
       <div>
+
         ${cartItems.map(item => `
           <div class="cart-item">
             <div class="cart-item-image"><img src="${item.product.icon}" alt="${item.product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';"></div>
@@ -925,13 +804,14 @@ function renderCartPage() {
               <div class="cart-item-price">${item.product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
             </div>
             <div class="cart-item-actions">
-              <button class="qty-btn" data-backend-id="${item.__backendId}" data-quantity="${item.quantity - 1}">-</button>
+              <button class="qty-btn" data-item-id="${item.id}" data-quantity="${item.quantity - 1}">-</button>
               <span class="qty-display">${item.quantity}</span>
-              <button class="qty-btn" data-backend-id="${item.__backendId}" data-quantity="${item.quantity + 1}">+</button>
-              <button class="remove-btn" data-backend-id="${item.__backendId}">Remove</button>
+              <button class="qty-btn" data-item-id="${item.id}" data-quantity="${item.quantity + 1}">+</button>
+              <button class="remove-btn" data-item-id="${item.id}">Remove</button>
             </div>
           </div>
         `).join('')}
+
       </div>
       <div class="cart-summary">
         <div class="summary-row">
@@ -953,46 +833,58 @@ function renderCartPage() {
   `;
 }
 
-async function updateQuantity(backendId, newQuantity) {
-    if (newQuantity < 1) return;
 
-    const item = cart.find(i => i.__backendId === backendId);
-    if (!item) return;
+async function updateQuantity(cartItemId, newQuantity) {
+  if (newQuantity < 1) return;
 
-    item.quantity = newQuantity;
-    const updateResult = await window.dataSdk.update(item);
+  console.log('Updating quantity for item:', cartItemId, 'to', newQuantity);
+  const result = await window.CartService.updateQuantity(cartItemId, newQuantity);
 
-    if (!updateResult.isOk) {
-        showToast("Failed to update cart", '#e74c3c');
-    }
+  if (result.success) {
+    cart = window.CartService.getCart();
+    updateCartCount();
+    renderCartPage();
+  } else {
+    showToast(result.error || "Failed to update cart", '#e74c3c');
+  }
 }
 
-async function removeFromCart(backendId) {
-    const item = cart.find(i => i.__backendId === backendId);
-    if (!item) return;
+async function removeFromCart(cartItemId) {
+  console.log('Removing item from cart:', cartItemId);
+  const result = await window.CartService.removeFromCart(cartItemId);
 
-    const deleteResult = await window.dataSdk.delete(item);
-
-    if (deleteResult.isOk) {
-        showToast("Removed from cart");
-    } else {
-        showToast("Failed to remove item", '#e74c3c');
-    }
+  if (result.success) {
+    cart = window.CartService.getCart();
+    updateCartCount();
+    renderCartPage();
+    showToast("Removed from cart");
+  } else {
+    showToast(result.error || "Failed to remove item", '#e74c3c');
+  }
 }
+
 
 function renderCheckoutPage() {
-    const allProducts = Object.values(products).flat();
-    const cartItems = cart.map(item => {
-        const product = allProducts.find(p => p.id === item.product_id);
-        return { ...item, product };
-    });
+  const allProducts = Object.values(products).flat();
+  const cartItems = cart.map(item => {
+    const pid = item.productId || item.product_id;
+    const product = allProducts.find(p => p.id === pid);
+    return {
+      ...item,
+      product: product || {
+        id: pid,
+        name: item.name,
+        price: item.price
+      }
+    };
+  });
 
-    const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
-    const tax = subtotal * 0.14;
-    const total = subtotal + tax;
+  const subtotal = cartItems.reduce((sum, item) => sum + (item.product.price * item.quantity), 0);
+  const tax = subtotal * 0.14;
+  const total = subtotal + tax;
 
-    const mainContent = document.getElementById('main-content');
-    mainContent.innerHTML = `
+  const mainContent = document.getElementById('main-content');
+  mainContent.innerHTML = `
     <div class="checkout-page">
       <h1 class="page-title">Checkout</h1>
       <p class="page-subtitle">Complete your order</p>
@@ -1000,19 +892,19 @@ function renderCheckoutPage() {
       <form id="checkout-form">
         <div class="form-group">
           <label for="customer-name">Full Name *</label>
-          <input type="text" id="customer-name" required>
+          <input type="text" id="customer-name" name="customer-name" required>
         </div>
         <div class="form-group">
           <label for="customer-email">Email Address *</label>
-          <input type="email" id="customer-email" required>
+          <input type="email" id="customer-email" name="customer-email" required>
         </div>
         <div class="form-group">
           <label for="customer-phone">Phone Number *</label>
-          <input type="tel" id="customer-phone" required>
+          <input type="tel" id="customer-phone" name="customer-phone" required>
         </div>
         <div class="form-group">
           <label for="customer-address">Shipping Address *</label>
-          <textarea id="customer-address" required></textarea>
+          <textarea id="customer-address" name="customer-address" required></textarea>
         </div>
         <div class="cart-summary">
           <h3 style="margin: 0 0 15px 0;">Order Summary</h3>
@@ -1035,56 +927,200 @@ function renderCheckoutPage() {
             <span>${total.toFixed(2)} EGP</span>
           </div>
           <button type="button" class="continue-shopping-btn" data-category="cart">Back to Cart</button>
-          <button type="submit" class="checkout-btn" id="submit-order-btn">Place Order</button>
+          <button type="submit" class="checkout-btn">Proceed to Payment</button>
         </div>
       </form>
     </div>
   `;
+
+  document.getElementById('checkout-form').onsubmit = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const shippingDetails = {
+      fullName: formData.get('customer-name'),
+      email: formData.get('customer-email'),
+      phone: formData.get('customer-phone'),
+      address: formData.get('customer-address')
+    };
+    renderPaymentPage(shippingDetails, total);
+  };
 }
 
-async function submitOrder(event) {
-    event.preventDefault();
 
-    const submitBtn = document.getElementById('submit-order-btn');
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Processing...";
+function renderPaymentPage(shippingDetails, total) {
+  const mainContent = document.getElementById('main-content');
+  mainContent.innerHTML = `
+    <div class="checkout-page fade-in-up">
+      <h1 class="page-title">Payment Method</h1>
+      <p class="page-subtitle">Choose how you'd like to pay</p>
+      
+      <div class="payment-methods">
+        <label class="payment-method-card active" id="method-cash">
+          <input type="radio" name="payment-method" value="cash" checked>
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16"><path d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1H1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/><path d="M0 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V5zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V7a2 2 0 0 1-2-2H3z"/></svg>
+          <strong>Cash on Delivery</strong>
+          <span style="font-size: 12px; opacity: 0.7;">Pay when you receive yours items</span>
+        </label>
+        
+        <label class="payment-method-card" id="method-card">
+          <input type="radio" name="payment-method" value="card">
+          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" viewBox="0 0 16 16"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7z"/><path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z"/></svg>
+          <strong>Credit / Debit Card</strong>
+          <span style="font-size: 12px; opacity: 0.7;">Secure online payment</span>
+        </label>
+      </div>
 
-    const name = document.getElementById('customer-name').value;
-    const email = document.getElementById('customer-email').value;
-    const phone = document.getElementById('customer-phone').value;
-    const address = document.getElementById('customer-address').value;
+      <div id="card-details-container" class="hidden">
+        <div class="card-mockup-container">
+           <div class="credit-card">
+              <div class="card-chip"></div>
+              <div class="card-number-display" id="card-number-preview">**** **** **** ****</div>
+              <div class="card-details-display">
+                 <div>
+                    <div style="opacity: 0.6; font-size: 10px;">Card Holder</div>
+                    <div id="card-holder-preview">YOUR NAME</div>
+                 </div>
+                 <div>
+                    <div style="opacity: 0.6; font-size: 10px;">Expires</div>
+                    <div id="card-expiry-preview">MM/YY</div>
+                 </div>
+              </div>
+           </div>
+           
+           <div class="card-form-grid">
+              <div class="form-group" style="grid-column: span 3;">
+                 <label>Card Holder Name</label>
+                 <input type="text" id="card-name" placeholder="FULL NAME" maxlength="30">
+              </div>
+              <div class="form-group">
+                 <label>Card Number</label>
+                 <input type="text" id="card-number" placeholder="1234 5678 9101 1121" maxlength="19">
+              </div>
+              <div class="form-group">
+                 <label>Expiry</label>
+                 <input type="text" id="card-expiry" placeholder="MM/YY" maxlength="5">
+              </div>
+              <div class="form-group">
+                 <label>CVV</label>
+                 <input type="password" id="card-cvv" placeholder="***" maxlength="3">
+              </div>
+           </div>
+        </div>
+      </div>
 
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    for (const item of cart) {
-        await window.dataSdk.delete(item);
-    }
-
-    const messageDiv = document.getElementById('checkout-message');
-    messageDiv.innerHTML = `
-    <div class="success-message">
-      <strong>Order placed successfully!</strong><br>
-      Thank you for your order, ${name}. We'll send a confirmation email to ${email}.
+      <div class="cart-summary" style="margin-top: 30px;">
+        <div class="summary-row total">
+          <span>Amount to Pay:</span>
+          <span>${total.toFixed(2)} EGP</span>
+        </div>
+        <div style="display: flex; gap: 15px; margin-top: 20px;">
+           <button class="continue-shopping-btn" style="flex: 1;" onclick="renderCheckoutPage()">Back to Shipping</button>
+           <button id="final-place-order" class="checkout-btn" style="flex: 2;">Place Order & Pay</button>
+        </div>
+      </div>
     </div>
   `;
 
-    document.getElementById('checkout-form').style.display = 'none';
+  // Payment method switching logic
+  const cashBtn = document.getElementById('method-cash');
+  const cardBtn = document.getElementById('method-card');
+  const cardDetails = document.getElementById('card-details-container');
 
-    setTimeout(() => {
-        showCategory('home');
-    }, 3000);
+  cashBtn.onclick = () => {
+    cashBtn.classList.add('active');
+    cardBtn.classList.remove('active');
+    cardDetails.classList.add('hidden');
+    cashBtn.querySelector('input').checked = true;
+  };
+
+  cardBtn.onclick = () => {
+    cardBtn.classList.add('active');
+    cashBtn.classList.remove('active');
+    cardDetails.classList.remove('hidden');
+    cardBtn.querySelector('input').checked = true;
+  };
+
+  // Fake card live preview
+  document.getElementById('card-name').oninput = (e) => {
+    document.getElementById('card-holder-preview').textContent = e.target.value.toUpperCase() || 'YOUR NAME';
+  };
+
+  document.getElementById('card-number').oninput = (e) => {
+    let val = e.target.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim();
+    e.target.value = val;
+    document.getElementById('card-number-preview').textContent = val || '**** **** **** ****';
+  };
+
+  document.getElementById('card-expiry').oninput = (e) => {
+    let val = e.target.value.replace(/\D/g, '');
+    if (val.length >= 2) val = val.slice(0, 2) + '/' + val.slice(2, 4);
+    e.target.value = val;
+    document.getElementById('card-expiry-preview').textContent = val || 'MM/YY';
+  };
+
+  document.getElementById('final-place-order').onclick = async () => {
+    const method = document.querySelector('input[name="payment-method"]:checked').value;
+    const orderData = {
+      shippingAddress: shippingDetails,
+      paymentMethod: method,
+      paymentDetails: method === 'card' ? {
+        cardHolder: shippingDetails.fullName,
+        cardNumber: '***' + document.getElementById('card-number').value.slice(-4)
+      } : null
+    };
+
+    submitFinalOrder(orderData);
+  };
 }
 
+async function submitFinalOrder(orderData) {
+  const submitBtn = document.getElementById('final-place-order');
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Processing Payment...";
+
+  try {
+    const result = await window.OrdersService.createOrder(orderData);
+
+    if (result.success) {
+      cart = [];
+      updateCartCount();
+
+      const mainContent = document.getElementById('main-content');
+      mainContent.innerHTML = `
+        <div class="checkout-page fade-in-up" style="text-align: center; padding: 60px 20px;">
+          <div style="font-size: 80px; margin-bottom: 20px;">✅</div>
+          <h1 class="page-title">Order Successful!</h1>
+          <p class="page-subtitle">Thank you for your purchase.</p>
+          <div class="success-message" style="max-width: 500px; margin: 30px auto;">
+            <strong>Order #${result.order.id.slice(0, 8)} confirmed.</strong><br>
+            A confirmation email has been sent to ${orderData.shippingAddress.email}.
+          </div>
+          <button class="checkout-btn" onclick="showCategory('home')">Back to Home</button>
+        </div>
+      `;
+    } else {
+      showToast(result.error || "Order failed", '#e74c3c');
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Place Order & Pay";
+    }
+  } catch (e) {
+    console.error(e);
+    showToast("An unexpected error occurred", '#e74c3c');
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Place Order & Pay";
+  }
+}
+
+
 function renderServicePage() {
-    const mainContent = document.getElementById('main-content');
-    mainContent.innerHTML = `
+  const mainContent = document.getElementById('main-content');
+  mainContent.innerHTML = `
     <div class="service-page">
-      <h1 class="page-title">Toyota Corolla Service Booking</h1>
+      <h1 class="page-title">Service Booking</h1>
       <p class="page-subtitle">Schedule your maintenance service based on mileage</p>
       <div class="service-grid">
         ${servicePackages.map((pkg, index) => `
           <div class="service-card ${selectedService === index ? 'selected' : ''}" data-service-index="${index}">
-            <div class="service-km">${pkg.km} KM</div>
             <div class="service-title">${pkg.title}</div>
             <div class="service-price">${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
             <p style="margin: 10px 0 0 0; color: #7f8c8d; font-size: 14px;">${pkg.items.length} service items</p>
@@ -1097,148 +1133,253 @@ function renderServicePage() {
 }
 
 function showProductDetails(productId) {
-    window.location.href = `product.html?id=${productId}`;
+  window.location.href = `product.html?id=${productId}`;
 }
 
 function renderProductDetailsPage() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get('id');
-    const allProducts = Object.values(products).flat();
-    const product = allProducts.find(p => p.id === productId);
+  const urlParams = new URLSearchParams(window.location.search);
+  const productId = urlParams.get('id');
+  const allProducts = Object.values(products).flat();
+  const product = allProducts.find(p => p.id === productId);
 
-    if (!product) {
-        document.getElementById('product-details-container').innerHTML = '<h2>Product not found</h2>';
-        return;
-    }
+  if (!product) {
+    document.getElementById('product-details-container').innerHTML = '<h2>Product not found</h2>';
+    return;
+  }
 
-    document.getElementById('product-details-container').innerHTML = `
-    <button onclick="history.back()" style="margin-bottom: 20px; padding: 10px; background: #ddd; border: none; cursor: pointer;">Back</button>
-    <div class="product-details-content" style="display: flex; gap: 20px;">
-      <div class="product-details-image" style="flex: 1;">
-        <img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';" style="max-width: 100%;">
+  document.getElementById('product-details-container').innerHTML = `
+    <button onclick="history.back()" class="back-btn-modern">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/></svg>
+      Back
+    </button>
+    <div class="product-details-content fade-in-up" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; background: rgba(255,255,255,0.03); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px);">
+      <div class="product-details-image" style="background: white; border-radius: 15px; padding: 20px; display: flex; align-items: center; justify-content: center; height: 450px;">
+        <img src="${product.icon}" alt="${product.name}" onerror="this.src=''; this.alt='Image not found'; this.style.display='none';" style="max-width: 100%; max-height: 100%; object-fit: contain;">
       </div>
-      <div class="product-details-info" style="flex: 1;">
-        <h2 style="margin: 0 0 10px 0; color: #2c3e50; font-size: 28px;">${product.name}</h2>
-        <div class="product-brand" style="font-size: 16px; margin-bottom: 15px;">${product.brand}</div>
-        <div class="product-price" style="font-size: 32px; margin-bottom: 20px;">${product.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
-        <p style="color: #7f8c8d; font-size: 16px; line-height: 1.6; margin-bottom: 25px;">${product.description}</p>
-        <div class="product-specs">
-          <h4>Product Specifications</h4>
-          <div class="spec-row">
-            <span class="spec-label">Part Number:</span>
-            <span class="spec-value">${product.partNumber}</span>
+      <div class="product-details-info">
+        <div class="product-brand" style="font-size: 16px; color: var(--accent-color); font-weight: 700; text-transform: uppercase; margin-bottom: 10px;">${product.brand}</div>
+        <h2 style="margin: 0 0 15px 0; color: white; font-size: 32px; font-weight: 800;">${product.name}</h2>
+        <div class="product-price" style="font-size: 36px; color: var(--secondary-color); font-weight: 700; margin-bottom: 25px;">${product.price.toFixed(2)} <span class="currency-symbol" style="font-size: 18px;">EGP</span></div>
+        
+        <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; margin-bottom: 25px;">
+           <p style="color: #ccc; font-size: 16px; line-height: 1.8; margin: 0;">${product.description}</p>
+        </div>
+
+        <div class="product-specs" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px;">
+          <div class="spec-item">
+            <span style="display: block; font-size: 12px; color: #666; text-transform: uppercase;">SKU / PART NO</span>
+            <span style="font-weight: 600;">${product.sku || 'N/A'}</span>
           </div>
-          <div class="spec-row">
-            <span class="spec-label">Compatibility:</span>
-            <span class="spec-value">${product.compatibility}</span>
+          <div class="spec-item">
+            <span style="display: block; font-size: 12px; color: #666; text-transform: uppercase;">VEHICLE MODEL</span>
+            <span style="font-weight: 600;">${product.car_model || 'Universal'}</span>
           </div>
-          <div class="spec-row">
-            <span class="spec-label">Category:</span>
-            <span class="spec-value">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</span>
+          <div class="spec-item">
+            <span style="display: block; font-size: 12px; color: #666; text-transform: uppercase;">YEAR COMPATIBILITY</span>
+            <span style="font-weight: 600;">${product.year_compatibility || 'All Years'}</span>
+          </div>
+          <div class="spec-item">
+            <span style="display: block; font-size: 12px; color: #666; text-transform: uppercase;">Category</span>
+            <span style="font-weight: 600;">${product.category || 'Standard'}</span>
+          </div>
+          <div class="spec-item">
+             <span style="display: block; font-size: 12px; color: #666; text-transform: uppercase;">Stock Status</span>
+             <span style="color: ${product.stock > 0 ? '#27ae60' : '#e74c3c'}; font-weight: bold;">
+                 ${product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+             </span>
           </div>
         </div>
-        <button class="add-to-cart-btn" data-product-id="${product.id}">Add to Cart</button>
+
+        <div style="display: flex; gap: 15px; margin-bottom: 40px;">
+          <button class="add-to-cart-btn" data-product-id="${product.id}" ${product.stock <= 0 ? 'disabled' : ''} style="flex: 2; height: 55px; font-size: 18px; font-weight: 700;">
+              ${product.stock <= 0 ? 'NOT AVAILABLE' : 'ADD TO CART'}
+          </button>
+          <button class="favorite-btn ${window.FavoritesService.isFavorite(product.id) ? 'active' : ''}" 
+                  data-product-id="${product.id}"
+                  style="flex: 1; border-radius: 8px;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16" style="margin: 0 auto;">
+              <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="reviews-section" style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px;">
+           <h3 style="color: white; margin-bottom: 20px;">Customer Reviews</h3>
+           <div id="reviews-container">
+              <p style="color: #666; font-style: italic;">No reviews yet. Be the first to review this product!</p>
+           </div>
+        </div>
       </div>
     </div>
   `;
+
+  // Fetch real reviews
+  window.ProductsService.getProductReviews(productId).then(res => {
+    if (res.success && res.reviews.length > 0) {
+      const container = document.getElementById('reviews-container');
+      container.innerHTML = res.reviews.map(r => `
+           <div style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.05);">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                 <span style="font-weight: 700; color: white;">${r.profile?.full_name || 'Verified Buyer'}</span>
+                 <span style="color: var(--secondary-color);">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+              </div>
+              <p style="color: #999; margin: 0; font-size: 14px;">${r.comment}</p>
+           </div>
+        `).join('');
+    }
+  });
 }
 
 function selectService(index) {
-    currentCategory = 'service-details';
-    selectedService = index;
-    includeParts = false;
-    selectedParts = [];
+  currentCategory = 'service-details';
+  selectedService = index;
+  includeParts = true; // Always include parts
+  selectedParts = [];
 
-    renderServiceDetailsPage();
+  // Auto-select all available products for this package
+  const pkg = servicePackages[selectedService];
+  if (pkg.products && pkg.products.length > 0) {
+    selectedParts = pkg.products.map(p => ({
+      id: p.id,
+      name: p.name,
+      price: p.price
+    }));
+  }
+
+  renderServiceDetailsPage();
 }
 
 function renderServiceDetailsPage() {
-    if (selectedService === null) return;
+  if (selectedService === null) return;
 
-    const pkg = servicePackages[selectedService];
-    const allProducts = Object.values(products).flat();
+  const pkg = servicePackages[selectedService];
 
-    const mainContent = document.getElementById('main-content');
-    mainContent.innerHTML = `
+  // Calculate totals with included parts
+  const partsTotal = pkg.products ? pkg.products.reduce((sum, p) => sum + p.price, 0) : 0;
+  const subtotal = pkg.price + partsTotal;
+  const tax = subtotal * 0.14;
+  const total = subtotal + tax;
+
+  const mainContent = document.getElementById('main-content');
+  mainContent.innerHTML = `
     <div class="service-details-page">
-      <button class="back-btn" data-category="service" style="margin-bottom: 20px;">Back to Services</button>
-      <h1 class="page-title">${pkg.km} KM Service - ${pkg.title}</h1>
-      <p class="page-subtitle">Complete maintenance package for your Toyota Corolla</p>
-      <div style="background: #252525; padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-          <div>
-            <h3 style="margin: 0; color: #2c3e50; font-size: 24px;">${pkg.title}</h3>
-            <p style="margin: 5px 0 0 0; color: #7f8c8d;">Recommended at ${pkg.km} kilometers</p>
+      <button class="back-btn-modern" data-category="service" style="margin-bottom: 20px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/></svg>
+        Back to Services
+      </button>
+      <h1 class="page-title">${pkg.title}</h1>
+      <p class="page-subtitle">Premium maintenance package for your vehicle</p>
+      
+      <div style="background: rgba(40,40,40,0.5); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px;">
+        <div style="grid-template-columns: 1fr; gap: 20px; display: grid;">
+          <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div>
+              <p style="margin: 5px 0 0 0; color: #888;">Complete Package Details</p>
+            </div>
+            <div style="background: var(--accent-color); color: black; padding: 10px 20px; border-radius: 10px; font-weight: 800; font-size: 20px;">
+              ${pkg.price.toFixed(2)} EGP
+            </div>
           </div>
-          <div class="service-price" style="margin: 0;">${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
+          
+          <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
+             <h4 style="margin: 0 0 15px 0; color: #ccc; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;">Service Tasks</h4>
+             <ul style="padding: 0; margin: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+               ${pkg.items.map(item => `
+                 <li style="display: flex; align-items: center; gap: 8px; color: #eee; font-size: 14px;">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
+                   ${item.name}
+                 </li>
+               `).join('')}
+             </ul>
+          </div>
         </div>
-        <table class="service-table">
-          <thead>
-            <tr>
-              <th>Service Item</th>
-              <th>Status</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${pkg.items.map(item => `
-              <tr>
-                <td><strong>${item.name}</strong></td>
-                <td>${item.required ? `<span style="color: #e74c3c; font-weight: 600;">Required</span>` : `<span style="color: #7f8c8d;">Optional</span>`}</td>
-                <td style="color: #7f8c8d; font-size: 14px;">${getServiceDescription(item.name)}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
       </div>
-      <div class="parts-option">
-        <label>
-          <input type="checkbox" id="include-parts-checkbox">
-          <span>Include parts replacement with this service</span>
-        </label>
+
+      ${pkg.products && pkg.products.length > 0 ? `
+      <div class="included-parts" style="margin-top: 30px;">
+        <h3 style="margin-bottom: 20px; color: var(--accent-color);">Parts Included</h3>
+        <div class="parts-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
+          ${pkg.products.map(p => `
+            <div class="part-card" style="background: white; padding: 15px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); text-align: center; color: #333;">
+              <div style="height: 120px; background: white; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; padding: 10px;">
+                <img src="${p.icon || ''}" alt="${p.name}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+              </div>
+              <div style="font-weight: 700; font-size: 14px; margin-bottom: 5px; color: #222; min-height: 40px; display: flex; align-items: center; justify-content: center;">${p.name}</div>
+              <div style="background: #f8f9fa; color: #27ae60; font-weight: 800; border-radius: 6px; padding: 5px;">${p.price.toFixed(2)} EGP</div>
+            </div>
+          `).join('')}
+        </div>
       </div>
-      <div id="parts-selection-container"></div>
-      <div class="booking-form">
-        <h3>Book Your Appointment</h3>
+      ` : ''}
+
+      <div class="booking-form" style="margin-top: 40px; background: rgba(0,0,0,0.2); padding: 30px; border-radius: 16px;">
+        <h3 style="color: white; margin-bottom: 25px;">Schedule Your Appointment</h3>
         <form id="service-booking-form">
-          <div class="form-group">
-            <label for="service-customer-name">Full Name *</label>
-            <input type="text" id="service-customer-name" required>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+            <div class="form-group">
+              <label style="display: block; margin-bottom: 8px; color: #888;">Full Name *</label>
+              <input type="text" id="service-customer-name" required placeholder="John Doe" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
+            </div>
+            <div class="form-group">
+              <label style="display: block; margin-bottom: 8px; color: #888;">Phone Number *</label>
+              <input type="tel" id="service-customer-phone" required placeholder="+20 1XX XXX XXXX" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
+            </div>
+            <div class="form-group">
+              <label style="display: block; margin-bottom: 8px; color: #888;">Email Address *</label>
+              <input type="email" id="service-customer-email" required placeholder="john@example.com" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="service-customer-phone">Phone Number *</label>
-            <input type="tel" id="service-customer-phone" required>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
+            <div class="form-group">
+              <label style="display: block; margin-bottom: 8px; color: #888;">Vehicle Make *</label>
+              <input type="text" id="service-vehicle-make" required placeholder="e.g. Toyota" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
+            </div>
+            <div class="form-group">
+              <label style="display: block; margin-bottom: 8px; color: #888;">Vehicle Model *</label>
+              <input type="text" id="service-vehicle-model" required placeholder="e.g. Corolla" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
+            </div>
+            <div class="form-group">
+              <label style="display: block; margin-bottom: 8px; color: #888;">Model Year *</label>
+              <input type="number" id="service-vehicle-year" required placeholder="2024" min="1900" max="${new Date().getFullYear() + 1}" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="service-customer-email">Email Address *</label>
-            <input type="email" id="service-customer-email" required>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+            <div class="form-group">
+              <label style="display: block; margin-bottom: 8px; color: #888;">Preferred Date *</label>
+              <input type="date" id="service-appointment-date" required min="${new Date().toISOString().split('T')[0]}" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
+            </div>
+            <div class="form-group">
+              <label style="display: block; margin-bottom: 8px; color: #888;">Preferred Time *</label>
+              <input type="time" id="service-appointment-time" required style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
+            </div>
           </div>
-          <div class="form-group">
-            <label for="service-appointment-date">Preferred Date *</label>
-            <input type="date" id="service-appointment-date" required min="${new Date().toISOString().split('T')[0]}">
-          </div>
-          <div class="cart-summary">
-            <div class="summary-row">
-              <span>Service Package:</span>
-              <span>${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></span>
+
+          <div class="payment-summary" style="margin-top: 40px; border-top: 1px solid #333; padding-top: 30px;">
+            <div style="max-width: 400px; margin-left: auto;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 15px; color: #888;">
+                <span>Workshop Service Fee</span>
+                <span>${pkg.price.toFixed(2)} EGP</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 15px; color: #888;">
+                <span>Total Parts Cost</span>
+                <span>${partsTotal.toFixed(2)} EGP</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 600;">
+                <span>Subtotal</span>
+                <span>${subtotal.toFixed(2)} EGP</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 15px; color: #888;">
+                <span>VAT (14%)</span>
+                <span>${tax.toFixed(2)} EGP</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--accent-color);">
+                <span style="font-size: 20px; font-weight: 800; color: white;">Total Payable</span>
+                <span style="font-size: 24px; font-weight: 800; color: var(--accent-color);">${total.toFixed(2)} EGP</span>
+              </div>
+              <button type="submit" class="checkout-btn" id="book-service-btn" style="width: 100%; margin-top: 30px; padding: 18px; font-size: 18px;">Confirm Appointment</button>
             </div>
-            <div class="summary-row" id="parts-cost-row" style="display: none;">
-              <span>Parts Cost:</span>
-              <span id="parts-cost">0.00 <span class="currency-symbol">EGP</span></span>
-            </div>
-            <div class="summary-row">
-              <span>Subtotal:</span>
-              <span id="subtotal-cost">${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></span>
-            </div>
-            <div class="summary-row">
-              <span>Tax (14%):</span>
-              <span id="tax-cost">${(pkg.price * 0.14).toFixed(2)} <span class="currency-symbol">EGP</span></span>
-            </div>
-            <div class="summary-row total">
-              <span>Total Cost:</span>
-              <span id="total-cost">${(pkg.price * 1.14).toFixed(2)} <span class="currency-symbol">EGP</span></span>
-            </div>
-            <button type="submit" class="checkout-btn" id="book-service-btn">Book Service Appointment</button>
           </div>
         </form>
       </div>
@@ -1247,80 +1388,80 @@ function renderServiceDetailsPage() {
 }
 
 function getServiceDescription(serviceName) {
-    const descriptions = {
-        'Engine Oil Change': 'Replace old engine oil with fresh, high-quality oil',
-        'Oil Filter Replacement': 'Install new oil filter to ensure clean oil circulation',
-        'Air Filter Replacement': 'Replace air filter for optimal engine breathing',
-        'Air Filter Inspection': 'Check air filter condition and clean if necessary',
-        'Spark Plugs Replacement': 'Install new spark plugs for better ignition',
-        'Spark Plugs Check': 'Inspect spark plugs condition and gap',
-        'Timing Belt Replacement': 'Replace timing belt to prevent engine damage',
-        'Timing Belt Inspection': 'Check timing belt for wear and proper tension',
-        'Water Pump Replacement': 'Install new water pump for cooling system',
-        'Water Pump Check': 'Inspect water pump for leaks and proper operation',
-        'Water Pump Inspection': 'Check water pump condition and coolant flow',
-        'Thermostat Replacement': 'Replace thermostat for proper temperature control',
-        'Thermostat Check': 'Test thermostat operation and temperature range',
-        'Transmission Fluid Change': 'Replace transmission fluid for smooth shifting',
-        'Transmission Fluid Check': 'Check transmission fluid level and condition',
-        'Coolant Flush': 'Complete cooling system flush and refill',
-        'Coolant Replacement': 'Replace old coolant with fresh antifreeze',
-        'Coolant Check': 'Check coolant level and concentration',
-        'Brake Pads Inspection': 'Inspect brake pads for wear and thickness',
-        'Brake Pads Front': 'Replace front brake pads for safe stopping',
-        'Brake Pads Rear': 'Replace rear brake pads for optimal braking',
-        'Brake Pads All Around': 'Replace all brake pads front and rear',
-        'Brake Pads & Rotors Front': 'Replace front brake pads and rotors',
-        'Brake Pads & Rotors Rear': 'Replace rear brake pads and rotors',
-        'Brake Fluid Check': 'Check brake fluid level and color',
-        'Brake Fluid Replacement': 'Replace brake fluid for safe braking',
-        'Brake Fluid Flush': 'Complete brake system fluid flush',
-        'Brake System Overhaul': 'Complete brake system inspection and service',
-        'Brake Inspection': 'Comprehensive brake system inspection',
-        'Tire Rotation': 'Rotate tires for even wear pattern',
-        'Tire Rotation & Balance': 'Rotate and balance tires for smooth ride',
-        'Battery Test': 'Test battery condition and charging system',
-        'Cabin Air Filter': 'Replace cabin air filter for clean interior air',
-        'Power Steering Fluid': 'Check and top up power steering fluid',
-        'Differential Oil Change': 'Replace differential oil for smooth operation',
-        'Fuel System Cleaning': 'Clean fuel injectors and system components',
-        'Fuel System Clean': 'Professional fuel system cleaning service',
-        'Engine Degreasing': 'Clean engine bay and remove oil buildup',
-        'Suspension Check': 'Inspect suspension components for wear',
-        'Complete Inspection': 'Comprehensive vehicle safety inspection',
-        'Complete Vehicle Inspection': 'Full multi-point vehicle inspection',
-        'Comprehensive Inspection': 'Detailed inspection of all vehicle systems'
-    };
+  const descriptions = {
+    'Engine Oil Change': 'Replace old engine oil with fresh, high-quality oil',
+    'Oil Filter Replacement': 'Install new oil filter to ensure clean oil circulation',
+    'Air Filter Replacement': 'Replace air filter for optimal engine breathing',
+    'Air Filter Inspection': 'Check air filter condition and clean if necessary',
+    'Spark Plugs Replacement': 'Install new spark plugs for better ignition',
+    'Spark Plugs Check': 'Inspect spark plugs condition and gap',
+    'Timing Belt Replacement': 'Replace timing belt to prevent engine damage',
+    'Timing Belt Inspection': 'Check timing belt for wear and proper tension',
+    'Water Pump Replacement': 'Install new water pump for cooling system',
+    'Water Pump Check': 'Inspect water pump for leaks and proper operation',
+    'Water Pump Inspection': 'Check water pump condition and coolant flow',
+    'Thermostat Replacement': 'Replace thermostat for proper temperature control',
+    'Thermostat Check': 'Test thermostat operation and temperature range',
+    'Transmission Fluid Change': 'Replace transmission fluid for smooth shifting',
+    'Transmission Fluid Check': 'Check transmission fluid level and condition',
+    'Coolant Flush': 'Complete cooling system flush and refill',
+    'Coolant Replacement': 'Replace old coolant with fresh antifreeze',
+    'Coolant Check': 'Check coolant level and concentration',
+    'Brake Pads Inspection': 'Inspect brake pads for wear and thickness',
+    'Brake Pads Front': 'Replace front brake pads for safe stopping',
+    'Brake Pads Rear': 'Replace rear brake pads for optimal braking',
+    'Brake Pads All Around': 'Replace all brake pads front and rear',
+    'Brake Pads & Rotors Front': 'Replace front brake pads and rotors',
+    'Brake Pads & Rotors Rear': 'Replace rear brake pads and rotors',
+    'Brake Fluid Check': 'Check brake fluid level and color',
+    'Brake Fluid Replacement': 'Replace brake fluid for safe braking',
+    'Brake Fluid Flush': 'Complete brake system fluid flush',
+    'Brake System Overhaul': 'Complete brake system inspection and service',
+    'Brake Inspection': 'Comprehensive brake system inspection',
+    'Tire Rotation': 'Rotate tires for even wear pattern',
+    'Tire Rotation & Balance': 'Rotate and balance tires for smooth ride',
+    'Battery Test': 'Test battery condition and charging system',
+    'Cabin Air Filter': 'Replace cabin air filter for clean interior air',
+    'Power Steering Fluid': 'Check and top up power steering fluid',
+    'Differential Oil Change': 'Replace differential oil for smooth operation',
+    'Fuel System Cleaning': 'Clean fuel injectors and system components',
+    'Fuel System Clean': 'Professional fuel system cleaning service',
+    'Engine Degreasing': 'Clean engine bay and remove oil buildup',
+    'Suspension Check': 'Inspect suspension components for wear',
+    'Complete Inspection': 'Comprehensive vehicle safety inspection',
+    'Complete Vehicle Inspection': 'Full multi-point vehicle inspection',
+    'Comprehensive Inspection': 'Detailed inspection of all vehicle systems'
+  };
 
-    return descriptions[serviceName] || 'Professional automotive service';
+  return descriptions[serviceName] || 'Professional automotive service';
 }
 
 function togglePartsSelection(checked) {
-    includeParts = checked;
+  includeParts = checked;
 
-    if (checked) {
-        renderPartsSelection();
-    } else {
-        document.getElementById('parts-selection-container').innerHTML = '';
-        selectedParts = [];
-        updateServiceTotal();
-    }
+  if (checked) {
+    renderPartsSelection();
+  } else {
+    document.getElementById('parts-selection-container').innerHTML = '';
+    selectedParts = [];
+    updateServiceTotal();
+  }
 }
 
 function renderPartsSelection() {
-    const pkg = servicePackages[selectedService];
-    const allProducts = Object.values(products).flat();
+  const pkg = servicePackages[selectedService];
+  const allProducts = Object.values(products).flat();
 
-    const availableParts = pkg.items
-        .filter(item => item.part)
-        .map(item => {
-            const product = allProducts.find(p => p.id === item.part);
-            return { ...item, product };
-        })
-        .filter(item => item.product);
+  const availableParts = pkg.items
+    .filter(item => item.part)
+    .map(item => {
+      const product = allProducts.find(p => p.id === item.part);
+      return { ...item, product };
+    })
+    .filter(item => item.product);
 
-    const container = document.getElementById('parts-selection-container');
-    container.innerHTML = `
+  const container = document.getElementById('parts-selection-container');
+  container.innerHTML = `
     <div class="parts-selection">
       <h4 style="margin: 0 0 15px 0; color: #2c3e50;">Select Parts to Include:</h4>
       ${availableParts.map(item => `
@@ -1337,171 +1478,244 @@ function renderPartsSelection() {
 }
 
 function togglePart(productId, price, checked) {
-    if (checked) {
-        selectedParts.push({ productId, price });
-    } else {
-        selectedParts = selectedParts.filter(p => p.productId !== productId);
-    }
-    updateServiceTotal();
+  if (checked) {
+    selectedParts.push({ productId, price });
+  } else {
+    selectedParts = selectedParts.filter(p => p.productId !== productId);
+  }
+  updateServiceTotal();
 }
 
 function updateServiceTotal() {
-    const pkg = servicePackages[selectedService];
-    const partsCost = selectedParts.reduce((sum, part) => sum + part.price, 0);
-    const subtotal = pkg.price + partsCost;
-    const tax = subtotal * 0.14;
-    const total = subtotal + tax;
+  const pkg = servicePackages[selectedService];
+  const partsCost = selectedParts.reduce((sum, part) => sum + part.price, 0);
+  const subtotal = pkg.price + partsCost;
+  const tax = subtotal * 0.14;
+  const total = subtotal + tax;
 
-    const partsCostRow = document.getElementById('parts-cost-row');
-    const partsCostSpan = document.getElementById('parts-cost');
-    const subtotalCostSpan = document.getElementById('subtotal-cost');
-    const taxCostSpan = document.getElementById('tax-cost');
-    const totalCostSpan = document.getElementById('total-cost');
+  const partsCostRow = document.getElementById('parts-cost-row');
+  const partsCostSpan = document.getElementById('parts-cost');
+  const subtotalCostSpan = document.getElementById('subtotal-cost');
+  const taxCostSpan = document.getElementById('tax-cost');
+  const totalCostSpan = document.getElementById('total-cost');
 
-    if (partsCost > 0) {
-        partsCostRow.style.display = 'flex';
-        partsCostSpan.innerHTML = `${partsCost.toFixed(2)} <span class="currency-symbol">EGP</span>`;
-    } else {
-        partsCostRow.style.display = 'none';
-    }
+  if (partsCost > 0) {
+    partsCostRow.style.display = 'flex';
+    partsCostSpan.innerHTML = `${partsCost.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+  } else {
+    partsCostRow.style.display = 'none';
+  }
 
-    subtotalCostSpan.innerHTML = `${subtotal.toFixed(2)} <span class="currency-symbol">EGP</span>`;
-    taxCostSpan.innerHTML = `${tax.toFixed(2)} <span class="currency-symbol">EGP</span>`;
-    totalCostSpan.innerHTML = `${total.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+  subtotalCostSpan.innerHTML = `${subtotal.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+  taxCostSpan.innerHTML = `${tax.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+  totalCostSpan.innerHTML = `${total.toFixed(2)} <span class="currency-symbol">EGP</span>`;
 }
+
 
 async function submitServiceBooking(event) {
-    event.preventDefault();
+  event.preventDefault();
 
-    if (cart.length >= 999) {
-        showToast("Maximum limit of 999 bookings reached. Please contact support.", '#e74c3c');
-        return;
-    }
+  const pkg = servicePackages[selectedService];
+  if (!pkg || !pkg.id || pkg.id === 'null' || pkg.id === 'undefined') {
+    showToast("Service configuration error. Please try again later.", '#e74c3c');
+    return;
+  }
 
-    const submitBtn = document.getElementById('book-service-btn');
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Booking...";
+  const submitBtn = document.getElementById('book-service-btn');
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Booking...";
 
-    const pkg = servicePackages[selectedService];
-    const name = document.getElementById('service-customer-name').value;
-    const phone = document.getElementById('service-customer-phone').value;
-    const email = document.getElementById('service-customer-email').value;
-    const date = document.getElementById('service-appointment-date').value;
+  const name = document.getElementById('service-customer-name').value;
+  const phone = document.getElementById('service-customer-phone').value;
+  const email = document.getElementById('service-customer-email').value;
+  const date = document.getElementById('service-appointment-date').value;
+  const time = document.getElementById('service-appointment-time')?.value || "09:00";
 
-    const bookingData = {
-        id: `service_${Date.now()}_${Math.random()}`,
-        type: 'service',
-        service_km: pkg.km,
-        with_parts: includeParts,
-        customer_name: name,
-        customer_phone: phone,
-        customer_email: email,
-        appointment_date: date,
-        created_at: new Date().toISOString()
-    };
+  const vMake = document.getElementById('service-vehicle-make').value;
+  const vModel = document.getElementById('service-vehicle-model').value;
+  const vYear = document.getElementById('service-vehicle-year').value;
 
-    const createResult = await window.dataSdk.create(bookingData);
+  const bookingData = {
+    serviceTypeId: pkg.id,
+    scheduledDate: date,
+    scheduledTime: time,
+    vehicleInfo: {
+      make: vMake,
+      model: vModel,
+      year: vYear,
+      mileage: pkg.km
+    },
+    customerInfo: { name, phone, email }, // Optional, mostly for guest (Supabase service expects auth)
+    notes: includeParts ? `Include parts: ${selectedParts.map(p => p.id).join(', ')}` : ''
+  };
 
-    if (createResult.isOk) {
-        const form = document.getElementById('service-booking-form');
-        form.innerHTML = `
-      <div class="success-message">
-        <strong>Service appointment booked successfully!</strong><br>
-        Your ${pkg.km} KM service for Toyota Corolla has been scheduled for ${date}. We'll send a confirmation to ${email}.
-      </div>
-    `;
+  try {
+    const result = await window.BookingsService.createBooking(bookingData);
 
-        setTimeout(() => {
-            showCategory('home');
-        }, 3000);
+    if (result.success) {
+      const form = document.getElementById('service-booking-form');
+      form.innerHTML = `
+          <div class="success-message">
+            <strong>Service appointment booked successfully!</strong><br>
+            Your ${pkg.km} KM service has been scheduled for ${date}. We'll send a confirmation to ${email}.
+          </div>
+        `;
+
+      setTimeout(() => {
+        showCategory('home');
+      }, 3000);
     } else {
-        showToast('Failed to book service. Please try again.', '#e74c3c');
+      if (result.requiresAuth) {
+        showToast("Please login to book a service", '#e74c3c');
+        setTimeout(() => window.location.href = 'login.html', 1500);
+      } else {
+        showToast(result.error || "Failed to book service", '#e74c3c');
         submitBtn.disabled = false;
         submitBtn.textContent = 'Book Service Appointment';
+      }
     }
+  } catch (e) {
+    console.error(e);
+    showToast("Booking failed due to an error", '#e74c3c');
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Book Service Appointment';
+  }
 }
+
 
 document.addEventListener('DOMContentLoaded', initApp);
 
+// ==========================================
+// SERVICE SYNC & GLOBAL EVENTS
+// ==========================================
+window.addEventListener('cartUpdated', (e) => {
+  cart = e.detail.cart;
+  updateCartCount();
+  if (currentCategory === 'cart') renderCartPage();
+});
+
+window.addEventListener('favoritesUpdated', (e) => {
+  if (currentCategory === 'favorites') {
+    renderFavoritesPage();
+  }
+});
+
 function flyToCart(element) {
-    const img = element.querySelector('img');
-    if (!img) return;
+  const img = element.querySelector('img');
+  if (!img) return;
 
-    const flyingImage = img.cloneNode();
-    const rect = img.getBoundingClientRect();
+  const flyingImage = img.cloneNode();
+  const rect = img.getBoundingClientRect();
 
-    flyingImage.style.position = 'fixed';
-    flyingImage.style.left = `${rect.left}px`;
-    flyingImage.style.top = `${rect.top}px`;
-    flyingImage.style.width = `${rect.width}px`;
-    flyingImage.style.height = `${rect.height}px`;
-    flyingImage.style.transition = 'all 1s ease-in-out';
-    flyingImage.style.zIndex = '10000';
+  flyingImage.style.position = 'fixed';
+  flyingImage.style.left = `${rect.left}px`;
+  flyingImage.style.top = `${rect.top}px`;
+  flyingImage.style.width = `${rect.width}px`;
+  flyingImage.style.height = `${rect.height}px`;
+  flyingImage.style.transition = 'all 1s ease-in-out';
+  flyingImage.style.zIndex = '10000';
 
-    document.body.appendChild(flyingImage);
+  document.body.appendChild(flyingImage);
 
-    const cartIcon = document.getElementById('cart-btn');
-    const cartRect = cartIcon.getBoundingClientRect();
+  const cartIcon = document.getElementById('cart-btn');
+  const cartRect = cartIcon.getBoundingClientRect();
 
-    requestAnimationFrame(() => {
-        flyingImage.style.left = `${cartRect.left + cartRect.width / 2}px`;
-        flyingImage.style.top = `${cartRect.top + cartRect.height / 2}px`;
-        flyingImage.style.width = '0px';
-        flyingImage.style.height = '0px';
-        flyingImage.style.opacity = '0';
-    });
+  requestAnimationFrame(() => {
+    flyingImage.style.left = `${cartRect.left + cartRect.width / 2}px`;
+    flyingImage.style.top = `${cartRect.top + cartRect.height / 2}px`;
+    flyingImage.style.width = '0px';
+    flyingImage.style.height = '0px';
+    flyingImage.style.opacity = '0';
+  });
 
-    setTimeout(() => {
-        flyingImage.remove();
-    }, 1000);
+  setTimeout(() => {
+    flyingImage.remove();
+  }, 1000);
 }
 
 document.addEventListener('click', (e) => {
-    const categoryButton = e.target.closest('[data-category]');
-    if (categoryButton) {
-        showCategory(categoryButton.dataset.category);
+  const categoryButton = e.target.closest('[data-category]');
+  if (categoryButton) {
+    showCategory(categoryButton.dataset.category);
+  }
+
+  if (e.target.matches('.add-to-cart-btn')) {
+    const productCard = e.target.closest('.product-card');
+    if (productCard) {
+      flyToCart(productCard);
     }
-    if (e.target.matches('.add-to-cart-btn')) {
-        const productCard = e.target.closest('.product-card');
-        if (productCard) {
-            flyToCart(productCard);
-        }
-        addToCart(e.target.dataset.productId);
-    }
-    if (e.target.matches('.view-details-btn')) {
-        showProductDetails(e.target.dataset.productId);
-    }
-    if (e.target.matches('.close-modal')) {
-        closeProductModal();
-    }
-    if (e.target.matches('.product-details-modal')) {
-        closeProductModal();
-    }
-    if (e.target.matches('.qty-btn')) {
-        updateQuantity(e.target.dataset.backendId, parseInt(e.target.dataset.quantity));
-    }
-    if (e.target.matches('.remove-btn')) {
-        removeFromCart(e.target.dataset.backendId);
-    }
-    if (e.target.matches('[data-service-index]')) {
-        selectService(parseInt(e.target.dataset.serviceIndex));
-    }
-    if (e.target.matches('#include-parts-checkbox')) {
-        togglePartsSelection(e.target.checked);
-    }
-    if (e.target.matches('.part-item input[type="checkbox"]')) {
-        togglePart(e.target.value, parseFloat(e.target.dataset.price), e.target.checked);
-    }
+    // Handled by AppIntegration to avoid double-add
+    // addToCart(e.target.dataset.productId); 
+  }
+
+  if (e.target.matches('.view-details-btn')) {
+    showProductDetails(e.target.dataset.productId);
+  }
+  if (e.target.matches('.close-modal')) {
+    closeProductModal();
+  }
+  if (e.target.matches('.product-details-modal')) {
+    closeProductModal();
+  }
+
+  if (e.target.matches('.qty-btn')) {
+    updateQuantity(e.target.dataset.itemId, parseInt(e.target.dataset.quantity));
+  }
+  if (e.target.matches('.remove-btn')) {
+    removeFromCart(e.target.dataset.itemId);
+  }
+
+  const serviceCard = e.target.closest('[data-service-index]');
+  if (serviceCard) {
+    selectService(parseInt(serviceCard.dataset.serviceIndex));
+  }
+  if (e.target.matches('#include-parts-checkbox')) {
+    togglePartsSelection(e.target.checked);
+  }
+  if (e.target.matches('.part-item input[type="checkbox"]')) {
+    togglePart(e.target.value, parseFloat(e.target.dataset.price), e.target.checked);
+  }
+  // Click listener for favorite toggle handled by AppIntegration.js
 });
 
+async function renderFavoritesPage() {
+  const mainContent = document.getElementById('main-content');
+  mainContent.innerHTML = `
+    <h1 class="page-title">My Favorites</h1>
+    <p class="page-subtitle">Your personally curated collection of parts</p>
+    <div id="products-grid" class="products-grid"></div>
+  `;
+
+  const { favorites } = await window.FavoritesService.getFavoritesWithDetails();
+  const grid = document.getElementById('products-grid');
+
+  if (!favorites || favorites.length === 0) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 60px;">
+        <div style="font-size: 64px; margin-bottom: 20px;">❤️</div>
+        <h3>Your wishlist is empty</h3>
+        <p>Save products you love to keep track of them here.</p>
+        <button class="back-btn" onclick="showCategory('home')" style="margin-top: 20px;">Browse Shop</button>
+      </div>
+    `;
+    return;
+  }
+
+  // Map favorites back to UI products format if needed, 
+  // but FavoritesService.getFavoritesWithDetails already gives full products
+  const uiProducts = favorites.filter(f => f.product).map(f => mapProductToUI(f.product));
+
+  // We need to temporarily mock the 'favorites' category in the global products object
+  products['favorites'] = uiProducts;
+  renderProducts('favorites');
+}
+
 document.addEventListener('submit', (e) => {
-    if (e.target.matches('#checkout-form')) {
-        submitOrder(e);
-    }
-    if (e.target.matches('#service-booking-form')) {
-        submitServiceBooking(e);
-    }
+  if (e.target.matches('#service-booking-form')) {
+    submitServiceBooking(e);
+  }
 });
+
 
 document.getElementById('search-btn').addEventListener('click', performSearch);
 document.getElementById('cart-btn').addEventListener('click', showCart);
