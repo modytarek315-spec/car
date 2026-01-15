@@ -13,7 +13,7 @@ const ServicePage = {
 
         mainContent.innerHTML = `
             <div class="service-page">
-                <h1 class="page-title">Toyota Corolla Service Booking</h1>
+                <h1 class="page-title">Vehicle Service Booking</h1>
                 <p class="page-subtitle">Schedule your maintenance service based on mileage</p>
                 <div class="service-grid">
                     ${servicePackages.map((pkg, index) => `
@@ -56,7 +56,7 @@ const ServicePage = {
             <div class="service-details-page">
                 <button class="back-btn" onclick="window.location.href='service.html'" style="margin-bottom: 20px;">Back to Services</button>
                 <h1 class="page-title">${pkg.km} KM Service - ${pkg.title}</h1>
-                <p class="page-subtitle">Complete maintenance package for your Toyota Corolla</p>
+                <p class="page-subtitle">Complete maintenance package for your vehicle</p>
                 
                 <div style="background: #252525; padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -102,27 +102,103 @@ const ServicePage = {
                 <div class="booking-form" style="background: #252525; padding: 25px; border-radius: 12px; margin-top: 20px;">
                     <h3 style="color: white; margin-bottom: 20px;">Book Your Appointment</h3>
                     <form id="service-booking-form" onsubmit="window.ServicePage.submitBooking(event)">
-                        <div class="form-group">
-                            <label for="service-customer-name">Full Name *</label>
-                            <input type="text" id="service-customer-name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="service-customer-phone">Phone Number *</label>
-                            <input type="tel" id="service-customer-phone" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="service-customer-email">Email Address *</label>
-                            <input type="email" id="service-customer-email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="service-appointment-date">Preferred Date *</label>
-                            <input type="date" id="service-appointment-date" required min="${new Date().toISOString().split('T')[0]}">
-                        </div>
                         
-                        <!-- Added Time Field as it is needed for backend -->
-                        <div class="form-group">
-                            <label for="service-appointment-time">Preferred Time *</label>
-                            <input type="time" id="service-appointment-time" required>
+                        <!-- Vehicle Information Section -->
+                        <div style="margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #444;">
+                            <h4 style="color: var(--secondary-color); margin-bottom: 15px; font-size: 16px;">
+                                <span style="margin-right: 8px;">🚗</span>Vehicle Information
+                            </h4>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="vehicle-make">Make (Brand) *</label>
+                                    <select id="vehicle-make" required style="width: 100%; padding: 12px; border-radius: 8px; background: #333; color: white; border: 1px solid #444;">
+                                        <option value="">Select Make</option>
+                                        <option value="Toyota">Toyota</option>
+                                        <option value="Honda">Honda</option>
+                                        <option value="Nissan">Nissan</option>
+                                        <option value="Hyundai">Hyundai</option>
+                                        <option value="Kia">Kia</option>
+                                        <option value="Chevrolet">Chevrolet</option>
+                                        <option value="Ford">Ford</option>
+                                        <option value="BMW">BMW</option>
+                                        <option value="Mercedes-Benz">Mercedes-Benz</option>
+                                        <option value="Volkswagen">Volkswagen</option>
+                                        <option value="Mazda">Mazda</option>
+                                        <option value="Mitsubishi">Mitsubishi</option>
+                                        <option value="Suzuki">Suzuki</option>
+                                        <option value="Peugeot">Peugeot</option>
+                                        <option value="Fiat">Fiat</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="vehicle-model">Model *</label>
+                                    <input type="text" id="vehicle-model" placeholder="e.g., Corolla, Civic, Sentra" required>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="vehicle-year">Year *</label>
+                                    <select id="vehicle-year" required style="width: 100%; padding: 12px; border-radius: 8px; background: #333; color: white; border: 1px solid #444;">
+                                        <option value="">Select Year</option>
+                                        ${Array.from({length: 30}, (_, i) => new Date().getFullYear() - i).map(year => 
+                                            `<option value="${year}">${year}</option>`
+                                        ).join('')}
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="vehicle-mileage">Current Mileage (KM) *</label>
+                                    <input type="number" id="vehicle-mileage" placeholder="e.g., 50000" required min="0" max="999999">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="vehicle-plate">License Plate</label>
+                                    <input type="text" id="vehicle-plate" placeholder="e.g., ABC 1234">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="vehicle-color">Color</label>
+                                    <input type="text" id="vehicle-color" placeholder="e.g., White, Black, Silver">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Customer Information Section -->
+                        <div style="margin-bottom: 25px; padding-bottom: 20px; border-bottom: 1px solid #444;">
+                            <h4 style="color: var(--secondary-color); margin-bottom: 15px; font-size: 16px;">
+                                <span style="margin-right: 8px;">👤</span>Customer Information
+                            </h4>
+                            <div class="form-group">
+                                <label for="service-customer-name">Full Name *</label>
+                                <input type="text" id="service-customer-name" required>
+                            </div>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="service-customer-phone">Phone Number *</label>
+                                    <input type="tel" id="service-customer-phone" required>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="service-customer-email">Email Address *</label>
+                                    <input type="email" id="service-customer-email" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Appointment Section -->
+                        <div style="margin-bottom: 20px;">
+                            <h4 style="color: var(--secondary-color); margin-bottom: 15px; font-size: 16px;">
+                                <span style="margin-right: 8px;">📅</span>Appointment Details
+                            </h4>
+                            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="service-appointment-date">Preferred Date *</label>
+                                    <input type="date" id="service-appointment-date" required min="${new Date().toISOString().split('T')[0]}">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label for="service-appointment-time">Preferred Time *</label>
+                                    <input type="time" id="service-appointment-time" required>
+                                </div>
+                            </div>
+                            <div class="form-group" style="margin-top: 15px;">
+                                <label for="service-notes">Additional Notes</label>
+                                <textarea id="service-notes" rows="3" placeholder="Any specific concerns or requests..." style="width: 100%; padding: 12px; border-radius: 8px; background: #333; color: white; border: 1px solid #444; resize: vertical;"></textarea>
+                            </div>
                         </div>
 
                         <div class="cart-summary" style="margin-top: 20px;">
@@ -229,23 +305,35 @@ const ServicePage = {
         const date = document.getElementById('service-appointment-date').value;
         const time = document.getElementById('service-appointment-time').value;
 
+        // Collect vehicle information from form
+        const vehicleInfo = {
+            make: document.getElementById('vehicle-make').value,
+            model: document.getElementById('vehicle-model').value,
+            year: document.getElementById('vehicle-year').value,
+            mileage: parseInt(document.getElementById('vehicle-mileage').value) || 0,
+            licensePlate: document.getElementById('vehicle-plate').value || '',
+            color: document.getElementById('vehicle-color').value || ''
+        };
+
+        // Collect additional notes
+        const additionalNotes = document.getElementById('service-notes')?.value || '';
+        const partsNotes = window.AppState.selectedParts.length > 0 
+            ? `Included Parts: ${window.AppState.selectedParts.map(p => p.name).join(', ')}` 
+            : '';
+        const combinedNotes = [additionalNotes, partsNotes].filter(n => n).join('\n');
+
         // Construct booking data for Supabase
         const bookingData = {
             serviceTypeId: pkg.id,
             scheduledDate: date,
             scheduledTime: time,
-            vehicleInfo: {
-                make: 'Toyota',
-                model: 'Corolla',
-                year: '2024',
-                mileage: pkg.km
-            },
+            vehicleInfo: vehicleInfo,
             customerInfo: {
                 name: customerName,
                 phone: document.getElementById('service-customer-phone').value,
                 email: document.getElementById('service-customer-email').value
             },
-            notes: `Included Parts: ${window.AppState.selectedParts.map(p => p.name).join(', ')}`
+            notes: combinedNotes
         };
 
         const result = await window.BookingsService.createBooking(bookingData);
@@ -255,6 +343,7 @@ const ServicePage = {
                 <div style="background: rgba(46, 204, 113, 0.1); color: #2ecc71; padding: 20px; border-radius: 8px; text-align: center;">
                     <h3>Appointment Confirmed!</h3>
                     <p>Your ${pkg.title} has been scheduled for ${date} at ${time}.</p>
+                    <p><strong>Vehicle:</strong> ${vehicleInfo.year} ${vehicleInfo.make} ${vehicleInfo.model}</p>
                     <p>Thank you, ${customerName}.</p>
                     <button onclick="window.location.href='index.html'" class="checkout-btn" style="width: auto; margin-top: 15px;">Return Home</button>
                 </div>
