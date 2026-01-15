@@ -20,7 +20,7 @@ const UI = {
         const container = document.getElementById('breadcrumb');
         if (!container) return;
 
-        const homeItem = { label: 'Home', action: () => window.Router.navigate('home') };
+        const homeItem = { label: 'Home', action: () => window.location.href = 'index.html' };
         const allItems = [homeItem, ...items];
 
         container.innerHTML = allItems.map((item, index) => {

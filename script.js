@@ -57,7 +57,23 @@ window.App = {
       if (window.location.pathname.includes('product.html')) {
         window.ProductDetailsPage.render();
       } else {
-        window.Router.navigate('home');
+        const page = document.body?.dataset?.page || '';
+        if (page === 'category') {
+          const params = new URLSearchParams(window.location.search);
+          let category = (params.get('category') || 'home').toString().trim();
+          const normalized = category.toLowerCase().replace(/\s+/g, '-');
+          const match = window.AppState.categories.find(c => c.slug === normalized || c.name?.toLowerCase() === category.toLowerCase());
+          if (match) category = match.slug;
+          else category = normalized;
+
+          window.AppState.currentCategory = category;
+          window.CategoryPage.render(category);
+          window.Router.updateActiveNavLink(category);
+        } else if (page) {
+          window.Router.navigate(page, { skipHistory: true, replace: true });
+        } else {
+          window.Router.init();
+        }
       }
 
     } catch (e) {
@@ -126,18 +142,25 @@ window.App = {
     const navList = document.querySelector('.nav-links');
     if (!navList) return;
 
-    let html = '<li><button data-category="home" class="active">Home</button></li>';
+    let html = '<li><a href="index.html"><button data-category="home">Home</button></a></li>';
     window.AppState.categories.forEach(c => {
-      html += `<li><button data-category="${c.slug}">${c.name}</button></li>`;
+      html += `<li><a href="category.html?category=${encodeURIComponent(c.slug)}"><button data-category="${c.slug}">${c.name}</button></a></li>`;
     });
-    html += '<li><button data-category="service">Service Booking</button></li>';
-    html += '<li><button data-category="about">About Us</button></li>';
+    html += '<li><a href="service.html"><button data-category="service">Service Booking</button></a></li>';
+    html += '<li><a href="about.html"><button data-category="about">About Us</button></a></li>';
 
     navList.innerHTML = html;
-    navList.onclick = (e) => {
-      const btn = e.target.closest('button');
-      if (btn?.dataset.category) window.Router.navigate(btn.dataset.category);
-    };
+    navList.onclick = null;
+
+    const page = document.body?.dataset?.page || '';
+    const params = new URLSearchParams(window.location.search);
+    const currentCategory = page === 'category'
+      ? (params.get('category') || 'home').toLowerCase()
+      : (page || 'home').toLowerCase();
+
+    navList.querySelectorAll('button[data-category]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.category === currentCategory);
+    });
   },
 
   applyStyles() {
@@ -162,7 +185,9 @@ window.App = {
 
     // Search Handlers
     document.getElementById('search-btn')?.addEventListener('click', () => this.performSearch());
-    document.getElementById('cart-btn')?.addEventListener('click', () => window.Router.navigate('cart'));
+    document.getElementById('cart-btn')?.addEventListener('click', () => {
+      window.location.href = 'cart.html';
+    });
 
     // Auth Actions
     document.getElementById('logout-btn')?.addEventListener('click', () => window.AuthUI.logout());
@@ -202,11 +227,6 @@ window.App = {
       return;
     }
 
-    const categoryCard = e.target.closest('.category-card');
-    if (categoryCard && categoryCard.dataset.category) {
-      window.Router.navigate(categoryCard.dataset.category);
-      return;
-    }
   },
 
   updateCartCount() {
@@ -249,15 +269,8 @@ window.App = {
       this.renderSearchHistory();
     }
 
-    // Render Search Results on a virtual category
-    const allProducts = Object.values(window.AppState.products).flat();
-    window.AppState.products['search'] = allProducts.filter(p =>
-      p.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.brand.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      p.category.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    window.CategoryPage.render('search');
+    // Navigate to search results page
+    window.location.href = `category.html?category=search&term=${encodeURIComponent(searchTerm)}`;
   }
 };
 

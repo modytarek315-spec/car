@@ -4,13 +4,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Car House 🚗</title>
+  <title>Checkout - Car House 🚗</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    @view-transition {
-      navigation: auto;
-    }
-  </style>
   <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
   <!-- Supabase & Services -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -38,7 +33,7 @@
   <script src="script.js" defer></script>
 </head>
 
-<body>
+<body data-page="checkout">
   <header class="header">
     <div class="header-top">
       <div class="logo-section">
@@ -60,40 +55,29 @@
           </div>
         </div>
         <button class="cart-btn" id="cart-btn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart"
-            viewBox="0 0 16 16">
-            <path
-              d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart" viewBox="0 0 16 16">
+            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M3.102 4l1.313 7h8.17l1.313-7zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
           </svg>
           <span id="cart-btn-label">Cart</span>
           <span class="cart-count" id="cart-count">0</span>
-
         </button>
-
         <div class="user-actions">
-          <!-- Guest State -->
           <div class="guest-only">
             <a href="login.html" class="auth-btn login-btn-alt">Login</a>
             <a href="register.html" class="auth-btn register-btn-alt">Register</a>
           </div>
-
-          <!-- Auth State -->
           <div class="auth-required" style="display: none; align-items: center; gap: 15px;">
-            <button onclick="window.location.href='favorites.html'" class="profile-icon-btn" title="My Favorites"
-              style="background: none; border: none; padding: 0;">
+            <button onclick="window.location.href='favorites.html'" class="profile-icon-btn" title="My Favorites" style="background: none; border: none; padding: 0;">
               <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
-                <path
-                  d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                <path d="m8 2.748-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
               </svg>
             </button>
             <div class="user-profile-summary">
               <span id="user-name-display" class="user-name-pill">User</span>
               <a href="profile.html" class="profile-icon-btn" title="View Profile">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-                  class="bi bi-person-circle" viewBox="0 0 16 16">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
                   <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                  <path fill-rule="evenodd"
-                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                  <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
                 </svg>
               </a>
             </div>
@@ -101,12 +85,10 @@
           </div>
         </div>
       </div>
-
     </div>
     <div class="search-bar">
       <div class="search-input-wrapper">
-        <input type="text" class="search-input" id="search-input"
-          placeholder="Search for parts, brands, or categories...">
+        <input type="text" class="search-input" id="search-input" placeholder="Search for parts, brands, or categories...">
         <button class="search-btn" id="search-btn">Search</button>
       </div>
       <div id="search-history-container"></div>
@@ -114,21 +96,15 @@
   </header>
   <nav class="nav">
     <ul class="nav-links">
-      <li><a href="index.html"><button data-category="home" class="active" id="nav-home">Home</button></a></li>
-      <li><a href="category.html?category=engine"><button data-category="engine" id="nav-engine">Engine Parts</button></a></li>
-      <li><a href="category.html?category=brakes"><button data-category="brakes" id="nav-brakes">Brakes</button></a></li>
-      <li><a href="category.html?category=suspension"><button data-category="suspension" id="nav-suspension">Suspension</button></a></li>
-      <li><a href="category.html?category=maintenance"><button data-category="maintenance" id="nav-maintenance">Maintenance Parts</button></a></li>
-      <li><a href="category.html?category=fluids"><button data-category="fluids" id="nav-fluids">Maintenance Fluids</button></a></li>
-      <li><a href="service.html"><button data-category="service" id="nav-service">Service Booking</button></a></li>
-      <li><a href="about.html"><button data-category="about" id="nav-about">About Us</button></a></li>
+      <li><a href="index.html"><button data-category="home" class="active">Home</button></a></li>
+      <li><a href="service.html"><button data-category="service">Service Booking</button></a></li>
+      <li><a href="about.html"><button data-category="about">About Us</button></a></li>
     </ul>
   </nav>
 
   <div class="container">
     <div id="breadcrumb" class="breadcrumb"></div>
     <div id="main-content" class="fade-in-up"></div>
-
   </div>
 </body>
 

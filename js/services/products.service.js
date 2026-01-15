@@ -127,9 +127,9 @@ const ProductsService = {
 
         try {
             // RELATIONAL JOIN (PRIMARY STRATEGY)
-            // RELATIONAL JOIN (PRIMARY STRATEGY)
-            // If filtering by category slug (relation), we must use !inner to filter parent rows
-            const categoryJoin = options.categorySlug ? 'categories!inner(id, name, slug)' : 'categories(id, name, slug)';
+            // If filtering by category slug (relation) and NOT by categoryId, we must use !inner to filter parent rows
+            const useSlugFilter = options.categorySlug && !options.categoryId;
+            const categoryJoin = useSlugFilter ? 'categories!inner(id, name, slug)' : 'categories(id, name, slug)';
 
             let query = client
                 .from('products')
@@ -139,10 +139,13 @@ const ProductsService = {
                     product_images(url)
                 `, { count: 'exact' });
 
-            // Filters
+            // Filters - prefer categoryId over categorySlug when both exist
             if (options.productId) query = query.eq('id', options.productId);
-            if (options.categoryId) query = query.eq('category_id', options.categoryId);
-            if (options.categorySlug) query = query.eq('categories.slug', options.categorySlug);
+            if (options.categoryId) {
+                query = query.eq('category_id', options.categoryId);
+            } else if (options.categorySlug) {
+                query = query.eq('categories.slug', options.categorySlug);
+            }
             if (options.brand) query = query.eq('brand', options.brand);
 
             // Text Search (Matches: name, brand, sku, car_model)
@@ -162,10 +165,28 @@ const ProductsService = {
             const offset = options.offset || 0;
             query = query.range(offset, offset + limit - 1);
 
+            console.log('[ProductsService] Fetching with options:', { categoryId: options.categoryId, categorySlug: options.categorySlug, limit, offset });
             const { data, error, count } = await query;
 
             if (error) {
-                console.warn('Relational fetch failed, falling back to manual hydration:', error.message);
+                console.warn('[ProductsService] Relational fetch failed, falling back:', error.message);
+
+                // First, resolve categorySlug to categoryId if needed
+                let categoryId = options.categoryId;
+                if (!categoryId && options.categorySlug) {
+                    console.log('[ProductsService] Resolving slug to ID:', options.categorySlug);
+                    const catRes = await client
+                        .from('categories')
+                        .select('id')
+                        .eq('slug', options.categorySlug)
+                        .single();
+                    if (catRes.data) {
+                        categoryId = catRes.data.id;
+                        console.log('[ProductsService] Resolved to categoryId:', categoryId);
+                    } else {
+                        console.warn('[ProductsService] Could not resolve slug:', options.categorySlug, catRes.error);
+                    }
+                }
 
                 let fallbackQuery = client
                     .from('products')
@@ -173,10 +194,12 @@ const ProductsService = {
                     .eq('is_active', true)
                     .range(offset, offset + limit - 1);
 
-                if (options.categoryId) fallbackQuery = fallbackQuery.eq('category_id', options.categoryId);
+                if (categoryId) fallbackQuery = fallbackQuery.eq('category_id', categoryId);
 
                 const { data: productsData, error: productsError } = await fallbackQuery;
                 if (productsError) throw productsError;
+
+                console.log('[ProductsService] Fallback returned', productsData?.length || 0, 'products');
 
                 if (productsData && productsData.length > 0) {
                     const productIds = productsData.map(p => p.id);
@@ -196,6 +219,7 @@ const ProductsService = {
                 return { success: true, products: [], count: 0 };
             }
 
+            console.log('[ProductsService] Primary fetch returned', data?.length || 0, 'products');
             return { success: true, products: data || [], count: count || 0 };
 
         } catch (error) {

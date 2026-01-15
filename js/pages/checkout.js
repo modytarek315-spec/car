@@ -2,8 +2,8 @@ const CheckoutPage = {
     render() {
         const mainContent = document.getElementById('main-content');
         window.UI.updateBreadcrumb([
-            { label: 'Cart', action: () => window.Router.navigate('cart') },
-            { label: 'Checkout', action: () => window.Router.navigate('checkout') }
+            { label: 'Cart', action: () => window.location.href = 'cart.html' },
+            { label: 'Checkout', action: () => window.location.href = 'checkout.html' }
         ]);
 
         mainContent.innerHTML = `
@@ -211,7 +211,7 @@ const CheckoutPage = {
                             <strong>Order #${result.order.id.slice(0, 8)} confirmed.</strong><br>
                             A confirmation email has been sent to ${orderData.shippingAddress.email}.
                         </div>
-                        <button class="checkout-btn" onclick="window.Router.navigate('home')">Back to Home</button>
+                        <button class="checkout-btn" onclick="window.location.href='index.html'">Back to Home</button>
                     </div>
                 `;
             } else {

@@ -1,7 +1,7 @@
 const ServicePage = {
     render() {
         const mainContent = document.getElementById('main-content');
-        window.UI.updateBreadcrumb([{ label: 'Service Booking', action: () => window.Router.navigate('service') }]);
+        window.UI.updateBreadcrumb([{ label: 'Service Booking', action: () => window.location.href = 'service.html' }]);
 
         // Use real data from Supabase, stored in AppState by script.js
         const servicePackages = window.AppState.servicePackages || [];
@@ -54,7 +54,7 @@ const ServicePage = {
 
         mainContent.innerHTML = `
             <div class="service-details-page">
-                <button class="back-btn" onclick="window.Router.navigate('service')" style="margin-bottom: 20px;">Back to Services</button>
+                <button class="back-btn" onclick="window.location.href='service.html'" style="margin-bottom: 20px;">Back to Services</button>
                 <h1 class="page-title">${pkg.km} KM Service - ${pkg.title}</h1>
                 <p class="page-subtitle">Complete maintenance package for your Toyota Corolla</p>
                 
@@ -256,7 +256,7 @@ const ServicePage = {
                     <h3>Appointment Confirmed!</h3>
                     <p>Your ${pkg.title} has been scheduled for ${date} at ${time}.</p>
                     <p>Thank you, ${customerName}.</p>
-                    <button onclick="window.Router.navigate('home')" class="checkout-btn" style="width: auto; margin-top: 15px;">Return Home</button>
+                    <button onclick="window.location.href='index.html'" class="checkout-btn" style="width: auto; margin-top: 15px;">Return Home</button>
                 </div>
             `;
         } else {
