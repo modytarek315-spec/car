@@ -1,5 +1,13 @@
+/**
+ * ==========================================
+ * UI UTILITIES
+ * ==========================================
+ * Common UI helper functions
+ */
+
 const UI = {
-    showToast(message, bgColor = '#27ae60') {
+    showToast(message, bgColor) {
+        const color = bgColor || window.AppConstants?.TOAST_COLORS?.SUCCESS || '#27ae60';
         const existingToast = document.querySelector('.toast');
         if (existingToast) {
             existingToast.remove();
@@ -8,12 +16,11 @@ const UI = {
         const toast = document.createElement('div');
         toast.className = 'toast';
         toast.textContent = message;
-        toast.style.background = bgColor;
+        toast.style.background = color;
         document.body.appendChild(toast);
 
-        setTimeout(() => {
-            toast.remove();
-        }, 3000);
+        const duration = window.AppConstants?.ANIMATIONS?.TOAST_DURATION || 3000;
+        setTimeout(() => toast.remove(), duration);
     },
 
     updateBreadcrumb(items = []) {
@@ -89,9 +96,8 @@ const UI = {
         const cartBtn = document.getElementById('cart-btn');
         if (cartBtn) {
             cartBtn.classList.add('bounce');
-            setTimeout(() => {
-                cartBtn.classList.remove('bounce');
-            }, 500);
+            const duration = window.AppConstants?.ANIMATIONS?.BOUNCE_DURATION || 500;
+            setTimeout(() => cartBtn.classList.remove('bounce'), duration);
         }
     },
 

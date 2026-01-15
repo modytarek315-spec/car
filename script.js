@@ -2,11 +2,11 @@
  * ==========================================
  * CAR HOUSE MAIN APPLICATION
  * ==========================================
- * Minimal entry point that orchestrates modules.
+ * Entry point that orchestrates all modules
  */
 
 window.AppState = {
-  config: {
+  config: { ...window.AppConstants?.DEFAULT_CONFIG } || {
     store_name: "Car House 🚗",
     store_tagline: "Quality Parts for Your Vehicle",
     primary_color: "#2C2C2C",
@@ -30,9 +30,7 @@ window.AppState = {
 
 window.App = {
   async init() {
-    console.log('Orchestrating App Modules...');
-
-    // 1. Initial UI Setup
+    // Initial UI Setup
     window.UI.renderCategorySkeletons();
     window.UI.updateBreadcrumb([]);
 
@@ -50,7 +48,7 @@ window.App = {
 
       this.processServices(serviceTypes);
 
-      // 3. Initial Render
+      // Initial Render
       this.applyStyles();
       window.AuthUI.updateUI();
 
@@ -60,11 +58,9 @@ window.App = {
         const page = document.body?.dataset?.page || '';
         if (page === 'category') {
           const params = new URLSearchParams(window.location.search);
-          let category = (params.get('category') || 'home').toString().trim();
-          const normalized = category.toLowerCase().replace(/\s+/g, '-');
-          const match = window.AppState.categories.find(c => c.slug === normalized || c.name?.toLowerCase() === category.toLowerCase());
-          if (match) category = match.slug;
-          else category = normalized;
+          const rawCategory = (params.get('category') || 'home').toString().trim();
+          const match = window.CategoryUtils.findCategory(rawCategory, window.AppState.categories);
+          const category = match?.slug || window.CategoryUtils.normalizeSlug(rawCategory);
 
           window.AppState.currentCategory = category;
           window.CategoryPage.render(category);
@@ -78,7 +74,7 @@ window.App = {
 
     } catch (e) {
       console.error('Initialization error:', e);
-      window.UI.showToast('Failed to load application data', '#e74c3c');
+      window.UI.showToast('Failed to load application data', window.AppConstants?.TOAST_COLORS?.ERROR || '#e74c3c');
     }
 
     // 4. Global Event Init

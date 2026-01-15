@@ -124,10 +124,8 @@ const ProductsService = {
             return { success: false, error: 'Supabase client not initialized' };
         }
 
-
         try {
-            // RELATIONAL JOIN (PRIMARY STRATEGY)
-            // If filtering by category slug (relation) and NOT by categoryId, we must use !inner to filter parent rows
+            // Use inner join when filtering by slug to properly filter parent rows
             const useSlugFilter = options.categorySlug && !options.categoryId;
             const categoryJoin = useSlugFilter ? 'categories!inner(id, name, slug)' : 'categories(id, name, slug)';
 
@@ -165,16 +163,13 @@ const ProductsService = {
             const offset = options.offset || 0;
             query = query.range(offset, offset + limit - 1);
 
-            console.log('[ProductsService] Fetching with options:', { categoryId: options.categoryId, categorySlug: options.categorySlug, limit, offset });
             const { data, error, count } = await query;
 
             if (error) {
-                console.warn('[ProductsService] Relational fetch failed, falling back:', error.message);
 
                 // First, resolve categorySlug to categoryId if needed
                 let categoryId = options.categoryId;
                 if (!categoryId && options.categorySlug) {
-                    console.log('[ProductsService] Resolving slug to ID:', options.categorySlug);
                     const catRes = await client
                         .from('categories')
                         .select('id')
@@ -182,9 +177,6 @@ const ProductsService = {
                         .single();
                     if (catRes.data) {
                         categoryId = catRes.data.id;
-                        console.log('[ProductsService] Resolved to categoryId:', categoryId);
-                    } else {
-                        console.warn('[ProductsService] Could not resolve slug:', options.categorySlug, catRes.error);
                     }
                 }
 
@@ -198,8 +190,6 @@ const ProductsService = {
 
                 const { data: productsData, error: productsError } = await fallbackQuery;
                 if (productsError) throw productsError;
-
-                console.log('[ProductsService] Fallback returned', productsData?.length || 0, 'products');
 
                 if (productsData && productsData.length > 0) {
                     const productIds = productsData.map(p => p.id);
@@ -219,7 +209,6 @@ const ProductsService = {
                 return { success: true, products: [], count: 0 };
             }
 
-            console.log('[ProductsService] Primary fetch returned', data?.length || 0, 'products');
             return { success: true, products: data || [], count: count || 0 };
 
         } catch (error) {

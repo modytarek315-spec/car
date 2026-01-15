@@ -46,9 +46,13 @@ const Router = {
 
     isValidCategory(category) {
         if (!category) return false;
-        const core = ['home', 'cart', 'checkout', 'service', 'favorites', 'about', 'search'];
+        
+        // Check core categories
+        const core = window.AppConstants?.CORE_CATEGORIES || 
+            ['home', 'cart', 'checkout', 'service', 'favorites', 'about', 'search'];
         if (core.includes(category)) return true;
 
+        // Check dynamic categories
         const dynamic = (window.AppState?.categories || []).map(c => c.slug);
         return dynamic.includes(category);
     },
