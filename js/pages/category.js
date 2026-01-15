@@ -58,11 +58,20 @@ const CategoryPage = {
         }
 
         // Fetch products for this category specifically
-        const res = await window.ProductsService.getProducts({
-            categorySlug: category === 'search' ? null : category,
-            search: category === 'search' ? window.AppState.currentSearchTerm : null,
+        // Fetch products for this category specifically
+        const fetchOptions = {
             limit: 40
-        });
+        };
+
+        if (category === 'search') {
+            fetchOptions.search = window.AppState.currentSearchTerm;
+        } else if (catObj) {
+            fetchOptions.categoryId = catObj.id;
+        } else {
+            fetchOptions.categorySlug = category;
+        }
+
+        const res = await window.ProductsService.getProducts(fetchOptions);
 
         if (res.success) {
             const uiProducts = res.products.map(p => window.App.mapProductToUI(p));

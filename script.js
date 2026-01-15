@@ -199,6 +199,13 @@ window.App = {
     const serviceCard = e.target.closest('[data-service-index]');
     if (serviceCard) {
       window.ServicePage.selectService(parseInt(serviceCard.dataset.serviceIndex));
+      return;
+    }
+
+    const categoryCard = e.target.closest('.category-card');
+    if (categoryCard && categoryCard.dataset.category) {
+      window.Router.navigate(categoryCard.dataset.category);
+      return;
     }
   },
 

@@ -1397,3 +1397,107 @@ body {
 .hidden {
     display: none !important;
 }
+/* Service Page Styles from Commit 603f7d4 */
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+}
+
+.service-card {
+    background: linear-gradient(135deg, #132440 50%, #BF092F 100%);
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    border: 1px solid #444;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 200px;
+    color: white;
+}
+
+.service-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(191, 9, 47, 0.4);
+    border-color: var(--secondary-color);
+}
+
+.service-card.selected {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 20px rgba(255, 199, 0, 0.3);
+}
+
+.service-km {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin-bottom: 12px;
+}
+
+.service-title {
+    font-size: 18px;
+    color: #FFFFFF;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.service-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--secondary-color);
+}
+
+.service-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    background: linear-gradient(135deg, #132440 50%, #BF092F 100%);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.service-table th,
+.service-table td {
+    padding: 18px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    color: white;
+}
+
+.service-table th {
+    background-color: rgba(0,0,0,0.3);
+    font-weight: 700;
+    color: var(--secondary-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.parts-option {
+    background: rgba(255,255,255,0.05);
+    padding: 20px;
+    border-radius: 12px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+}
+
+.parts-option label {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    cursor: pointer;
+    font-weight: 500;
+    color: white;
+    font-size: 18px;
+}
+
+.parts-selection-container {
+    margin-top: 20px;
+}
+

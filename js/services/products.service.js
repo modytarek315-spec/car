@@ -127,11 +127,15 @@ const ProductsService = {
 
         try {
             // RELATIONAL JOIN (PRIMARY STRATEGY)
+            // RELATIONAL JOIN (PRIMARY STRATEGY)
+            // If filtering by category slug (relation), we must use !inner to filter parent rows
+            const categoryJoin = options.categorySlug ? 'categories!inner(id, name, slug)' : 'categories(id, name, slug)';
+
             let query = client
                 .from('products')
                 .select(`
                     *,
-                    categories(id, name, slug),
+                    ${categoryJoin},
                     product_images(url)
                 `, { count: 'exact' });
 

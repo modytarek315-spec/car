@@ -3,15 +3,24 @@ const ServicePage = {
         const mainContent = document.getElementById('main-content');
         window.UI.updateBreadcrumb([{ label: 'Service Booking', action: () => window.Router.navigate('service') }]);
 
-        const servicePackages = window.AppState.servicePackages;
+        // Use real data from Supabase, stored in AppState by script.js
+        const servicePackages = window.AppState.servicePackages || [];
+
+        if (servicePackages.length === 0) {
+            mainContent.innerHTML = '<div style="text-align:center; padding: 50px;">Loading services...</div>';
+            return;
+        }
 
         mainContent.innerHTML = `
             <div class="service-page">
-                <h1 class="page-title">Service Booking</h1>
+                <h1 class="page-title">Toyota Corolla Service Booking</h1>
                 <p class="page-subtitle">Schedule your maintenance service based on mileage</p>
                 <div class="service-grid">
                     ${servicePackages.map((pkg, index) => `
-                        <div class="service-card ${window.AppState.selectedService === index ? 'selected' : ''}" data-service-index="${index}">
+                        <div class="service-card ${window.AppState.selectedService === index ? 'selected' : ''}" 
+                             data-service-index="${index}"
+                             onclick="window.ServicePage.selectService(${index})">
+                            <div class="service-km">${pkg.km} KM</div>
                             <div class="service-title">${pkg.title}</div>
                             <div class="service-price">${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
                             <p style="margin: 10px 0 0 0; color: #7f8c8d; font-size: 14px;">${pkg.items.length} service items</p>
@@ -26,196 +35,284 @@ const ServicePage = {
     selectService(index) {
         window.AppState.currentCategory = 'service-details';
         window.AppState.selectedService = index;
-        window.AppState.includeParts = true;
+        window.AppState.includeParts = false;
         window.AppState.selectedParts = [];
-
-        const pkg = window.AppState.servicePackages[index];
-        if (pkg.products && pkg.products.length > 0) {
-            window.AppState.selectedParts = pkg.products.map(p => ({
-                id: p.id,
-                name: p.name,
-                price: p.price
-            }));
-        }
 
         this.renderServiceDetails(index);
     },
 
     renderServiceDetails(index) {
         const pkg = window.AppState.servicePackages[index];
-        const partsTotal = pkg.products ? pkg.products.reduce((sum, p) => sum + p.price, 0) : 0;
-        const subtotal = pkg.price + partsTotal;
+        const mainContent = document.getElementById('main-content');
+
+        // Calculate totals for rendering initial state
+        const serviceFee = pkg.price;
+        const partsCost = 0; // Reset parts initially
+        const subtotal = serviceFee;
         const tax = subtotal * 0.14;
         const total = subtotal + tax;
 
-        const mainContent = document.getElementById('main-content');
         mainContent.innerHTML = `
             <div class="service-details-page">
-                <button class="back-btn-modern" onclick="window.Router.navigate('service')" style="margin-bottom: 20px;">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/></svg>
-                    Back to Services
-                </button>
-                <h1 class="page-title">${pkg.title}</h1>
-                <p class="page-subtitle">Premium maintenance package for your vehicle</p>
+                <button class="back-btn" onclick="window.Router.navigate('service')" style="margin-bottom: 20px;">Back to Services</button>
+                <h1 class="page-title">${pkg.km} KM Service - ${pkg.title}</h1>
+                <p class="page-subtitle">Complete maintenance package for your Toyota Corolla</p>
                 
-                <div style="background: rgba(40,40,40,0.5); padding: 30px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 30px;">
-                    <div style="grid-template-columns: 1fr; gap: 20px; display: grid;">
-                        <div style="display: flex; justify-content: space-between; align-items: start;">
-                            <div>
-                                <p style="margin: 5px 0 0 0; color: #888;">Complete Package Details</p>
-                            </div>
-                            <div style="background: var(--accent-color); color: black; padding: 10px 20px; border-radius: 10px; font-weight: 800; font-size: 20px;">
-                                ${pkg.price.toFixed(2)} EGP
-                            </div>
+                <div style="background: #252525; padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <div>
+                            <h3 style="margin: 0; color: #fff; font-size: 24px;">${pkg.title}</h3>
+                            <p style="margin: 5px 0 0 0; color: #7f8c8d;">Recommended at ${pkg.km} kilometers</p>
                         </div>
-                        
-                        <div style="border-top: 1px solid rgba(255,255,255,0.05); padding-top: 20px;">
-                             <h4 style="margin: 0 0 15px 0; color: #ccc; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;">Service Tasks</h4>
-                             <ul style="padding: 0; margin: 0; list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                               ${pkg.items.map(item => `
-                                 <li style="display: flex; align-items: center; gap: 8px; color: #eee; font-size: 14px;">
-                                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#27ae60" viewBox="0 0 16 16"><path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"/></svg>
-                                   ${item.name}
-                                 </li>
-                               `).join('')}
-                             </ul>
-                        </div>
+                        <div class="service-price" style="margin: 0;">${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
                     </div>
+
+                    <table class="service-table">
+                        <thead>
+                            <tr>
+                                <th>Service Item</th>
+                                <th>Status</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${pkg.items.map(item => `
+                                <tr>
+                                    <td><strong>${item.name}</strong></td>
+                                    <td>${item.required ?
+                `<span style="color: #e74c3c; font-weight: 600;">Required</span>` :
+                `<span style="color: #7f8c8d;">Optional</span>`}
+                                    </td>
+                                    <td style="color: #ccc; font-size: 14px;">${this.getDescription(item.name)}</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
                 </div>
 
-                ${pkg.products && pkg.products.length > 0 ? `
-                <div class="included-parts" style="margin-top: 30px;">
-                    <h3 style="margin-bottom: 20px; color: var(--accent-color);">Parts Included</h3>
-                    <div class="parts-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
-                        ${pkg.products.map(p => window.Cards.createPartCard(p)).join('')}
-                    </div>
+                <div class="parts-option">
+                    <label>
+                        <input type="checkbox" id="include-parts-checkbox" onchange="window.ServicePage.togglePartsSelection(this.checked)">
+                        <span>Include parts replacement with this service</span>
+                    </label>
                 </div>
-                ` : ''}
-
-                <div class="booking-form" style="margin-top: 40px; background: rgba(0,0,0,0.2); padding: 30px; border-radius: 16px;">
-                    <h3 style="color: white; margin-bottom: 25px;">Schedule Your Appointment</h3>
-                    <form id="service-booking-form">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
-                            <div class="form-group">
-                                <label style="display: block; margin-bottom: 8px; color: #888;">Full Name *</label>
-                                <input type="text" id="service-customer-name" required placeholder="John Doe" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
-                            </div>
-                            <div class="form-group">
-                                <label style="display: block; margin-bottom: 8px; color: #888;">Phone Number *</label>
-                                <input type="tel" id="service-customer-phone" required placeholder="+20 1XX XXX XXXX" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
-                            </div>
-                            <div class="form-group">
-                                <label style="display: block; margin-bottom: 8px; color: #888;">Email Address *</label>
-                                <input type="email" id="service-customer-email" required placeholder="john@example.com" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
-                            </div>
+                
+                <div id="parts-selection-container"></div>
+                
+                <div class="booking-form" style="background: #252525; padding: 25px; border-radius: 12px; margin-top: 20px;">
+                    <h3 style="color: white; margin-bottom: 20px;">Book Your Appointment</h3>
+                    <form id="service-booking-form" onsubmit="window.ServicePage.submitBooking(event)">
+                        <div class="form-group">
+                            <label for="service-customer-name">Full Name *</label>
+                            <input type="text" id="service-customer-name" required>
                         </div>
-
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 20px;">
-                            <div class="form-group">
-                                <label style="display: block; margin-bottom: 8px; color: #888;">Vehicle Make *</label>
-                                <input type="text" id="service-vehicle-make" required placeholder="e.g. Toyota" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
-                            </div>
-                            <div class="form-group">
-                                <label style="display: block; margin-bottom: 8px; color: #888;">Vehicle Model *</label>
-                                <input type="text" id="service-vehicle-model" required placeholder="e.g. Corolla" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
-                            </div>
-                            <div class="form-group">
-                                <label style="display: block; margin-bottom: 8px; color: #888;">Model Year *</label>
-                                <input type="number" id="service-vehicle-year" required placeholder="2024" min="1900" max="${new Date().getFullYear() + 1}" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
-                            </div>
+                        <div class="form-group">
+                            <label for="service-customer-phone">Phone Number *</label>
+                            <input type="tel" id="service-customer-phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service-customer-email">Email Address *</label>
+                            <input type="email" id="service-customer-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service-appointment-date">Preferred Date *</label>
+                            <input type="date" id="service-appointment-date" required min="${new Date().toISOString().split('T')[0]}">
                         </div>
                         
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
-                            <div class="form-group">
-                                <label style="display: block; margin-bottom: 8px; color: #888;">Preferred Date *</label>
-                                <input type="date" id="service-appointment-date" required min="${new Date().toISOString().split('T')[0]}" style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
-                            </div>
-                            <div class="form-group">
-                                <label style="display: block; margin-bottom: 8px; color: #888;">Preferred Time *</label>
-                                <input type="time" id="service-appointment-time" required style="width: 100%; padding: 12px; background: #111; border: 1px solid #333; border-radius: 8px; color: white;">
-                            </div>
+                        <!-- Added Time Field as it is needed for backend -->
+                        <div class="form-group">
+                            <label for="service-appointment-time">Preferred Time *</label>
+                            <input type="time" id="service-appointment-time" required>
                         </div>
 
-                        <div class="payment-summary" style="margin-top: 40px; border-top: 1px solid #333; padding-top: 30px;">
-                            <div style="max-width: 400px; margin-left: auto;">
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; color: #888;">
-                                    <span>Workshop Service Fee</span>
-                                    <span>${pkg.price.toFixed(2)} EGP</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; color: #888;">
-                                    <span>Total Parts Cost</span>
-                                    <span>${partsTotal.toFixed(2)} EGP</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; font-weight: 600;">
-                                    <span>Subtotal</span>
-                                    <span>${subtotal.toFixed(2)} EGP</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; margin-bottom: 15px; color: #888;">
-                                    <span>VAT (14%)</span>
-                                    <span>${tax.toFixed(2)} EGP</span>
-                                </div>
-                                <div style="display: flex; justify-content: space-between; margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--accent-color);">
-                                    <span style="font-size: 20px; font-weight: 800; color: white;">Total Payable</span>
-                                    <span style="font-size: 24px; font-weight: 800; color: var(--accent-color);">${total.toFixed(2)} EGP</span>
-                                </div>
-                                <button type="submit" class="checkout-btn" id="book-service-btn" style="width: 100%; margin-top: 30px; padding: 18px; font-size: 18px;">Confirm Appointment</button>
+                        <div class="cart-summary" style="margin-top: 20px;">
+                            <div class="summary-row">
+                                <span>Service Package:</span>
+                                <span>${serviceFee.toFixed(2)} <span class="currency-symbol">EGP</span></span>
                             </div>
+                            <div class="summary-row" id="parts-cost-row" style="display: none;">
+                                <span>Parts Cost:</span>
+                                <span id="parts-cost">0.00 <span class="currency-symbol">EGP</span></span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Subtotal:</span>
+                                <span id="subtotal-cost">${subtotal.toFixed(2)} <span class="currency-symbol">EGP</span></span>
+                            </div>
+                            <div class="summary-row">
+                                <span>Tax (14%):</span>
+                                <span id="tax-cost">${tax.toFixed(2)} <span class="currency-symbol">EGP</span></span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Total Cost:</span>
+                                <span id="total-cost">${total.toFixed(2)} <span class="currency-symbol">EGP</span></span>
+                            </div>
+                            <button type="submit" class="checkout-btn" id="book-service-btn" style="width: 100%; margin-top: 20px;">Book Service Appointment</button>
                         </div>
                     </form>
                 </div>
             </div>
         `;
+    },
 
-        document.getElementById('service-booking-form').onsubmit = (e) => this.submitBooking(e);
+    togglePartsSelection(checked) {
+        window.AppState.includeParts = checked;
+        const container = document.getElementById('parts-selection-container');
+
+        if (checked) {
+            const pkg = window.AppState.servicePackages[window.AppState.selectedService];
+            const parts = pkg.products || [];
+
+            container.innerHTML = `
+                <div class="parts-list" style="background: #252525; padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                    <h4 style="margin: 0 0 15px 0; color: #fff;">Select Parts</h4>
+                    ${parts.map(part => `
+                        <div class="part-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #444;">
+                            <label style="display: flex; align-items: center; gap: 10px; cursor: pointer; color: white;">
+                                <input type="checkbox" 
+                                       value="${part.id}" 
+                                       data-price="${part.price}" 
+                                       onchange="window.ServicePage.togglePart('${part.id}', ${part.price}, this.checked)">
+                                <span>${part.name}</span>
+                            </label>
+                            <span style="color: var(--secondary-color); font-weight: bold;">${part.price.toFixed(2)} EGP</span>
+                        </div>
+                    `).join('')}
+                    ${parts.length === 0 ? '<p style="color: #ccc;">No specific parts available for this service.</p>' : ''}
+                </div>
+            `;
+        } else {
+            container.innerHTML = '';
+            window.AppState.selectedParts = [];
+            this.updateServiceTotal();
+        }
+    },
+
+    togglePart(partId, price, checked) {
+        if (checked) {
+            const pkg = window.AppState.servicePackages[window.AppState.selectedService];
+            const part = pkg.products.find(p => p.id === partId);
+            if (part) {
+                window.AppState.selectedParts.push({ id: part.id, name: part.name, price: part.price });
+            }
+        } else {
+            window.AppState.selectedParts = window.AppState.selectedParts.filter(p => p.id !== partId);
+        }
+        this.updateServiceTotal();
+    },
+
+    updateServiceTotal() {
+        const pkg = window.AppState.servicePackages[window.AppState.selectedService];
+        const partsCost = window.AppState.selectedParts.reduce((sum, part) => sum + part.price, 0);
+        const subtotal = pkg.price + partsCost;
+        const tax = subtotal * 0.14;
+        const total = subtotal + tax;
+
+        const partsRow = document.getElementById('parts-cost-row');
+        if (partsRow) {
+            partsRow.style.display = partsCost > 0 ? 'flex' : 'none';
+            document.getElementById('parts-cost').innerHTML = `${partsCost.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+        }
+
+        document.getElementById('subtotal-cost').innerHTML = `${subtotal.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+        document.getElementById('tax-cost').innerHTML = `${tax.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+        document.getElementById('total-cost').innerHTML = `${total.toFixed(2)} <span class="currency-symbol">EGP</span>`;
     },
 
     async submitBooking(event) {
         event.preventDefault();
         const pkg = window.AppState.servicePackages[window.AppState.selectedService];
-
         const submitBtn = document.getElementById('book-service-btn');
         submitBtn.disabled = true;
-        submitBtn.textContent = "Booking...";
+        submitBtn.textContent = "Processing...";
 
+        const customerName = document.getElementById('service-customer-name').value;
+        const date = document.getElementById('service-appointment-date').value;
+        const time = document.getElementById('service-appointment-time').value;
+
+        // Construct booking data for Supabase
         const bookingData = {
             serviceTypeId: pkg.id,
-            scheduledDate: document.getElementById('service-appointment-date').value,
-            scheduledTime: document.getElementById('service-appointment-time').value,
+            scheduledDate: date,
+            scheduledTime: time,
             vehicleInfo: {
-                make: document.getElementById('service-vehicle-make').value,
-                model: document.getElementById('service-vehicle-model').value,
-                year: document.getElementById('service-vehicle-year').value,
+                make: 'Toyota',
+                model: 'Corolla',
+                year: '2024',
                 mileage: pkg.km
             },
             customerInfo: {
-                name: document.getElementById('service-customer-name').value,
+                name: customerName,
                 phone: document.getElementById('service-customer-phone').value,
                 email: document.getElementById('service-customer-email').value
             },
-            notes: `Include parts: ${window.AppState.selectedParts.map(p => p.id).join(', ')}`
+            notes: `Included Parts: ${window.AppState.selectedParts.map(p => p.name).join(', ')}`
         };
 
-        try {
-            const result = await window.BookingsService.createBooking(bookingData);
-            if (result.success) {
-                document.getElementById('service-booking-form').innerHTML = `
-                    <div class="success-message">
-                        <strong>Service appointment booked successfully!</strong><br>
-                        Your ${pkg.km} KM service has been scheduled.
-                    </div>
-                `;
-                setTimeout(() => window.Router.navigate('home'), 3000);
-            } else {
-                window.UI.showToast(result.error || "Failed to book service", '#e74c3c');
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Confirm Appointment';
-            }
-        } catch (e) {
-            console.error(e);
-            window.UI.showToast("Booking failed due to an error", '#e74c3c');
+        const result = await window.BookingsService.createBooking(bookingData);
+
+        if (result.success) {
+            document.getElementById('service-booking-form').innerHTML = `
+                <div style="background: rgba(46, 204, 113, 0.1); color: #2ecc71; padding: 20px; border-radius: 8px; text-align: center;">
+                    <h3>Appointment Confirmed!</h3>
+                    <p>Your ${pkg.title} has been scheduled for ${date} at ${time}.</p>
+                    <p>Thank you, ${customerName}.</p>
+                    <button onclick="window.Router.navigate('home')" class="checkout-btn" style="width: auto; margin-top: 15px;">Return Home</button>
+                </div>
+            `;
+        } else {
+            window.UI.showToast(result.error || 'Failed to create booking', '#ef4444');
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Confirm Appointment';
+            submitBtn.textContent = 'Book Service Appointment';
         }
+    },
+
+    getDescription(itemName) {
+        const descriptions = {
+            'Engine Oil Change': 'Replace old engine oil with fresh, high-quality oil',
+            'Oil Filter Replacement': 'Install new oil filter to ensure clean oil circulation',
+            'Air Filter Replacement': 'Replace air filter for optimal engine breathing',
+            'Air Filter Inspection': 'Check air filter condition and clean if necessary',
+            'Spark Plugs Replacement': 'Install new spark plugs for better ignition',
+            'Spark Plugs Check': 'Inspect spark plugs condition and gap',
+            'Timing Belt Replacement': 'Replace timing belt to prevent engine damage',
+            'Timing Belt Inspection': 'Check timing belt for wear and proper tension',
+            'Water Pump Replacement': 'Install new water pump for cooling system',
+            'Water Pump Check': 'Inspect water pump for leaks and proper operation',
+            'Water Pump Inspection': 'Check water pump condition and coolant flow',
+            'Thermostat Replacement': 'Replace thermostat for proper temperature control',
+            'Thermostat Check': 'Test thermostat operation and temperature range',
+            'Transmission Fluid Change': 'Replace transmission fluid for smooth shifting',
+            'Transmission Fluid Check': 'Check transmission fluid level and condition',
+            'Coolant Flush': 'Complete cooling system flush and refill',
+            'Coolant Replacement': 'Replace old coolant with fresh antifreeze',
+            'Coolant Check': 'Check coolant level and concentration',
+            'Brake Pads Inspection': 'Inspect brake pads for wear and thickness',
+            'Brake Pads Front': 'Replace front brake pads for safe stopping',
+            'Brake Pads Rear': 'Replace rear brake pads for optimal braking',
+            'Brake Pads All Around': 'Replace all brake pads front and rear',
+            'Brake Pads & Rotors Front': 'Replace front brake pads and rotors',
+            'Brake Pads & Rotors Rear': 'Replace rear brake pads and rotors',
+            'Brake Fluid Check': 'Check brake fluid level and color',
+            'Brake Fluid Replacement': 'Replace brake fluid for safe braking',
+            'Brake Fluid Flush': 'Complete brake system fluid flush',
+            'Brake System Overhaul': 'Complete brake system inspection and service',
+            'Brake Inspection': 'Comprehensive brake system inspection',
+            'Tire Rotation': 'Rotate tires for even wear pattern',
+            'Tire Rotation & Balance': 'Rotate and balance tires for smooth ride',
+            'Battery Test': 'Test battery condition and charging system',
+            'Cabin Air Filter': 'Replace cabin air filter for clean interior air',
+            'Power Steering Fluid': 'Check and top up power steering fluid',
+            'Differential Oil Change': 'Replace differential oil for smooth operation',
+            'Fuel System Cleaning': 'Clean fuel injectors and system components',
+            'Fuel System Clean': 'Professional fuel system cleaning service',
+            'Engine Degreasing': 'Clean engine bay and remove oil buildup',
+            'Suspension Check': 'Inspect suspension components for wear',
+            'Complete Inspection': 'Comprehensive vehicle safety inspection',
+            'Complete Vehicle Inspection': 'Full multi-point vehicle inspection',
+            'Comprehensive Inspection': 'Detailed inspection of all vehicle systems',
+            'Safety Check': 'Expert safety diagnostic'
+        };
+        return descriptions[itemName] || 'Professional automotive service';
     }
 };
 
