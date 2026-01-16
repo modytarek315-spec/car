@@ -1,7 +1,7 @@
 const ServicePage = {
     render() {
         const mainContent = document.getElementById('main-content');
-        window.UI.updateBreadcrumb([{ label: 'Service Booking', action: () => window.location.href = 'service.html' }]);
+        window.UI.updateBreadcrumb([{ label: 'Service', action: () => window.location.href = 'service.html' }]);
 
         // Use real data from Supabase, stored in AppState by script.js
         const servicePackages = window.AppState.servicePackages || [];

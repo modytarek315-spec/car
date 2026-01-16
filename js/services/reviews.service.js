@@ -51,7 +51,7 @@ const ReviewsService = {
                 .from('reviews')
                 .select(`
                     *,
-                    reviewer:profiles(id, full_name, avatar_url)
+                    reviewer:profiles(id, full_name, email, avatar_url)
                 `, { count: 'exact' })
                 .eq('product_id', productId)
                 .eq('is_visible', true) // Business rule: only visible reviews
@@ -98,7 +98,7 @@ const ReviewsService = {
      * RLS: reviews_insert_limit - authenticated users can create
      * 
      * @param {Object} reviewData - Review information
-     * @param {string} reviewData.productId - Product UUID
+     * @param {string} reviewData.productId|reviewData.product_id - Product UUID
      * @param {number} reviewData.rating - Rating (1-5)
      * @param {string} [reviewData.comment] - Review comment
      * @returns {Promise<Object>} { success, review, error }
@@ -120,6 +120,13 @@ const ReviewsService = {
                 };
             }
 
+            // Support both naming conventions
+            const productId = reviewData.product_id || reviewData.productId;
+            
+            if (!productId) {
+                return { success: false, error: 'Product ID is required' };
+            }
+
             // Validate rating
             if (reviewData.rating < 1 || reviewData.rating > 5) {
                 return { success: false, error: 'Rating must be between 1 and 5' };
@@ -129,7 +136,7 @@ const ReviewsService = {
             const { data: existingReview } = await client
                 .from('reviews')
                 .select('id')
-                .eq('product_id', reviewData.productId)
+                .eq('product_id', productId)
                 .eq('user_id', user.id)
                 .single();
 
@@ -140,22 +147,15 @@ const ReviewsService = {
                 };
             }
 
-            // Check if user has purchased this product (for verified purchase badge)
-            const isVerifiedPurchase = await this.checkVerifiedPurchase(
-                user.id,
-                reviewData.productId
-            );
-
             // Create review
             const { data: review, error } = await client
                 .from('reviews')
                 .insert({
                     user_id: user.id,
-                    product_id: reviewData.productId,
+                    product_id: productId,
                     rating: reviewData.rating,
                     comment: reviewData.comment || null,
-                    is_visible: true, // Admin can toggle this
-                    is_verified_purchase: isVerifiedPurchase
+                    is_visible: true
                 })
                 .select()
                 .single();
@@ -163,7 +163,7 @@ const ReviewsService = {
             if (error) throw error;
 
             // Update product average rating
-            await this.updateProductRating(reviewData.productId);
+            await this.updateProductRating(productId);
 
             return {
                 success: true,
@@ -212,7 +212,7 @@ const ReviewsService = {
     /**
      * Update product's average rating
      * 
-     * Table: products (rating column)
+     * Table: products (rating, rating_count, total_ratings columns)
      * 
      * @param {string} productId - Product UUID
      */
@@ -233,15 +233,29 @@ const ReviewsService = {
             if (reviews && reviews.length > 0) {
                 const totalRating = reviews.reduce((sum, r) => sum + r.rating, 0);
                 const averageRating = totalRating / reviews.length;
+                const ratingCount = reviews.length;
 
                 // Round to 1 decimal place
                 const roundedRating = Math.round(averageRating * 10) / 10;
 
-                // Update product rating
+                // Update product rating with new schema fields
                 await client
                     .from('products')
                     .update({
                         rating: roundedRating,
+                        rating_count: ratingCount,
+                        total_ratings: totalRating,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', productId);
+            } else {
+                // Reset rating if no reviews
+                await client
+                    .from('products')
+                    .update({
+                        rating: 0,
+                        rating_count: 0,
+                        total_ratings: 0,
                         updated_at: new Date().toISOString()
                     })
                     .eq('id', productId);

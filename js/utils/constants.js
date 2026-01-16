@@ -8,7 +8,7 @@
 const AppConstants = {
     // Default store configuration
     DEFAULT_CONFIG: {
-        store_name: "Car House 🚗",
+        store_name: "Car House ",
         store_tagline: "Quality Parts for Your Vehicle",
         primary_color: "#2C2C2C",
         secondary_color: "#FFC700",
