@@ -74,7 +74,7 @@ window.App = {
 
     } catch (e) {
       console.error('Initialization error:', e);
-      window.UI.showToast('Failed to load application data', window.AppConstants?.TOAST_COLORS?.ERROR || '#e74c3c');
+      window.UI.showToast(window.AppConstants?.MESSAGES?.ERROR?.LOAD_FAILED || 'Failed to load application data', '#e74c3c', { type: 'error' });
     }
 
     // 4. Global Event Init
@@ -122,7 +122,7 @@ window.App = {
       window.AppState.servicePackages = serviceTypes.services.map(s => ({
         id: s.id,
         title: s.name,
-        km: s.name.replace(/[^0-9]/g, '') || "0",
+        name: s.name, // Full service name from Supabase
         price: s.base_price || 0,
         products: (s.items || s.service_type_products || []).map(i => i.product).filter(p => !!p),
         items: (s.items || s.service_type_products || []).map(i => ({
@@ -169,14 +169,19 @@ window.App = {
   },
 
   initGlobalEvents() {
-    // Sync Cart
-    window.AppState.cart = window.CartService.getCart();
+    // Sync Cart from localStorage
+    if (window.CartService) {
+      window.AppState.cart = window.CartService.getCart();
+    }
     this.updateCartCount();
 
     window.addEventListener('cartUpdated', (e) => {
       window.AppState.cart = e.detail.cart;
       this.updateCartCount();
-      if (window.AppState.currentCategory === 'cart') window.CartPage.render();
+      // Refresh cart page if currently viewing it
+      if (window.location.pathname.includes('cart.html')) {
+        window.CartPage.render();
+      }
     });
 
     // Search Handlers

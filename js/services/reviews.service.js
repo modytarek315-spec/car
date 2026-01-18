@@ -181,6 +181,8 @@ const ReviewsService = {
 
     /**
      * Check if user has purchased the product
+     * Note: is_verified_purchase field doesn't exist in schema.
+     * This is a runtime check only.
      * 
      * @param {string} userId - User UUID
      * @param {string} productId - Product UUID

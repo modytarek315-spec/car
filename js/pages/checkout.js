@@ -52,20 +52,40 @@ const CheckoutPage = {
             };
             this.renderPaymentPage(shippingData);
         };
+        
+        // Auto-populate user data if logged in
+        this.populateUserData();
+    },
+
+    async populateUserData() {
+        try {
+            const isAuth = await window.CarHouseSupabase.isAuthenticated();
+            if (!isAuth) return;
+
+            const result = await window.AuthService.getProfile();
+            if (result.success && result.profile) {
+                const profile = result.profile;
+                
+                // Populate shipping form fields
+                const nameField = document.getElementById('ship-name');
+                const emailField = document.getElementById('ship-email');
+                const phoneField = document.getElementById('ship-phone');
+                
+                if (nameField && profile.full_name) nameField.value = profile.full_name;
+                if (emailField && profile.email) emailField.value = profile.email;
+                if (phoneField && profile.phone) phoneField.value = profile.phone;
+            }
+        } catch (error) {
+            console.log('Could not auto-populate user data:', error);
+        }
     },
 
     renderPaymentPage(shippingDetails) {
         const mainContent = document.getElementById('main-content');
-        const cart = window.AppState.cart;
-        const products = window.AppState.products;
-        const allProducts = Object.values(products).flat();
-
-        const subtotal = cart.reduce((sum, item) => {
-            const p = allProducts.find(prod => prod.id === (item.productId || item.product_id));
-            return sum + (p ? p.price * item.quantity : 0);
-        }, 0);
-        const tax = subtotal * 0.14;
-        const total = subtotal + tax;
+        
+        // Use CartService to get accurate totals
+        const totals = window.CartService.getCartTotals();
+        const { subtotal, tax, total } = totals;
 
         mainContent.innerHTML = `
             <div class="checkout-page">
@@ -102,13 +122,13 @@ const CheckoutPage = {
                     </div>
 
                     <div class="card-form-grid">
-                        <div class="form-group">
+                        <div class="form-group" style="grid-column: span 3;">
                             <label>Card Holder Name</label>
                             <input type="text" id="card-name" placeholder="Full Name on Card">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" style="grid-column: span 3;">
                             <label>Card Number</label>
-                            <input type="text" id="card-number" placeholder="0000 0000 0000 0000" maxlength="19">
+                            <input type="text" id="card-number" placeholder="0000 0000 0000 0000" maxlength="19" style="font-size: 18px; letter-spacing: 2px; font-family: 'Courier New', monospace;">
                         </div>
                         <div class="card-form-grid" style="grid-template-columns: 1fr 1fr; gap: 15px; grid-column: span 3;">
                             <div class="form-group">

@@ -293,10 +293,20 @@ const AppIntegration = {
             return;
         }
 
-        // Disable button
+        // Get product card element for animation
+        const productCard = button.closest('.product-card');
+        
+        // Disable button with loading state
         const originalText = button.textContent;
+        const originalHTML = button.innerHTML;
         button.disabled = true;
-        button.textContent = 'Adding...';
+        button.classList.add('loading');
+        button.innerHTML = `
+            <svg class="spinner" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="33 11" />
+            </svg>
+            <span>Adding...</span>
+        `;
 
         try {
             // Get product details from Supabase
@@ -304,7 +314,7 @@ const AppIntegration = {
 
             if (!productResult.success) {
                 // Fallback: try to get from existing data
-                this.showToast(productResult.error || 'Product not found', '#e74c3c');
+                this.showToast(productResult.error || window.AppConstants.MESSAGES.ERROR.GENERIC, '#e74c3c', { type: 'error' });
                 return;
             }
 
@@ -312,7 +322,7 @@ const AppIntegration = {
 
             // Check stock
             if (product.stock <= 0) {
-                this.showToast('This product is out of stock', '#e74c3c');
+                this.showToast(window.AppConstants.MESSAGES.ERROR.OUT_OF_STOCK, '#e74c3c', { type: 'error' });
                 return;
             }
 
@@ -320,21 +330,58 @@ const AppIntegration = {
             const result = await window.CartService.addToCart(product);
 
             if (result.success) {
-                this.showToast(result.message);
+                // Success feedback
+                button.classList.add('success');
+                button.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                    </svg>
+                    <span>Added!</span>
+                `;
+                
+                // Update cart UI and count
+                if (window.CartService) {
+                    window.CartService.updateCartUI();
+                }
+                
+                // Flying animation to cart
+                if (productCard) {
+                    this.flyToCart(productCard);
+                }
+                
+                // Bounce cart icon
                 this.bounceCartIcon();
+                
+                // Show mini cart preview
+                this.showMiniCart(product);
+                
+                // Confetti effect
+                this.createConfetti(button);
+                
+                // Toast notification
+                this.showToast(window.AppConstants.MESSAGES.SUCCESS.CART_ADDED, '#27ae60', { type: 'success' });
+                
+                // Reset button after delay
+                setTimeout(() => {
+                    button.classList.remove('success');
+                    button.innerHTML = originalHTML;
+                }, 2000);
             } else {
                 if (result.requiresAuth) {
-                    this.showToast('Please login to add items to cart', '#f39c12');
-                    // Still add to localStorage cart for guests
+                    this.showToast(window.AppConstants.MESSAGES.WARNING.LOGIN_REQUIRED, '#f39c12', { type: 'warning' });
+                } else {
+                    this.showToast(result.error || window.AppConstants.MESSAGES.ERROR.CART_FAILED, '#e74c3c', { type: 'error' });
                 }
-                this.showToast(result.error || 'Failed to add to cart', '#e74c3c');
             }
         } catch (error) {
             console.error('Add to cart error:', error);
-            this.showToast('Failed to add to cart', '#e74c3c');
+            this.showToast(window.AppConstants.MESSAGES.ERROR.CART_FAILED, '#e74c3c', { type: 'error' });
         } finally {
             button.disabled = false;
-            button.textContent = originalText;
+            button.classList.remove('loading');
+            if (!button.classList.contains('success')) {
+                button.innerHTML = originalHTML;
+            }
         }
     },
 
@@ -348,7 +395,7 @@ const AppIntegration = {
         if (!window.FavoritesService) return;
 
         if (!this.currentUser) {
-            this.showToast('Please login to save favorites', '#f39c12');
+            this.showToast(window.AppConstants.MESSAGES.WARNING.LOGIN_REQUIRED, '#f39c12', { type: 'warning' });
             return;
         }
 
@@ -361,17 +408,18 @@ const AppIntegration = {
             if (result.success) {
                 // Toggle active class on button
                 button.classList.toggle('active', result.isFavorite);
-                this.showToast(result.message);
+                const message = result.isFavorite ? window.AppConstants.MESSAGES.SUCCESS.FAVORITE_ADDED : window.AppConstants.MESSAGES.SUCCESS.FAVORITE_REMOVED;
+                this.showToast(message, result.isFavorite ? '#27ae60' : '#3498db', { type: result.isFavorite ? 'success' : 'info' });
             } else {
                 if (result.requiresAuth) {
-                    this.showToast('Please login to save favorites', '#f39c12');
+                    this.showToast(window.AppConstants.MESSAGES.WARNING.LOGIN_REQUIRED, '#f39c12', { type: 'warning' });
                 } else {
-                    this.showToast(result.error || 'Failed to update favorites', '#e74c3c');
+                    this.showToast(result.error || window.AppConstants.MESSAGES.ERROR.FAVORITE_FAILED, '#e74c3c', { type: 'error' });
                 }
             }
         } catch (error) {
             console.error('Toggle favorite error:', error);
-            this.showToast('Failed to update favorites', '#e74c3c');
+            this.showToast(window.AppConstants.MESSAGES.ERROR.FAVORITE_FAILED, '#e74c3c', { type: 'error' });
         }
     },
 
@@ -385,7 +433,7 @@ const AppIntegration = {
 
         // Check auth
         if (!this.currentUser) {
-            this.showToast('Please login to complete your order', '#f39c12');
+            this.showToast(window.AppConstants.MESSAGES.WARNING.LOGIN_REQUIRED, '#f39c12', { type: 'warning' });
             this.showLoginModal();
             return;
         }
@@ -558,6 +606,88 @@ const AppIntegration = {
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
             }
+        }
+    },
+
+    /**
+     * Show mini cart preview
+     */
+    showMiniCart(product) {
+        const existing = document.querySelector('.mini-cart-preview');
+        if (existing) existing.remove();
+
+        const cart = window.CartService.getCart();
+        const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+        const miniCart = document.createElement('div');
+        miniCart.className = 'mini-cart-preview';
+        miniCart.innerHTML = `
+            <div class="mini-cart-header">
+                <h4>🛒 Cart Updated</h4>
+                <button class="mini-cart-close" onclick="this.closest('.mini-cart-preview').remove()">
+                    <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="mini-cart-item">
+                <img src="${product.image_url || product.icon || (product.images?.[0]?.url)}" alt="${product.name}" onerror="this.style.display='none'">
+                <div class="mini-cart-item-details">
+                    <div class="mini-cart-item-name">${product.name || product.title}</div>
+                    <div class="mini-cart-item-price">${product.price.toFixed(2)} EGP</div>
+                </div>
+            </div>
+            <div class="mini-cart-footer">
+                <div class="mini-cart-summary">
+                    <span>${itemCount} item${itemCount !== 1 ? 's' : ''}</span>
+                    <span class="mini-cart-total">${total.toFixed(2)} EGP</span>
+                </div>
+                <button class="mini-cart-view-btn" onclick="window.location.href='cart.html'">
+                    View Cart
+                </button>
+            </div>
+        `;
+
+        document.body.appendChild(miniCart);
+
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            if (miniCart.parentElement) {
+                miniCart.classList.add('mini-cart-exit');
+                setTimeout(() => miniCart.remove(), 300);
+            }
+        }, 5000);
+    },
+
+    /**
+     * Create confetti effect
+     */
+    createConfetti(element) {
+        const colors = ['#FFC700', '#27ae60', '#3498db', '#e74c3c', '#9b59b6'];
+        const rect = element.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        for (let i = 0; i < 20; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = centerX + 'px';
+            confetti.style.top = centerY + 'px';
+            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+            
+            const angle = (Math.random() * 360) * (Math.PI / 180);
+            const velocity = 100 + Math.random() * 100;
+            const tx = Math.cos(angle) * velocity;
+            const ty = Math.sin(angle) * velocity - 50;
+            
+            confetti.style.setProperty('--tx', tx + 'px');
+            confetti.style.setProperty('--ty', ty + 'px');
+            confetti.style.setProperty('--r', Math.random() * 360 + 'deg');
+            
+            document.body.appendChild(confetti);
+            
+            setTimeout(() => confetti.remove(), 1000);
         }
     },
 

@@ -1,7 +1,8 @@
 const CartPage = {
     render() {
         const mainContent = document.getElementById('main-content');
-        const cart = window.AppState.cart;
+        // Read directly from CartService for real-time data
+        const cart = window.CartService ? window.CartService.getCart() : [];
         const products = window.AppState.products;
 
         window.UI.updateBreadcrumb([{ label: 'Shopping Cart', action: () => window.location.href = 'cart.html' }]);

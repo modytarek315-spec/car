@@ -297,13 +297,8 @@ const ProductDetailsPage = {
     },
 
     attachEventListeners() {
-        // Existing add to cart logic
-        document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-            btn.addEventListener('click', async (e) => {
-                const productId = e.target.dataset.productId;
-                await window.CartPage.handleAddToCart(productId, 1);
-            });
-        });
+        // Add to cart buttons handled by app.integration.js global listener
+        // No need to duplicate event listeners here
     }
 };
 

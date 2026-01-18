@@ -285,7 +285,6 @@ const AuthService = {
 
         const fullName = params.fullName || params.full_name;
         const phone = params.phone;
-        const address = params.address;
         const avatarUrl = params.avatarUrl || params.avatar_url;
 
         try {
@@ -301,7 +300,6 @@ const AuthService = {
 
             if (fullName !== undefined) updates.full_name = fullName;
             if (phone !== undefined) updates.phone = phone;
-            if (address !== undefined) updates.address = address;
             if (avatarUrl !== undefined) updates.avatar_url = avatarUrl;
 
             const { data, error } = await client

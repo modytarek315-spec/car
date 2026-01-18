@@ -6,8 +6,7 @@
  */
 
 const UI = {
-    showToast(message, bgColor) {
-        const color = bgColor || window.AppConstants?.TOAST_COLORS?.SUCCESS || '#27ae60';
+    showToast(message, bgColor = '#27ae60') {
         const existingToast = document.querySelector('.toast');
         if (existingToast) {
             existingToast.remove();
@@ -16,11 +15,12 @@ const UI = {
         const toast = document.createElement('div');
         toast.className = 'toast';
         toast.textContent = message;
-        toast.style.background = color;
+        toast.style.background = bgColor;
         document.body.appendChild(toast);
 
-        const duration = window.AppConstants?.ANIMATIONS?.TOAST_DURATION || 3000;
-        setTimeout(() => toast.remove(), duration);
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
     },
 
     updateBreadcrumb(items = []) {

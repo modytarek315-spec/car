@@ -20,8 +20,7 @@ const ServicePage = {
                         <div class="service-card ${window.AppState.selectedService === index ? 'selected' : ''}" 
                              data-service-index="${index}"
                              onclick="window.ServicePage.selectService(${index})">
-                            <div class="service-km">${pkg.km} KM</div>
-                            <div class="service-title">${pkg.title}</div>
+                            <div class="service-km">${pkg.name || pkg.title}</div>
                             <div class="service-price">${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
                             <p style="margin: 10px 0 0 0; color: #7f8c8d; font-size: 14px;">${pkg.items.length} service items</p>
                         </div>
@@ -55,14 +54,14 @@ const ServicePage = {
         mainContent.innerHTML = `
             <div class="service-details-page">
                 <button class="back-btn" onclick="window.location.href='service.html'" style="margin-bottom: 20px;">Back to Services</button>
-                <h1 class="page-title">${pkg.km} KM Service - ${pkg.title}</h1>
+                <h1 class="page-title">${pkg.name || pkg.title}</h1>
                 <p class="page-subtitle">Complete maintenance package for your vehicle</p>
                 
                 <div style="background: #252525; padding: 25px; border-radius: 12px; margin-bottom: 25px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                         <div>
-                            <h3 style="margin: 0; color: #fff; font-size: 24px;">${pkg.title}</h3>
-                            <p style="margin: 5px 0 0 0; color: #7f8c8d;">Recommended at ${pkg.km} kilometers</p>
+                            <h3 style="margin: 0; color: #fff; font-size: 24px;">${pkg.name || pkg.title}</h3>
+                            <p style="margin: 5px 0 0 0; color: #7f8c8d;">Professional service package</p>
                         </div>
                         <div class="service-price" style="margin: 0;">${pkg.price.toFixed(2)} <span class="currency-symbol">EGP</span></div>
                     </div>
@@ -150,7 +149,7 @@ const ServicePage = {
                                 </div>
                                 <div class="form-group" style="margin-bottom: 0;">
                                     <label for="vehicle-plate">License Plate</label>
-                                    <input type="text" id="vehicle-plate" placeholder="e.g., ABC 1234">
+                                    <input type="text" id="vehicle-plate" placeholder="e.g., ABC 1234" oninput="window.ServicePage.formatLicensePlate(this)" maxlength="10">
                                 </div>
                                 <div class="form-group" style="margin-bottom: 0;">
                                     <label for="vehicle-color">Color</label>
@@ -228,6 +227,32 @@ const ServicePage = {
                 </div>
             </div>
         `;
+        
+        // Auto-populate user data if logged in
+        this.populateUserData();
+    },
+
+    async populateUserData() {
+        try {
+            const isAuth = await window.CarHouseSupabase.isAuthenticated();
+            if (!isAuth) return;
+
+            const result = await window.AuthService.getProfile();
+            if (result.success && result.profile) {
+                const profile = result.profile;
+                
+                // Populate customer info fields
+                const nameField = document.getElementById('service-customer-name');
+                const emailField = document.getElementById('service-customer-email');
+                const phoneField = document.getElementById('service-customer-phone');
+                
+                if (nameField && profile.full_name) nameField.value = profile.full_name;
+                if (emailField && profile.email) emailField.value = profile.email;
+                if (phoneField && profile.phone) phoneField.value = profile.phone;
+            }
+        } catch (error) {
+            console.log('Could not auto-populate user data:', error);
+        }
     },
 
     togglePartsSelection(checked) {
@@ -292,6 +317,16 @@ const ServicePage = {
         document.getElementById('subtotal-cost').innerHTML = `${subtotal.toFixed(2)} <span class="currency-symbol">EGP</span>`;
         document.getElementById('tax-cost').innerHTML = `${tax.toFixed(2)} <span class="currency-symbol">EGP</span>`;
         document.getElementById('total-cost').innerHTML = `${total.toFixed(2)} <span class="currency-symbol">EGP</span>`;
+    },
+
+    formatLicensePlate(input) {
+        // Remove all non-alphanumeric characters except spaces
+        let value = input.value.replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+        
+        // Add space after each character
+        value = value.split('').join(' ').trim();
+        
+        input.value = value;
     },
 
     async submitBooking(event) {

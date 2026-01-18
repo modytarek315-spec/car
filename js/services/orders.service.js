@@ -93,6 +93,8 @@ const OrdersService = {
             const totals = window.CartService.getCartTotals(orderData.shippingType);
 
             // Create order record
+            // Note: Schema only has total_amount and total fields
+            // Breakdown (subtotal, tax, shipping) should be stored in payment_meta if needed
             const orderInsertData = {
                 user_id: user.id,
                 status: 'pending',
