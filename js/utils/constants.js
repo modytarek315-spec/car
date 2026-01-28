@@ -70,16 +70,19 @@ const AppConstants = {
 
     /**
      * Get the correct path to a page based on current location
-     * @param {string} page - Page key from PAGES constant
+     * @param {string} page - Page key from PAGES constant (e.g., 'home', 'cart', 'login')
      * @returns {string} Correct relative path to the page
      */
     getPagePath(page) {
         const isInPagesFolder = window.location.pathname.includes('/pages/');
-        const pagePath = this.PAGES[page.toUpperCase()] || page;
+        const pageKey = page.toUpperCase();
         
-        if (page.toUpperCase() === 'HOME') {
+        // Handle both 'home' and 'index' as home page
+        if (pageKey === 'HOME' || pageKey === 'INDEX') {
             return isInPagesFolder ? '../index.html' : 'index.html';
         }
+        
+        const pagePath = this.PAGES[pageKey] || `${page}.html`;
         
         return isInPagesFolder ? pagePath : `pages/${pagePath}`;
     }
