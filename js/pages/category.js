@@ -34,7 +34,7 @@ const CategoryPage = {
 
         window.UI.updateBreadcrumb([{ 
             label: categoryName, 
-            action: () => window.location.href = `category.html?category=${encodeURIComponent(finalSlug)}` 
+            action: () => window.location.href = `${window.getPagePath('category')}?category=${encodeURIComponent(finalSlug)}` 
         }]);
 
         this.renderLayout(categoryName);
@@ -169,7 +169,7 @@ const CategoryPage = {
                 <div class="empty-state-icon" style="font-size: 64px; margin-bottom: 20px;">🔍</div>
                 <h3 style="font-size: 24px; color: white;">No products found</h3>
                 <p style="color: #888; margin-bottom: 30px;">Try adjusting your search or filters to find what you're looking for.</p>
-                <button class="back-btn" onclick="window.location.href='index.html'">Back to Home</button>
+                <button class="back-btn" onclick="window.location.href=window.getPagePath('index')">Back to Home</button>
             </div>
         `;
     },

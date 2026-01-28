@@ -3,7 +3,7 @@ const ProductDetailsPage = {
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get('id');
         if (!productId) {
-            window.location.href = 'index.html';
+            window.location.href = window.getPagePath('index');
             return;
         }
 
@@ -139,7 +139,7 @@ const ProductDetailsPage = {
         } else {
             container.innerHTML = `
                 <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; margin-bottom: 25px; text-align: center;">
-                    <p style="color: #ccc;">Please <a href="login.html" style="color: var(--secondary-color);">login</a> to leave a review</p>
+                    <p style="color: #ccc;">Please <a href="" onclick="window.location.href=window.getPagePath('login'); return false;" style="color: var(--secondary-color);">login</a> to leave a review</p>
                 </div>
             `;
         }

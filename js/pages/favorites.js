@@ -1,7 +1,7 @@
 const FavoritesPage = {
     async render() {
         const mainContent = document.getElementById('main-content');
-        window.UI.updateBreadcrumb([{ label: 'My Favorites', action: () => window.location.href = 'favorites.html' }]);
+        window.UI.updateBreadcrumb([{ label: 'My Favorites', action: () => window.location.href = window.getPagePath('favorites') }]);
 
         mainContent.innerHTML = `
             <h1 class="page-title">My Favorites</h1>
@@ -18,7 +18,7 @@ const FavoritesPage = {
                     <div style="font-size: 64px; margin-bottom: 20px;">❤️</div>
                     <h3>Your wishlist is empty</h3>
                     <p>Save products you love to keep track of them here.</p>
-                    <button class="back-btn" onclick="window.location.href='index.html'" style="margin-top: 20px;">Browse Shop</button>
+                    <button class="back-btn" onclick="window.location.href=window.getPagePath('home')" style="margin-top: 20px;">Browse Shop</button>
                 </div>
             `;
             return;

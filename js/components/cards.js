@@ -31,7 +31,7 @@ const Cards = {
 
     createCategoryCard(category, index) {
         return `
-            <a class="category-card fade-in-up" href="category.html?category=${encodeURIComponent(category.slug)}" style="animation-delay: ${index * 0.1}s">
+            <a class="category-card fade-in-up" href="" onclick="window.location.href=window.getPagePath('category')+'?category=${encodeURIComponent(category.slug)}'; return false;" style="animation-delay: ${index * 0.1}s">
                 <div class="category-card-image-wrapper">
                     <img src="${category.image_url || category.icon || 'https://via.placeholder.com/300'}" alt="${category.name}" class="category-card-image" onerror="this.src='https://via.placeholder.com/300?text=${category.name}';">
                 </div>

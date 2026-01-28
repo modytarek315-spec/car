@@ -5,22 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Car House 🚗</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="../style.css">
     <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
 
     <!-- Supabase & Services -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/supabase-client.js"></script>
-    <script src="js/services/auth.service.js"></script>
-    <script src="js/app.integration.js" defer></script>
+    <script src="../js/supabase-client.js"></script>
+    <script src="../js/services/auth.service.js"></script>
+    <script src="../js/utils/constants.js"></script>
+    <script src="../js/utils/ui.js"></script>
+    <script src="../js/app.integration.js" defer></script>
 </head>
 
 <body class="bg-[#1A1A1A]">
     <header class="header">
         <div class="header-top">
             <div class="logo-section">
-                <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-                    <img src="Logo.png" alt="Car House Logo" style="height: 50px; width: auto; object-fit: contain;">
+                <a href="../index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+                    <img src="../Logo.png" alt="Car House Logo" style="height: 50px; width: auto; object-fit: contain;">
                     <div class="logo-text">
                         <h1 id="store-name" style="margin: 0; font-size: 24px; color: white;">Car House</h1>
                         <p id="store-tagline" style="margin: 0; font-size: 12px; opacity: 0.8; color: #ccc;">Quality
@@ -33,12 +35,31 @@
 
     <nav class="nav">
         <ul class="nav-links">
-            <li><a href="index.html"><button>Back to Shop</button></a></li>
+            <li><a href="../index.html"><button>Back to Shop</button></a></li>
         </ul>
     </nav>
 
     <div class="container mx-auto px-4 flex justify-center items-center min-h-[70vh] mt-10">
         <div class="w-full max-w-lg bg-gray-800 rounded-2xl shadow-2xl overflow-hidden border border-gray-700 relative">
+            <!-- Success Message Overlay -->
+            <div id="register-success-overlay"
+                class="absolute inset-0 bg-gradient-to-br from-green-900/95 to-emerald-800/95 flex flex-col items-center justify-center z-50 hidden transition-all duration-500 opacity-0 backdrop-blur-sm">
+                <div class="relative">
+                    <div class="absolute inset-0 animate-ping bg-green-400/30 rounded-full"></div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-20 w-20 text-green-400 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <h2 class="text-3xl font-bold text-white mb-2 mt-6">Account Created!</h2>
+                <p class="text-green-200 text-lg">Welcome to Car House</p>
+                <div class="mt-4 flex items-center gap-2 text-green-300">
+                    <svg class="animate-spin h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span>Redirecting to login...</span>
+                </div>
+            </div>
             <div class="p-8">
                 <div class="text-center mb-8">
                     <h2 class="text-3xl font-bold text-white mb-2">Join the Club</h2>

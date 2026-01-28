@@ -961,7 +961,182 @@ body {
     color: #FFFFFF;
 }
 
-/* Toast Notifications */
+/* Toast Notifications - Enhanced */
+.enhanced-toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    max-width: 400px;
+    width: calc(100% - 40px);
+    pointer-events: none;
+}
+
+.enhanced-toast {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 16px 20px;
+    padding-right: 45px;
+    background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    pointer-events: all;
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    overflow: hidden;
+}
+
+.enhanced-toast.toast-show {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.enhanced-toast.toast-hide {
+    transform: translateX(120%);
+    opacity: 0;
+    transition: all 0.3s ease-in;
+}
+
+/* Toast Type Styles */
+.enhanced-toast-success {
+    border-left: 4px solid #27ae60;
+}
+
+.enhanced-toast-success .toast-icon-wrapper {
+    background: rgba(39, 174, 96, 0.15);
+    color: #27ae60;
+}
+
+.enhanced-toast-error {
+    border-left: 4px solid #e74c3c;
+}
+
+.enhanced-toast-error .toast-icon-wrapper {
+    background: rgba(231, 76, 60, 0.15);
+    color: #e74c3c;
+}
+
+.enhanced-toast-warning {
+    border-left: 4px solid #f39c12;
+}
+
+.enhanced-toast-warning .toast-icon-wrapper {
+    background: rgba(243, 156, 18, 0.15);
+    color: #f39c12;
+}
+
+.enhanced-toast-info {
+    border-left: 4px solid #3498db;
+}
+
+.enhanced-toast-info .toast-icon-wrapper {
+    background: rgba(52, 152, 219, 0.15);
+    color: #3498db;
+}
+
+/* Toast Icon */
+.toast-icon-wrapper {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.toast-icon {
+    width: 22px;
+    height: 22px;
+}
+
+/* Toast Content */
+.toast-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.toast-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.toast-message {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.4;
+    word-wrap: break-word;
+}
+
+/* Close Button */
+.toast-close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.toast-close svg {
+    width: 14px;
+    height: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    transition: color 0.2s ease;
+}
+
+.toast-close:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.toast-close:hover svg {
+    color: #ffffff;
+}
+
+/* Progress Bar */
+.toast-progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.toast-progress-bar {
+    height: 100%;
+    width: 100%;
+    background: var(--secondary-color, #FFC700);
+    transform-origin: left;
+}
+
+/* Toast Hover Effect */
+.enhanced-toast:hover {
+    transform: translateX(-5px);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+/* Legacy Toast Support */
 .toast {
     position: fixed;
     top: 20px;
@@ -974,6 +1149,40 @@ body {
     z-index: 10000;
     font-weight: 500;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+    .enhanced-toast-container {
+        top: auto;
+        bottom: 20px;
+        left: 10px;
+        right: 10px;
+        width: auto;
+    }
+
+    .enhanced-toast {
+        padding: 14px 16px;
+        padding-right: 40px;
+    }
+
+    .toast-icon-wrapper {
+        width: 36px;
+        height: 36px;
+    }
+
+    .toast-icon {
+        width: 18px;
+        height: 18px;
+    }
+
+    .toast-title {
+        font-size: 13px;
+    }
+
+    .toast-message {
+        font-size: 12px;
+    }
 }
 
 

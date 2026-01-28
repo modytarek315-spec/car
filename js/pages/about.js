@@ -1,7 +1,7 @@
 const AboutPage = {
     render() {
         const mainContent = document.getElementById('main-content');
-        window.UI.updateBreadcrumb([{ label: 'About Us', action: () => window.location.href = 'about.html' }]);
+        window.UI.updateBreadcrumb([{ label: 'About Us', action: () => window.location.href = window.getPagePath('about') }]);
 
         mainContent.innerHTML = `
             <h1 class="page-title">About Us</h1>

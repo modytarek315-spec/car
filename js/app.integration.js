@@ -500,7 +500,7 @@ const AppIntegration = {
 
                 // Redirect to home after delay
                 setTimeout(() => {
-                    window.location.href = 'index.html';
+                    window.location.href = window.getPagePath('index');
                 }, 3000);
             } else {
                 if (result.requiresAuth) {
@@ -589,7 +589,7 @@ const AppIntegration = {
                 `;
 
                 setTimeout(() => {
-                    window.location.href = 'index.html';
+                    window.location.href = window.getPagePath('index');
                 }, 3000);
             } else {
                 if (result.requiresAuth) {
@@ -643,7 +643,7 @@ const AppIntegration = {
                     <span>${itemCount} item${itemCount !== 1 ? 's' : ''}</span>
                     <span class="mini-cart-total">${total.toFixed(2)} EGP</span>
                 </div>
-                <button class="mini-cart-view-btn" onclick="window.location.href='cart.html'">
+                <button class="mini-cart-view-btn" onclick="window.location.href=window.getPagePath('cart')">
                     View Cart
                 </button>
             </div>
@@ -717,8 +717,8 @@ const AppIntegration = {
 
 
             if (result.success) {
-                // Show standard toast removed as requested
-                // this.showToast('Login successful!');
+                // Show success toast notification
+                this.showToast('Login successful! Welcome back!', '#27ae60', { type: 'success' });
 
                 // Show Overlay if exists (Login Page)
                 const overlay = document.getElementById('login-success-overlay');
@@ -729,21 +729,21 @@ const AppIntegration = {
                     overlay.classList.remove('opacity-0');
 
                     setTimeout(() => {
-                        window.location.href = 'index.html';
+                        window.location.href = window.getPagePath('index');
                     }, 2000);
                 } else {
                     this.closeModal();
                     // If on login page but no overlay?
-                    if (window.location.pathname.endsWith('login.html')) {
-                        setTimeout(() => { window.location.href = 'index.html'; }, 1000);
+                    if (window.location.pathname.includes('login')) {
+                        setTimeout(() => { window.location.href = window.getPagePath('index'); }, 1000);
                     }
                 }
             } else {
-                this.showToast(result.error || 'Login failed', '#e74c3c');
+                this.showToast(result.error || 'Login failed. Please check your credentials.', '#e74c3c', { type: 'error' });
             }
         } catch (error) {
             console.error('Login error:', error);
-            this.showToast('Login failed', '#e74c3c');
+            this.showToast('Login failed. Please try again.', '#e74c3c', { type: 'error' });
         } finally {
             if (submitBtn) {
                 submitBtn.disabled = false;
@@ -776,7 +776,7 @@ const AppIntegration = {
             const confirmPassword = formData.get('confirm-password');
 
             if (password !== confirmPassword) {
-                this.showToast('Passwords do not match', '#e74c3c');
+                this.showToast('Passwords do not match. Please try again.', '#e74c3c', { type: 'error' });
                 return;
             }
 
@@ -788,14 +788,31 @@ const AppIntegration = {
             });
 
             if (result.success) {
-                this.showToast(result.message || 'Registration successful!');
-                this.closeModal();
+                this.showToast(result.message || 'Account created successfully! Welcome to Car House!', '#27ae60', { type: 'success' });
+                
+                // Show success overlay if exists
+                const overlay = document.getElementById('register-success-overlay');
+                if (overlay) {
+                    overlay.classList.remove('hidden');
+                    void overlay.offsetWidth;
+                    overlay.classList.remove('opacity-0');
+                    
+                    setTimeout(() => {
+                        window.location.href = window.getPagePath('login');
+                    }, 2500);
+                } else {
+                    this.closeModal();
+                    // Redirect after short delay
+                    setTimeout(() => {
+                        window.location.href = window.getPagePath('login');
+                    }, 1500);
+                }
             } else {
-                this.showToast(result.error || 'Registration failed', '#e74c3c');
+                this.showToast(result.error || 'Registration failed. Please try again.', '#e74c3c', { type: 'error' });
             }
         } catch (error) {
             console.error('Register error:', error);
-            this.showToast('Registration failed', '#e74c3c');
+            this.showToast('Registration failed. Please try again.', '#e74c3c', { type: 'error' });
         } finally {
             if (submitBtn) {
                 submitBtn.disabled = false;
@@ -988,7 +1005,7 @@ const AppIntegration = {
                     window.FavoritesService.clearFavorites();
                 }
                 // Redirect to home
-                window.location.href = 'index.html';
+                window.location.href = window.getPagePath('index');
             }
         } catch (error) {
             console.error('Logout error:', error);
@@ -1016,14 +1033,14 @@ const AppIntegration = {
      * Show login modal
      */
     showLoginModal() {
-        window.location.href = 'login.html';
+        window.location.href = window.getPagePath('login');
     },
 
     /**
      * Show profile page
      */
     showProfilePage() {
-        window.location.href = 'profile.html';
+        window.location.href = window.getPagePath('profile');
     },
 
     /**
@@ -1039,19 +1056,20 @@ const AppIntegration = {
 
     /**
      * Show toast notification
-     * Uses existing showToast if available
+     * Uses the enhanced UI.showToast if available
      * 
      * @param {string} message - Message to display
      * @param {string} [bgColor='#27ae60'] - Background color
+     * @param {Object} [options] - Additional options
      */
-    showToast(message, bgColor = '#27ae60') {
-        // Use existing showToast function if available
-        if (typeof window.showToast === 'function') {
-            window.showToast(message, bgColor);
+    showToast(message, bgColor = '#27ae60', options = {}) {
+        // Use the enhanced UI.showToast
+        if (window.UI && typeof window.UI.showToast === 'function') {
+            window.UI.showToast(message, bgColor, options);
             return;
         }
 
-        // Fallback implementation
+        // Fallback to basic toast if UI not available
         const existingToast = document.querySelector('.toast');
         if (existingToast) {
             existingToast.remove();

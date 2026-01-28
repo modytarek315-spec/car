@@ -1,9 +1,24 @@
 {
+  "name": "car-house",
+  "version": "1.0.0",
+  "description": "Car parts e-commerce website with service booking",
   "scripts": {
     "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:mobile": "playwright test --project='Mobile Chrome' --project='Mobile Safari'",
+    "test:e2e": "playwright test tests/e2e.spec.js",
+    "test:api": "playwright test tests/api.spec.js",
+    "test:report": "playwright show-report test-results/html-report",
+    "serve": "npx http-server -p 5500",
     "postinstall": "playwright install"
   },
   "devDependencies": {
-    "@playwright/test": "^1.56.1"
+    "@playwright/test": "^1.56.1",
+    "http-server": "^14.1.1"
   }
 }

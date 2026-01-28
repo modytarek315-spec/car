@@ -50,7 +50,42 @@ const AppConstants = {
         TOAST_DURATION: 3000,
         BOUNCE_DURATION: 500,
         TRANSITION_DURATION: 300
+    },
+
+    // Page paths - helps with navigation from different locations
+    PAGES: {
+        HOME: 'index.html',
+        LOGIN: 'login.html',
+        REGISTER: 'register.html',
+        PROFILE: 'profile.html',
+        CART: 'cart.html',
+        CHECKOUT: 'checkout.html',
+        FAVORITES: 'favorites.html',
+        SERVICE: 'service.html',
+        ABOUT: 'about.html',
+        CATEGORY: 'category.html',
+        PRODUCT: 'product.html',
+        FORGOT_PASSWORD: 'forgot-password.html'
+    },
+
+    /**
+     * Get the correct path to a page based on current location
+     * @param {string} page - Page key from PAGES constant
+     * @returns {string} Correct relative path to the page
+     */
+    getPagePath(page) {
+        const isInPagesFolder = window.location.pathname.includes('/pages/');
+        const pagePath = this.PAGES[page.toUpperCase()] || page;
+        
+        if (page.toUpperCase() === 'HOME') {
+            return isInPagesFolder ? '../index.html' : 'index.html';
+        }
+        
+        return isInPagesFolder ? pagePath : `pages/${pagePath}`;
     }
 };
 
 window.AppConstants = AppConstants;
+
+// Global helper function for easy access
+window.getPagePath = (page) => AppConstants.getPagePath(page);

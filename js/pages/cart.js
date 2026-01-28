@@ -5,7 +5,7 @@ const CartPage = {
         const cart = window.CartService ? window.CartService.getCart() : [];
         const products = window.AppState.products;
 
-        window.UI.updateBreadcrumb([{ label: 'Shopping Cart', action: () => window.location.href = 'cart.html' }]);
+        window.UI.updateBreadcrumb([{ label: 'Shopping Cart', action: () => window.location.href = window.getPagePath('cart') }]);
 
         if (cart.length === 0) {
             mainContent.innerHTML = `
@@ -14,7 +14,7 @@ const CartPage = {
                         <div class="empty-state-icon">🛒</div>
                         <h3>Your cart is empty</h3>
                         <p>Explore our premium parts and add some products to get started</p>
-                        <button class="back-btn" onclick="window.location.href='index.html'">Continue Shopping</button>
+                        <button class="back-btn" onclick="window.location.href=window.getPagePath('home')">Continue Shopping</button>
                     </div>
                 </div>
             `;
@@ -78,8 +78,8 @@ const CartPage = {
                         <span>${total.toFixed(2)} EGP</span>
                     </div>
                     <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
-                        <button class="continue-shopping-btn" onclick="window.location.href='index.html'">Continue Shopping</button>
-                        <button class="checkout-btn" onclick="window.location.href='checkout.html'">Proceed to Checkout</button>
+                        <button class="continue-shopping-btn" onclick="window.location.href=window.getPagePath('home')">Continue Shopping</button>
+                        <button class="checkout-btn" onclick="window.location.href=window.getPagePath('checkout')">Proceed to Checkout</button>
                     </div>
                 </div>
             </div>

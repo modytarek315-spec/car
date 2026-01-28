@@ -146,44 +146,33 @@
     // =============================================================
 
     /**
-     * Show a toast notification
+     * Show a toast notification using the enhanced UI system
      * @param {string} message - Message to display
-     * @param {string} type - 'success', 'error', or 'info'
+     * @param {string} type - 'success', 'error', 'warning', or 'info'
      */
     function showToast(message, type = 'info') {
-        let container = document.querySelector('.toast-container');
-        if (!container) {
-            container = document.createElement('div');
-            container.className = 'toast-container';
-            document.body.appendChild(container);
+        // Use the enhanced UI.showToast if available
+        if (window.UI && typeof window.UI.showToast === 'function') {
+            const colorMap = {
+                success: '#27ae60',
+                error: '#e74c3c',
+                warning: '#f39c12',
+                info: '#3498db'
+            };
+            window.UI.showToast(message, colorMap[type] || colorMap.info, { type });
+            return;
         }
 
+        // Fallback to basic toast
+        const existingToast = document.querySelector('.toast');
+        if (existingToast) existingToast.remove();
+        
         const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-
-        const icons = {
-            success: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/></svg>`,
-            error: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"/></svg>`,
-            info: `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16"><path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.308.533.19 0 .452-.084.826-.252l-.4.25c-.284.19-.444.246-.5.246-.056 0-.102-.026-.144-.078.04-.05.05.097.05.131 0 .041-.01.082-.03.136l-.1.35c-.02.08-.02.12-.02.152 0 .054.02.083.08.083.053 0 .12-.023.213-.07zM8 5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>`
-        };
-
-        toast.innerHTML = `
-            ${icons[type] || icons.info}
-            <span>${message}</span>
-        `;
-
-        container.appendChild(toast);
-
-        // Animate in
-        requestAnimationFrame(() => {
-            toast.classList.add('show');
-        });
-
-        // Auto remove
-        setTimeout(() => {
-            toast.classList.remove('show');
-            setTimeout(() => toast.remove(), 500);
-        }, 4000);
+        toast.className = 'toast';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => toast.remove(), 4000);
     }
 
     // =============================================================

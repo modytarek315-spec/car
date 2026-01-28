@@ -4,43 +4,43 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Category - Car House 🚗</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Shopping Cart - Car House 🚗</title>
+  <link rel="stylesheet" href="../style.css">
   <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
   <!-- Supabase & Services -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="js/supabase-client.js"></script>
-  <script src="js/services/auth.service.js"></script>
-  <script src="js/services/products.service.js"></script>
-  <script src="js/services/cart.service.js"></script>
-  <script src="js/services/orders.service.js"></script>
-  <script src="js/services/bookings.service.js"></script>
-  <script src="js/services/favorites.service.js"></script>
-  <script src="js/services/reviews.service.js"></script>
-  <script src="js/services/coupons.service.js"></script>
+  <script src="../js/supabase-client.js"></script>
+  <script src="../js/services/auth.service.js"></script>
+  <script src="../js/services/products.service.js"></script>
+  <script src="../js/services/cart.service.js"></script>
+  <script src="../js/services/orders.service.js"></script>
+  <script src="../js/services/bookings.service.js"></script>
+  <script src="../js/services/favorites.service.js"></script>
+  <script src="../js/services/reviews.service.js"></script>
+  <script src="../js/services/coupons.service.js"></script>
   <!-- App Modules -->
-  <script src="js/utils/constants.js"></script>
-  <script src="js/utils/ui.js"></script>
-  <script src="js/utils/category.js"></script>
-  <script src="js/utils/auth.js"></script>
-  <script src="js/components/cards.js"></script>
-  <script src="js/pages/home.js"></script>
-  <script src="js/pages/category.js"></script>
-  <script src="js/pages/cart.js"></script>
-  <script src="js/pages/checkout.js"></script>
-  <script src="js/pages/service.js"></script>
-  <script src="js/pages/favorites.js"></script>
-  <script src="js/pages/about.js"></script>
-  <script src="js/router.js"></script>
-  <script src="script.js" defer></script>
+  <script src="../js/utils/constants.js"></script>
+  <script src="../js/utils/ui.js"></script>
+  <script src="../js/utils/category.js"></script>
+  <script src="../js/utils/auth.js"></script>
+  <script src="../js/components/cards.js"></script>
+  <script src="../js/pages/home.js"></script>
+  <script src="../js/pages/category.js"></script>
+  <script src="../js/pages/cart.js"></script>
+  <script src="../js/pages/checkout.js"></script>
+  <script src="../js/pages/service.js"></script>
+  <script src="../js/pages/favorites.js"></script>
+  <script src="../js/pages/about.js"></script>
+  <script src="../js/router.js"></script>
+  <script src="../script.js" defer></script>
 </head>
 
-<body data-page="category">
+<body data-page="cart">
   <header class="header">
     <div class="header-top">
       <div class="logo-section">
-        <a href="index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
-          <img src="Logo.png" alt="Car House Logo" style="height: 50px; width: auto; object-fit: contain;">
+        <a href="../index.html" style="display: flex; align-items: center; gap: 12px; text-decoration: none;">
+          <img src="../Logo.png" alt="Car House Logo" style="height: 50px; width: auto; object-fit: contain;">
           <div class="logo-text">
             <h1 id="store-name" style="margin: 0; font-size: 24px;">Car House</h1>
             <p id="store-tagline" style="margin: 0; font-size: 12px; opacity: 0.8;">Quality Parts for Your Vehicle</p>
@@ -98,7 +98,7 @@
   </header>
   <nav class="nav">
     <ul class="nav-links">
-      <li><a href="index.html"><button data-category="home" class="active">Home</button></a></li>
+      <li><a href="../index.html"><button data-category="home" class="active">Home</button></a></li>
       <li><a href="service.html"><button data-category="service">Service Booking</button></a></li>
       <li><a href="about.html"><button data-category="about">About Us</button></a></li>
     </ul>
