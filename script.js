@@ -138,12 +138,17 @@ window.App = {
     const navList = document.querySelector('.nav-links');
     if (!navList) return;
 
-    let html = '<li><a href="index.html"><button data-category="home">Home</button></a></li>';
+    // Determine if we're in the pages folder to use correct relative paths
+    const isInPagesFolder = window.location.pathname.includes('/pages/');
+    const rootPrefix = isInPagesFolder ? '../' : '';
+    const pagesPrefix = isInPagesFolder ? '' : 'pages/';
+
+    let html = `<li><a href="${rootPrefix}index.html"><button data-category="home">Home</button></a></li>`;
     window.AppState.categories.forEach(c => {
-      html += `<li><a href="category.html?category=${encodeURIComponent(c.slug)}"><button data-category="${c.slug}">${c.name}</button></a></li>`;
+      html += `<li><a href="${pagesPrefix}category.html?category=${encodeURIComponent(c.slug)}"><button data-category="${c.slug}">${c.name}</button></a></li>`;
     });
-    html += '<li><a href="service.html"><button data-category="service">Service Booking</button></a></li>';
-    html += '<li><a href="about.html"><button data-category="about">About Us</button></a></li>';
+    html += `<li><a href="${pagesPrefix}service.html"><button data-category="service">Service Booking</button></a></li>`;
+    html += `<li><a href="${pagesPrefix}about.html"><button data-category="about">About Us</button></a></li>`;
 
     navList.innerHTML = html;
     navList.onclick = null;
@@ -187,7 +192,7 @@ window.App = {
     // Search Handlers
     document.getElementById('search-btn')?.addEventListener('click', () => this.performSearch());
     document.getElementById('cart-btn')?.addEventListener('click', () => {
-      window.location.href = 'cart.html';
+      window.location.href = window.getPagePath('cart');
     });
 
     // Auth Actions
@@ -219,7 +224,7 @@ window.App = {
     }
 
     if (e.target.matches('.view-details-btn')) {
-      window.location.href = `product.html?id=${e.target.dataset.productId}`;
+      window.location.href = `${window.getPagePath('product')}?id=${e.target.dataset.productId}`;
     }
 
     const serviceCard = e.target.closest('[data-service-index]');
@@ -246,10 +251,18 @@ window.App = {
   renderSearchHistory() {
     const container = document.getElementById('search-history-container');
     if (!container) return;
+    
+    // Escape search terms to prevent XSS
+    const historyButtons = window.AppState.searchHistory.map(term => {
+      const escapedTerm = term.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+      const displayTerm = window.UI ? window.UI.escapeHtml(term) : term;
+      return `<button class="search-history-btn" onclick="window.App.performSearch('${escapedTerm}')">${displayTerm}</button>`;
+    }).join('');
+    
     container.innerHTML = `
             <div style="margin-top: 10px; display: flex; gap: 10px; align-items: center;">
                 <span style="font-weight: 500; color: white;">Recent Searches</span>
-                ${window.AppState.searchHistory.map(term => `<button class="search-history-btn" onclick="window.App.performSearch('${term}')">${term}</button>`).join('')}
+                ${historyButtons}
             </div>
         `;
   },
@@ -271,7 +284,7 @@ window.App = {
     }
 
     // Navigate to search results page
-    window.location.href = `category.html?category=search&term=${encodeURIComponent(searchTerm)}`;
+    window.location.href = `${window.getPagePath('category')}?category=search&term=${encodeURIComponent(searchTerm)}`;
   }
 };
 

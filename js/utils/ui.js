@@ -7,6 +7,18 @@
 
 const UI = {
     /**
+     * Escape HTML special characters to prevent XSS attacks
+     * @param {string} text - Text to escape
+     * @returns {string} Escaped text safe for HTML insertion
+     */
+    escapeHtml(text) {
+        if (text === null || text === undefined) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    },
+
+    /**
      * Enhanced Toast Notification System
      * @param {string} message - Message to display
      * @param {string} bgColor - Background color (legacy support)

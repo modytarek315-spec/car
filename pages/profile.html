@@ -15,6 +15,7 @@
     <script src="../js/services/orders.service.js"></script>
     <script src="../js/services/bookings.service.js"></script>
     <script src="../js/services/favorites.service.js"></script>
+    <script src="../js/utils/constants.js"></script>
     <script src="../js/app.integration.js" defer></script>
 </head>
 
@@ -32,7 +33,7 @@
                 </a>
             </div>
             <div class="header-actions">
-                <button onclick="window.AuthService.logout().then(() => window.location.href='../index.html')"
+                <button onclick="window.AuthService.logout().then(() => window.location.href=window.getPagePath('index'))"
                     class="logout-btn-alt">Logout</button>
             </div>
         </div>
@@ -197,7 +198,7 @@
             // Load User Data
             const user = await window.CarHouseSupabase.getCurrentUser();
             if (!user) {
-                window.location.href = 'login.html';
+                window.location.href = window.getPagePath('login');
                 return;
             }
 

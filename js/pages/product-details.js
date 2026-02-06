@@ -150,9 +150,10 @@ const ProductDetailsPage = {
         
         if (res.success && res.reviews && res.reviews.length > 0) {
             reviewsList.innerHTML = res.reviews.map(review => {
-                const displayName = review.reviewer?.full_name || 
+                const displayName = window.UI.escapeHtml(review.reviewer?.full_name || 
                                    review.reviewer?.email?.split('@')[0] || 
-                                   'Anonymous';
+                                   'Anonymous');
+                const escapedComment = review.comment ? window.UI.escapeHtml(review.comment) : '';
                 return `
                 <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; margin-bottom: 15px;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
@@ -166,7 +167,7 @@ const ProductDetailsPage = {
                         </div>
                         <span style="color: #888; font-size: 14px;">${new Date(review.created_at).toLocaleDateString()}</span>
                     </div>
-                    ${review.comment ? `<p style="color: #ccc; margin: 0;">${review.comment}</p>` : ''}
+                    ${escapedComment ? `<p style="color: #ccc; margin: 0;">${escapedComment}</p>` : ''}
                 </div>
             `;
             }).join('');
@@ -273,9 +274,10 @@ const ProductDetailsPage = {
         
         if (reviewsRes.success && reviewsRes.reviews && reviewsRes.reviews.length > 0) {
             reviewsList.innerHTML = reviewsRes.reviews.map(review => {
-                const displayName = review.reviewer?.full_name || 
+                const displayName = window.UI.escapeHtml(review.reviewer?.full_name || 
                                    review.reviewer?.email?.split('@')[0] || 
-                                   'Anonymous';
+                                   'Anonymous');
+                const escapedComment = review.comment ? window.UI.escapeHtml(review.comment) : '';
                 return `
                 <div style="background: rgba(0,0,0,0.2); padding: 20px; border-radius: 12px; margin-bottom: 15px;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
@@ -289,7 +291,7 @@ const ProductDetailsPage = {
                         </div>
                         <span style="color: #888; font-size: 14px;">${new Date(review.created_at).toLocaleDateString()}</span>
                     </div>
-                    ${review.comment ? `<p style="color: #ccc; margin: 0;">${review.comment}</p>` : ''}
+                    ${escapedComment ? `<p style="color: #ccc; margin: 0;">${escapedComment}</p>` : ''}
                 </div>
             `;
             }).join('');

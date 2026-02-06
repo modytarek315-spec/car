@@ -177,7 +177,8 @@ const CategoryPage = {
     renderError(error) {
         const grid = document.getElementById('products-grid');
         if (grid) {
-            grid.innerHTML = `<p class="error" style="color: #e74c3c; text-align: center; padding: 40px;">Failed to load products: ${error}</p>`;
+            const escapedError = window.UI.escapeHtml(error);
+            grid.innerHTML = `<p class="error" style="color: #e74c3c; text-align: center; padding: 40px;">Failed to load products: ${escapedError}</p>`;
         }
     }
 };
