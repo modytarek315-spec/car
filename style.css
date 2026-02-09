@@ -1444,13 +1444,17 @@ body {
     cursor: pointer;
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(255, 255, 255, 0.05);
-    color: #fff;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.favorite-btn svg {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .favorite-btn:hover {
     background: rgba(231, 76, 60, 0.1);
     border-color: rgba(231, 76, 60, 0.3);
-    color: #e74c3c;
+    color: rgba(231, 76, 60, 0.7);
     transform: scale(1.1);
 }
 
@@ -1461,7 +1465,11 @@ body {
 }
 
 .favorite-btn.active svg {
-    fill: #e74c3c;
+    transform: scale(1.15);
+}
+
+.favorite-btn.active:hover {
+    transform: scale(1.1);
 }
 
 /* Payment Methods & Card Mockup */

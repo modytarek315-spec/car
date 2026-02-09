@@ -12,7 +12,7 @@ const HomePage = {
         const serviceCard = `
             <a class="category-card fade-in-up" href="${window.getPagePath('service')}" style="animation-delay: ${categories.length * 0.1}s">
                 <div class="category-card-image-wrapper">
-                    <img src="https://toyotacorporate.sitedemo.com.my/wp-content/uploads/2022/01/v2-services-image4.jpg" alt="Service Booking" class="category-card-image" onerror="this.src=''; this.alt='Service Booking'; this.style.display='none';">
+                    <img src="reservation.png" alt="Service Booking" class="category-card-image" onerror="this.src=''; this.alt='Service Booking'; this.style.display='none';">
                 </div>
                 <h3 class="category-card-title">Service Booking</h3>
                 <p class="category-card-description">Inspection Repair Scheduling</p>

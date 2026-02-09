@@ -70,6 +70,13 @@ const ProductDetailsPage = {
                         <button class="add-to-cart-btn" data-product-id="${product.id}" ${product.stock <= 0 ? 'disabled' : ''} style="flex: 2; height: 55px; font-size: 18px; font-weight: 700;">
                             ${product.stock <= 0 ? 'NOT AVAILABLE' : 'ADD TO CART'}
                         </button>
+                        <button class="favorite-btn ${window.FavoritesService && window.FavoritesService.isFavorite(product.id) ? 'active' : ''}" 
+                                data-product-id="${product.id}" 
+                                style="width: 55px; height: 55px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 16 16" class="heart-icon">
+                                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                            </svg>
+                        </button>
                     </div>
                 </div>
             </div>

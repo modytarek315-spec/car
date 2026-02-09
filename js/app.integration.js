@@ -135,6 +135,11 @@ const AppIntegration = {
      * Setup global event listeners
      */
     setupEventListeners() {
+        // Listen for favorites updates and refresh UI
+        window.addEventListener('favoritesUpdated', () => {
+            this.updateAllFavoriteButtons();
+        });
+
         // Override add to cart to use Supabase service
         document.addEventListener('click', async (e) => {
             // Add to cart with stock check
@@ -408,6 +413,8 @@ const AppIntegration = {
             if (result.success) {
                 // Toggle active class on button
                 button.classList.toggle('active', result.isFavorite);
+                // Update all buttons with same product ID
+                this.updateFavoriteButtonState(productId, result.isFavorite);
                 const message = result.isFavorite ? window.AppConstants.MESSAGES.SUCCESS.FAVORITE_ADDED : window.AppConstants.MESSAGES.SUCCESS.FAVORITE_REMOVED;
                 this.showToast(message, result.isFavorite ? '#27ae60' : '#3498db', { type: result.isFavorite ? 'success' : 'info' });
             } else {
@@ -421,6 +428,32 @@ const AppIntegration = {
             console.error('Toggle favorite error:', error);
             this.showToast(window.AppConstants.MESSAGES.ERROR.FAVORITE_FAILED, '#e74c3c', { type: 'error' });
         }
+    },
+
+    /**
+     * Update all favorite buttons on the page based on current favorites state
+     */
+    updateAllFavoriteButtons() {
+        if (!window.FavoritesService) return;
+        
+        const allFavButtons = document.querySelectorAll('.favorite-btn[data-product-id]');
+        allFavButtons.forEach(btn => {
+            const productId = btn.dataset.productId;
+            if (productId && productId !== 'null' && productId !== 'undefined') {
+                const isFav = window.FavoritesService.isFavorite(productId);
+                btn.classList.toggle('active', isFav);
+            }
+        });
+    },
+
+    /**
+     * Update favorite button state for a specific product
+     */
+    updateFavoriteButtonState(productId, isFavorite) {
+        const buttons = document.querySelectorAll(`.favorite-btn[data-product-id="${productId}"]`);
+        buttons.forEach(btn => {
+            btn.classList.toggle('active', isFavorite);
+        });
     },
 
     /**
