@@ -342,23 +342,6 @@ const OrdersService = {
         };
 
         return statusMap[status] || { text: status, color: '#7f8c8d' };
-    },
-
-    /**
-     * Get payment status display text
-     * 
-     * @param {string} status - Payment status code
-     * @returns {Object} { text, color }
-     */
-    getPaymentStatusDisplay(status) {
-        const statusMap = {
-            pending: { text: 'Pending', color: '#f39c12' },
-            paid: { text: 'Paid', color: '#27ae60' },
-            failed: { text: 'Failed', color: '#e74c3c' },
-            refunded: { text: 'Refunded', color: '#9b59b6' }
-        };
-
-        return statusMap[status] || { text: status, color: '#7f8c8d' };
     }
 };
 

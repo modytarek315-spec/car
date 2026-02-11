@@ -45,7 +45,6 @@
                     flowType: 'pkce'
                 }
             });
-            console.log('Supabase client initialized successfully');
             return supabaseClient;
         } else {
             console.error('Supabase JS library not loaded. Please include the CDN script.');

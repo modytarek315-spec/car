@@ -11,7 +11,7 @@ const AuthUI = {
                 }
             }
         } catch (e) {
-            console.log('Cache read error:', e);
+            // ignore cache read errors
         }
         return null;
     },
@@ -23,7 +23,7 @@ const AuthUI = {
                 timestamp: Date.now()
             }));
         } catch (e) {
-            console.log('Cache write error:', e);
+            // ignore cache write errors
         }
     },
 
@@ -31,7 +31,7 @@ const AuthUI = {
         try {
             localStorage.removeItem('_auth_state_cache');
         } catch (e) {
-            console.log('Cache clear error:', e);
+            // ignore cache clear errors
         }
     },
 

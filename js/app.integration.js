@@ -34,8 +34,6 @@ const AppIntegration = {
      * Call this after Supabase client is initialized
      */
     async init() {
-        console.log('Initializing Car House App Integration...');
-
         // Wait for Supabase to be ready
         await this.waitForSupabase();
 
@@ -61,7 +59,7 @@ const AppIntegration = {
             window.CartService.updateCartUI();
         }
 
-        console.log('App Integration initialized successfully');
+
     },
 
     /**
@@ -90,7 +88,6 @@ const AppIntegration = {
             const result = await window.AuthService.restoreSession();
             if (result.success && result.session) {
                 this.currentUser = result.session.user;
-                console.log('Session restored for:', this.currentUser.email);
 
                 // Sync favorites on session restore
                 if (window.FavoritesService) {
@@ -109,8 +106,6 @@ const AppIntegration = {
         if (!window.CarHouseSupabase) return;
 
         window.CarHouseSupabase.onAuthStateChange(async (event, session) => { // Made async to allow await
-            console.log('Auth state changed:', event);
-
             if (event === 'SIGNED_IN' && session) {
                 this.currentUser = session.user;
                 // Sync favorites on login
@@ -186,12 +181,6 @@ const AppIntegration = {
 
         // Checkout flow is now multi-step and handled by script.js + submitFinalOrder
         document.addEventListener('submit', async (e) => {
-            /*
-            if (e.target.matches('#checkout-form')) {
-                e.preventDefault();
-                await this.handleCheckout(e.target);
-            }
-            */
 
             // Login form
             if (e.target.matches('#login-form')) {
@@ -210,14 +199,6 @@ const AppIntegration = {
                 e.preventDefault();
                 await this.handleForgotPassword(e.target);
             }
-
-            /*
-            // Service booking is now handled by script.js to ensure proper ID mapping
-            if (e.target.matches('#service-booking-form')) {
-                e.preventDefault();
-                await this.handleServiceBooking(e.target);
-            }
-            */
 
             // Profile update form
             if (e.target.matches('#profile-form')) {
@@ -350,8 +331,8 @@ const AppIntegration = {
                 }
                 
                 // Flying animation to cart
-                if (productCard) {
-                    this.flyToCart(productCard);
+                if (productCard && window.UI) {
+                    window.UI.flyToCart(productCard);
                 }
                 
                 // Bounce cart icon
@@ -454,192 +435,6 @@ const AppIntegration = {
         buttons.forEach(btn => {
             btn.classList.toggle('active', isFavorite);
         });
-    },
-
-    /**
-     * Handle checkout form submission
-     * 
-     * @param {HTMLFormElement} form - Checkout form
-     */
-    async handleCheckout(form) {
-        if (!window.OrdersService) return;
-
-        // Check auth
-        if (!this.currentUser) {
-            this.showToast(window.AppConstants.MESSAGES.WARNING.LOGIN_REQUIRED, '#f39c12', { type: 'warning' });
-            this.showLoginModal();
-            return;
-        }
-
-        const submitBtn = form.querySelector('#submit-order-btn, [type="submit"]');
-        const originalText = submitBtn?.textContent || 'Place Order';
-
-        try {
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Processing...';
-            }
-
-            // Get form data
-            const formData = new FormData(form);
-
-            const orderData = {
-                shippingAddress: {
-                    fullName: formData.get('customer-name') || document.getElementById('customer-name')?.value,
-                    email: formData.get('customer-email') || document.getElementById('customer-email')?.value,
-                    phone: formData.get('customer-phone') || document.getElementById('customer-phone')?.value,
-                    address: formData.get('customer-address') || document.getElementById('customer-address')?.value,
-                    city: formData.get('city') || '',
-                    postalCode: formData.get('postal-code') || ''
-                },
-                paymentMethod: formData.get('payment-method') || 'cash',
-                shippingType: formData.get('shipping-type') || 'standard',
-                notes: formData.get('notes') || ''
-            };
-
-            // Apply coupon if exists
-            if (window.CouponsService) {
-                const appliedCoupon = window.CouponsService.getAppliedCoupon(
-                    window.CartService.getCartTotals().subtotal
-                );
-                if (appliedCoupon) {
-                    orderData.couponId = appliedCoupon.coupon.id;
-                    orderData.discount = appliedCoupon.discount;
-                }
-            }
-
-            // Create order
-            const result = await window.OrdersService.createOrder(orderData);
-
-            if (result.success) {
-                // Show success message
-                const messageDiv = document.getElementById('checkout-message');
-                if (messageDiv) {
-                    messageDiv.innerHTML = `
-                        <div class="success-message">
-                            <strong>Order placed successfully!</strong><br>
-                            Thank you for your order. Your order ID is: ${result.order.id.slice(0, 8)}...
-                        </div>
-                    `;
-                }
-
-                // Hide form
-                form.style.display = 'none';
-
-                // Clear applied coupon
-                if (window.CouponsService) {
-                    window.CouponsService.removeCoupon();
-                }
-
-                // Redirect to home after delay
-                setTimeout(() => {
-                    window.location.href = window.getPagePath('index');
-                }, 3000);
-            } else {
-                if (result.requiresAuth) {
-                    this.showToast('Please login to complete your order', '#f39c12');
-                    this.showLoginModal();
-                } else {
-                    this.showToast(result.error || 'Failed to place order', '#e74c3c');
-                }
-            }
-        } catch (error) {
-            console.error('Checkout error:', error);
-            this.showToast('Failed to place order', '#e74c3c');
-        } finally {
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
-            }
-        }
-    },
-
-    /**
-     * Handle service booking form submission
-     * 
-     * @param {HTMLFormElement} form - Booking form
-     */
-    async handleServiceBooking(form) {
-        if (!window.BookingsService) return;
-
-        // Check auth
-        if (!this.currentUser) {
-            this.showToast('Please login to book a service', '#f39c12');
-            this.showLoginModal();
-            return;
-        }
-
-        const submitBtn = form.querySelector('#book-service-btn, [type="submit"]');
-        const originalText = submitBtn?.textContent || 'Book Service';
-
-        try {
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Booking...';
-            }
-
-            // Get form data
-            const formData = new FormData(form);
-
-            // Get service type ID from the page (stored during selection)
-            const serviceTypeId = form.dataset.serviceTypeId ||
-                window.selectedServiceTypeId ||
-                formData.get('service-type-id');
-
-            const bookingData = {
-                serviceTypeId,
-                vehicleInfo: {
-                    make: formData.get('vehicle-make') || 'Toyota',
-                    model: formData.get('vehicle-model') || 'Corolla',
-                    year: formData.get('vehicle-year') || '',
-                    licensePlate: formData.get('license-plate') || '',
-                    mileage: formData.get('mileage') || ''
-                },
-                scheduledDate: formData.get('appointment-date') ||
-                    document.getElementById('service-appointment-date')?.value,
-                scheduledTime: formData.get('appointment-time') ||
-                    document.getElementById('service-appointment-time')?.value || '',
-                notes: formData.get('notes') || '',
-                customerInfo: {
-                    name: formData.get('customer-name') ||
-                        document.getElementById('service-customer-name')?.value,
-                    phone: formData.get('customer-phone') ||
-                        document.getElementById('service-customer-phone')?.value,
-                    email: formData.get('customer-email') ||
-                        document.getElementById('service-customer-email')?.value
-                }
-            };
-
-            const result = await window.BookingsService.createBooking(bookingData);
-
-            if (result.success) {
-                // Show success message
-                form.innerHTML = `
-                    <div class="success-message">
-                        <strong>${result.message}</strong><br>
-                        Your booking has been confirmed. We'll contact you shortly.
-                    </div>
-                `;
-
-                setTimeout(() => {
-                    window.location.href = window.getPagePath('index');
-                }, 3000);
-            } else {
-                if (result.requiresAuth) {
-                    this.showToast('Please login to book a service', '#f39c12');
-                } else {
-                    this.showToast(result.error || 'Failed to book service', '#e74c3c');
-                }
-            }
-        } catch (error) {
-            console.error('Booking error:', error);
-            this.showToast('Failed to book service', '#e74c3c');
-        } finally {
-            if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
-            }
-        }
     },
 
     /**
@@ -997,8 +792,6 @@ const AppIntegration = {
 
         if (result.success) {
             this.showToast(result.message);
-            // Update totals display
-            this.updateCheckoutTotals();
         } else {
             this.showToast(result.error || 'Invalid coupon', '#e74c3c');
         }
@@ -1012,15 +805,6 @@ const AppIntegration = {
 
         const result = window.CouponsService.removeCoupon();
         this.showToast(result.message);
-        this.updateCheckoutTotals();
-    },
-
-    /**
-     * Update checkout totals display
-     */
-    updateCheckoutTotals() {
-        // This would update the cart/checkout totals if there's a coupon
-        // Implementation depends on existing UI structure
     },
 
     /**
@@ -1050,15 +834,12 @@ const AppIntegration = {
      * Called when user logs in
      */
     onUserLoggedIn() {
-        // Sync any guest cart/favorites if needed
-        console.log('User logged in:', this.currentUser.email);
     },
 
     /**
      * Called when user logs out
      */
     onUserLoggedOut() {
-        console.log('User logged out');
     },
 
 

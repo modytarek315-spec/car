@@ -191,38 +191,6 @@ const AuthService = {
     },
 
     /**
-     * Update user password (after reset)
-     * 
-     * @param {string} newPassword - New password (min 6 chars)
-     * @returns {Promise<Object>} { success, error }
-     */
-    async updatePassword(newPassword) {
-        const client = window.CarHouseSupabase.getClient();
-        if (!client) {
-            return { success: false, error: 'Supabase client not initialized' };
-        }
-
-        try {
-            const { error } = await client.auth.updateUser({
-                password: newPassword
-            });
-
-            if (error) throw error;
-
-            return {
-                success: true,
-                message: 'Password updated successfully!'
-            };
-        } catch (error) {
-            console.error('Update password error:', error);
-            return {
-                success: false,
-                error: window.CarHouseSupabase.formatError(error)
-            };
-        }
-    },
-
-    /**
      * Get current user profile from profiles table
      * 
      * Table: profiles
@@ -370,28 +338,6 @@ const AuthService = {
                 success: false,
                 error: window.CarHouseSupabase.formatError(error)
             };
-        }
-    },
-
-    /**
-     * Check if current user has admin role
-     * 
-     * Uses the is_admin() function defined in database.sql
-     * Checks both admins table and profiles.role
-     * 
-     * @returns {Promise<boolean>} True if user is admin
-     */
-    async isAdmin() {
-        const client = window.CarHouseSupabase.getClient();
-        if (!client) return false;
-
-        try {
-            const { data, error } = await client.rpc('is_admin');
-            if (error) throw error;
-            return data === true;
-        } catch (error) {
-            console.error('Check admin error:', error);
-            return false;
         }
     },
 

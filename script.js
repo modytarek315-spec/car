@@ -82,19 +82,6 @@ window.App = {
     this.loadSearchHistory();
   },
 
-  processProducts(allProducts) {
-    window.AppState.products = {};
-    window.AppState.categories.forEach(c => window.AppState.products[c.slug] = []);
-
-    allProducts.forEach(p => {
-      if (!p) return;
-      const uiProduct = this.mapProductToUI(p);
-      const cat = uiProduct.category;
-      if (!window.AppState.products[cat]) window.AppState.products[cat] = [];
-      window.AppState.products[cat].push(uiProduct);
-    });
-  },
-
   mapProductToUI(p) {
     let catSlug = p.categories?.slug || p.category?.slug;
     if (!catSlug && p.category_id) {

@@ -305,52 +305,6 @@ const CouponsService = {
             console.error('Increment coupon usage error:', error);
             return false;
         }
-    },
-
-    /**
-     * Get cart totals with coupon applied
-     * 
-     * @param {string} [shippingType='standard'] - Shipping type
-     * @returns {Object} Complete cart totals
-     */
-    getCartTotalsWithCoupon(shippingType = 'standard') {
-        const baseTotals = window.CartService.getCartTotals(shippingType);
-        const applied = this.getAppliedCoupon(baseTotals.subtotal);
-
-        if (applied) {
-            const discountedSubtotal = baseTotals.subtotal - applied.discount;
-            const tax = discountedSubtotal * 0.14;
-            const total = discountedSubtotal + tax + baseTotals.shipping;
-
-            return {
-                ...baseTotals,
-                discount: applied.discount,
-                couponCode: applied.coupon.code,
-                subtotalAfterDiscount: discountedSubtotal,
-                tax,
-                total
-            };
-        }
-
-        return {
-            ...baseTotals,
-            discount: 0,
-            couponCode: null,
-            subtotalAfterDiscount: baseTotals.subtotal
-        };
-    },
-
-    /**
-     * Format discount display
-     * 
-     * @param {Object} coupon - Coupon object
-     * @returns {string} Formatted discount string
-     */
-    formatDiscountDisplay(coupon) {
-        if (coupon.discount_type === 'percentage') {
-            return `${coupon.discount_value}% off`;
-        }
-        return `${coupon.discount_value.toFixed(2)} EGP off`;
     }
 };
 

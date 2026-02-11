@@ -66,40 +66,6 @@ body {
     transform: translateY(-2px);
 }
 
-.user-profile-summary {
-    display: flex;
-    align-items: center;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 6px 6px 6px 16px;
-    border-radius: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.user-name-pill {
-    color: #fff;
-    font-weight: 600;
-    font-size: 16px;
-    margin-right: 8px;
-}
-
-.profile-icon-btn {
-    color: var(--accent-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-}
-
-.profile-icon-btn svg {
-    width: 28px !important;
-    height: 28px !important;
-}
-
-.profile-icon-btn:hover {
-    transform: scale(1.1);
-    color: white;
-}
-
 .logout-btn-alt {
     background: transparent;
     border: 1px solid rgba(231, 76, 60, 0.3);
@@ -115,13 +81,6 @@ body {
 .logout-btn-alt:hover {
     background: #e74c3c;
     color: white;
-}
-
-/* Prominent Header Action Buttons */
-.header-actions {
-    display: flex;
-    align-items: center;
-    gap: 20px;
 }
 
 .profile-icon-btn {
@@ -819,101 +778,9 @@ body {
     margin: 0 auto;
 }
 
-.service-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 25px;
-    margin-bottom: 40px;
-}
-
-.service-card {
-    background: linear-gradient(135deg, #132440 50%, #BF092F 100%);
-    padding: 25px;
-    border-radius: 15px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-    border: 1px solid #444;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.service-card:hover {
-    transform: translateY(-5px) scale(1.02);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6), 0 0 15px rgba(191, 9, 47, 0.4);
-    border-color: var(--secondary-color);
-}
-
-.service-card.selected {
-    border-color: var(--accent-color);
-    background: #333;
-}
-
-.service-km {
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--secondary-color);
-    margin-bottom: 12px;
-}
-
-.service-title {
-    font-size: 18px;
-    color: #FFFFFF;
-    margin-bottom: 15px;
-    font-weight: 500;
-}
-
-.service-price {
-    font-size: 22px;
-    color: var(--success-color);
-    font-weight: 700;
-}
-
 .service-details-page {
     max-width: 800px;
     margin: 0 auto;
-}
-
-.service-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 25px 0;
-    background: linear-gradient(135deg, #132440 50%, #BF092F 100%);
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-}
-
-.service-table th,
-.service-table td {
-    padding: 18px;
-    text-align: left;
-    border-bottom: 1px solid #444;
-}
-
-.service-table th {
-    background-color: #333;
-    font-weight: 700;
-    color: var(--secondary-color);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.parts-option {
-    background: var(--background-color);
-    padding: 20px;
-    border-radius: 8px;
-    margin: 20px 0;
-}
-
-.parts-option label {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    font-weight: 500;
 }
 
 .parts-selection {
@@ -1366,55 +1233,6 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-/* Newsletter Section */
-.newsletter-section {
-    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url('https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&q=80&w=1920');
-    background-size: cover;
-    background-position: center;
-    padding: 80px 20px;
-    text-align: center;
-    margin-top: 60px;
-    border-radius: 20px;
-}
-
-.newsletter-content {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.newsletter-input-group {
-    display: flex;
-    gap: 10px;
-    margin-top: 30px;
-}
-
-.newsletter-input {
-    flex: 1;
-    padding: 15px 20px;
-    border-radius: 30px;
-    border: 1px solid #444;
-    background: rgba(255, 255, 255, 0.1);
-    color: white;
-    outline: none;
-    backdrop-filter: blur(5px);
-}
-
-.newsletter-btn {
-    padding: 15px 30px;
-    border-radius: 30px;
-    background: var(--secondary-color);
-    color: black;
-    font-weight: 700;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.newsletter-btn:hover {
-    background: #fff;
-    transform: scale(1.05);
 }
 
 /* Custom Scrollbar */

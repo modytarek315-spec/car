@@ -330,102 +330,6 @@ const BookingsService = {
     },
 
     /**
-     * Get single booking by ID
-     * 
-     * @param {string} bookingId - Booking UUID
-     * @returns {Promise<Object>} { success, booking, error }
-     */
-    async getBookingById(bookingId) {
-        const client = window.CarHouseSupabase.getClient();
-        if (!client) {
-            return { success: false, error: 'Supabase client not initialized' };
-        }
-
-        try {
-            const { data, error } = await client
-                .from('workshop_bookings')
-                .select(`
-                    *,
-                    service:service_types(id, name, description, base_price, icon, estimated_duration)
-                `)
-                .eq('id', bookingId)
-                .single();
-
-            if (error) throw error;
-
-            return {
-                success: true,
-                booking: data
-            };
-        } catch (error) {
-            console.error('Get booking error:', error);
-            return {
-                success: false,
-                error: window.CarHouseSupabase.formatError(error)
-            };
-        }
-    },
-
-    /**
-     * Cancel a booking
-     * 
-     * @param {string} bookingId - Booking UUID
-     * @returns {Promise<Object>} { success, error }
-     */
-    async cancelBooking(bookingId) {
-        const client = window.CarHouseSupabase.getClient();
-        if (!client) {
-            return { success: false, error: 'Supabase client not initialized' };
-        }
-
-        try {
-            const user = await window.CarHouseSupabase.getCurrentUser();
-            if (!user) {
-                return { success: false, error: 'Not authenticated' };
-            }
-
-            // Verify ownership
-            const { data: booking, error: getError } = await client
-                .from('workshop_bookings')
-                .select('user_id, status')
-                .eq('id', bookingId)
-                .single();
-
-            if (getError) throw getError;
-
-            if (booking.user_id !== user.id) {
-                return { success: false, error: 'Not authorized' };
-            }
-
-            if (booking.status === 'cancelled') {
-                return { success: false, error: 'Booking already cancelled' };
-            }
-
-            if (booking.status === 'completed') {
-                return { success: false, error: 'Cannot cancel completed booking' };
-            }
-
-            const { error } = await client
-                .from('workshop_bookings')
-                .update({ status: 'cancelled' })
-                .eq('id', bookingId);
-
-            if (error) throw error;
-
-            return {
-                success: true,
-                message: 'Booking cancelled successfully'
-            };
-        } catch (error) {
-            console.error('Cancel booking error:', error);
-            return {
-                success: false,
-                error: window.CarHouseSupabase.formatError(error)
-            };
-        }
-    },
-
-    /**
      * Get booking status display text
      * 
      * @param {string} status - Booking status code
@@ -441,23 +345,6 @@ const BookingsService = {
         };
 
         return statusMap[status] || { text: status, color: '#7f8c8d' };
-    },
-
-    /**
-     * Format duration for display
-     * 
-     * @param {number} minutes - Duration in minutes
-     * @returns {string} Formatted duration string
-     */
-    formatDuration(minutes) {
-        if (!minutes) return 'N/A';
-
-        const hours = Math.floor(minutes / 60);
-        const mins = minutes % 60;
-
-        if (hours === 0) return `${mins} min`;
-        if (mins === 0) return `${hours} hr`;
-        return `${hours} hr ${mins} min`;
     }
 };
 

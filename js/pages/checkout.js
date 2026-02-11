@@ -76,7 +76,7 @@ const CheckoutPage = {
                 if (phoneField && profile.phone) phoneField.value = profile.phone;
             }
         } catch (error) {
-            console.log('Could not auto-populate user data:', error);
+            // User data auto-populate not available
         }
     },
 
