@@ -1,15 +1,30 @@
 const ServicePage = {
-    render() {
+    async render() {
         const mainContent = document.getElementById('main-content');
         window.UI.updateBreadcrumb([{ label: 'Service', action: () => window.location.href = window.getPagePath('service') }]);
 
+        // Hydrate from cache if empty
+        if (!window.AppState.servicePackages || window.AppState.servicePackages.length === 0) {
+            try {
+                const cachedSvc = sessionStorage.getItem('carhouse_services');
+                if (cachedSvc) window.AppState.servicePackages = JSON.parse(cachedSvc);
+            } catch (e) {}
+        }
+
+        if (!window.AppState.servicePackages || window.AppState.servicePackages.length === 0) {
+            mainContent.innerHTML = '<div class="loading-spinner"></div>';
+            try {
+                const serviceTypes = await window.BookingsService.getServiceTypes();
+                if (window.App && window.App.processServices) {
+                  window.App.processServices(serviceTypes);
+                }
+            } catch(e) {
+                console.error(e);
+            }
+        }
+
         // Use real data from Supabase, stored in AppState by script.js
         const servicePackages = window.AppState.servicePackages || [];
-
-        if (servicePackages.length === 0) {
-            mainContent.innerHTML = '<div style="text-align:center; padding: 50px;">Loading services...</div>';
-            return;
-        }
 
         mainContent.innerHTML = `
             <div class="service-page">

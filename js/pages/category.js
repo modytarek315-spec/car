@@ -110,6 +110,16 @@ const CategoryPage = {
             fetchOptions.categorySlug = categorySlug;
         }
 
+        const cacheKey = `carhouse_products_${categorySlug}_${fetchOptions.search || ''}`;
+        try {
+            const cached = sessionStorage.getItem(cacheKey);
+            if (cached) {
+                window.AppState.products[categorySlug] = JSON.parse(cached);
+                this.renderProducts(categorySlug);
+                return;
+            }
+        } catch (e) {}
+
         let res = await window.ProductsService.getProducts(fetchOptions);
 
         // Retry with slug only if no results with categoryId
@@ -122,6 +132,9 @@ const CategoryPage = {
         if (res.success) {
             const uiProducts = res.products.map(p => window.App.mapProductToUI(p));
             window.AppState.products[categorySlug] = uiProducts;
+            try {
+                sessionStorage.setItem(cacheKey, JSON.stringify(uiProducts));
+            } catch (e) {}
             this.renderProducts(categorySlug);
         } else {
             this.renderError(res.error);

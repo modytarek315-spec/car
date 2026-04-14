@@ -103,6 +103,7 @@ const CartService = {
      * Load cart from Supabase on login
      */
     async loadFromSupabase() {
+        if (sessionStorage.getItem('carhouse_cart_synced')) return;
         try {
             const client = window.CarHouseSupabase?.getClient();
             const user = await window.CarHouseSupabase?.getCurrentUser();
@@ -146,6 +147,7 @@ const CartService = {
                 localStorage.setItem(this.STORAGE_KEY, JSON.stringify(localCart));
                 this.updateCartUI();
             }
+            sessionStorage.setItem('carhouse_cart_synced', 'true');
         } catch (error) {
             console.error('Error loading cart from Supabase:', error);
         }
@@ -285,6 +287,7 @@ const CartService = {
      */
     clearCart() {
         localStorage.removeItem(this.STORAGE_KEY);
+        try { sessionStorage.removeItem('carhouse_cart_synced'); } catch(e) {}
         this.updateCartUI();
     },
 

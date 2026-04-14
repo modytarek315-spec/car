@@ -135,6 +135,9 @@ const AppIntegration = {
      * Setup global event listeners
      */
     setupEventListeners() {
+        if (this._eventsSetup) return;
+        this._eventsSetup = true;
+
         // Listen for favorites updates and refresh UI
         window.addEventListener('favoritesUpdated', () => {
             this.updateAllFavoriteButtons();
@@ -279,6 +282,8 @@ const AppIntegration = {
      * @param {HTMLElement} button - The clicked button
      */
     async handleAddToCart(productId, button) {
+        if (button.disabled) return;
+        
         if (!window.CartService || !window.ProductsService) {
             // Fallback to existing behavior
             return;
@@ -502,6 +507,8 @@ const AppIntegration = {
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
 
+        const fragment = document.createDocumentFragment();
+
         for (let i = 0; i < 20; i++) {
             const confetti = document.createElement('div');
             confetti.className = 'confetti';
@@ -518,10 +525,11 @@ const AppIntegration = {
             confetti.style.setProperty('--ty', ty + 'px');
             confetti.style.setProperty('--r', Math.random() * 360 + 'deg');
             
-            document.body.appendChild(confetti);
+            fragment.appendChild(confetti);
             
             setTimeout(() => confetti.remove(), 1000);
         }
+        document.body.appendChild(fragment);
     },
 
     /**
@@ -944,8 +952,5 @@ window.AppIntegration = AppIntegration;
 
 // Auto-initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-    // Initialize after a short delay to ensure all services are loaded
-    setTimeout(() => {
-        AppIntegration.init();
-    }, 500);
+    AppIntegration.init();
 });

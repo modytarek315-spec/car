@@ -35,18 +35,23 @@ window.App = {
     window.UI.updateBreadcrumb([]);
 
     try {
-      // 2. Fetch Core Data
-      const categoriesResponse = await window.ProductsService.getCategories();
-      window.AppState.categories = categoriesResponse.categories || [];
+      // 2. Fetch Core Data (Cached in SessionStorage if possible)
+      let categoriesData = null;
+      try {
+        const cached = sessionStorage.getItem('carhouse_categories');
+        if (cached) categoriesData = JSON.parse(cached);
+      } catch (e) {}
+
+      if (!categoriesData) {
+        const categoriesResponse = await window.ProductsService.getCategories();
+        categoriesData = categoriesResponse.categories || [];
+        try {
+          sessionStorage.setItem('carhouse_categories', JSON.stringify(categoriesData));
+        } catch (e) {}
+      }
+      window.AppState.categories = categoriesData;
 
       this.renderDynamicNavigation();
-
-      const [productsRes, serviceTypes] = await Promise.all([
-        window.ProductsService.getProducts({ limit: 10 }), // Just get some featured ones
-        window.BookingsService.getServiceTypes()
-      ]);
-
-      this.processServices(serviceTypes);
 
       // Initial Render
       this.applyStyles();
@@ -118,6 +123,10 @@ window.App = {
           required: i.is_required !== false
         }))
       }));
+      // Cache processed services
+      try {
+        sessionStorage.setItem('carhouse_services', JSON.stringify(window.AppState.servicePackages));
+      } catch (e) {}
     }
   },
 
@@ -190,15 +199,7 @@ window.App = {
   },
 
   handleGlobalClick(e) {
-    if (e.target.matches('.add-to-cart-btn')) {
-      const pid = e.target.dataset.productId;
-      const product = Object.values(window.AppState.products).flat().find(p => p.id === pid);
-      if (product) {
-        window.CartService.addToCart(product, 1);
-        window.UI.flyToCart(e.target.closest('.product-card'));
-        window.UI.bounceCartIcon();
-      }
-    }
+    // Add to cart is handled by app.integration.js
 
     if (e.target.matches('.qty-btn')) {
       const pid = e.target.dataset.itemId;

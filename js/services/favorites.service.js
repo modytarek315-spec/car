@@ -29,6 +29,13 @@ const FavoritesService = {
      * Fetch favorites from Supabase and update cache
      */
     async syncWithSupabase() {
+        if (sessionStorage.getItem('carhouse_favs_synced')) {
+            try {
+                this._favoritesCache = JSON.parse(sessionStorage.getItem('carhouse_favs_cache') || '[]');
+                this.dispatchFavoritesEvent(this._favoritesCache);
+                return;
+            } catch (e) {}
+        }
         try {
             const supabase = window.CarHouseSupabase.getClient();
             const { data: { user } } = await supabase.auth.getUser();
@@ -47,6 +54,11 @@ const FavoritesService = {
                 productId: f.product_id,
                 addedAt: f.created_at
             }));
+
+            try {
+                sessionStorage.setItem('carhouse_favs_synced', 'true');
+                sessionStorage.setItem('carhouse_favs_cache', JSON.stringify(this._favoritesCache));
+            } catch (e) {}
 
             this.dispatchFavoritesEvent(this._favoritesCache);
         } catch (error) {
@@ -127,12 +139,8 @@ const FavoritesService = {
                 addedAt: new Date().toISOString()
             });
 
-            this.dispatchFavoritesEvent(this._favoritesCache);
+        try { sessionStorage.setItem('carhouse_favs_cache', JSON.stringify(this._favoritesCache)); } catch(e) {}
 
-            return {
-                success: true,
-                message: 'Added to favorites!'
-            };
         } catch (error) {
             console.error('Add favorite error:', error);
             // Re-sync in case local cache is out of sync with DB
@@ -168,8 +176,7 @@ const FavoritesService = {
 
             // Update cache
             this._favoritesCache = this._favoritesCache.filter(fav => fav.productId !== productId);
-            this.dispatchFavoritesEvent(this._favoritesCache);
-
+        try { sessionStorage.setItem('carhouse_favs_cache', JSON.stringify(this._favoritesCache)); } catch(e) {}
             return {
                 success: true,
                 message: 'Removed from favorites'
@@ -249,6 +256,10 @@ const FavoritesService = {
      */
     clearFavorites() {
         this._favoritesCache = [];
+        try {
+            sessionStorage.removeItem('carhouse_favs_synced');
+            sessionStorage.removeItem('carhouse_favs_cache');
+        } catch (e) {}
         this.dispatchFavoritesEvent([]);
     },
 
