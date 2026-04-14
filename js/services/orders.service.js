@@ -93,13 +93,15 @@ const OrdersService = {
             const totals = window.CartService.getCartTotals(orderData.shippingType);
 
             // Create order record
-            // Note: Schema only has total_amount and total fields
-            // Breakdown (subtotal, tax, shipping) should be stored in payment_meta if needed
             const orderInsertData = {
                 user_id: user.id,
                 status: 'pending',
                 total_amount: totals.total,
                 total: totals.total,
+                subtotal: totals.subtotal,
+                tax: totals.tax,
+                shipping_cost: totals.shipping,
+                discount_amount: totals.discount || 0,
                 shipping_address: {
                     full_name: orderData.shippingAddress.fullName,
                     email: orderData.shippingAddress.email,
@@ -109,6 +111,7 @@ const OrdersService = {
                     postal_code: orderData.shippingAddress.postalCode || ''
                 },
                 payment_method: orderData.paymentMethod || 'cash',
+                payment_status: orderData.paymentMethod === 'cash' ? 'pending' : 'paid',
                 billing_address: orderData.billingAddress || orderData.shippingAddress,
                 payment_meta: orderData.paymentDetails || {},
                 notes: orderData.notes || null
@@ -338,7 +341,8 @@ const OrdersService = {
             processing: { text: 'Processing', color: '#3498db' },
             shipped: { text: 'Shipped', color: '#9b59b6' },
             delivered: { text: 'Delivered', color: '#27ae60' },
-            cancelled: { text: 'Cancelled', color: '#e74c3c' }
+            cancelled: { text: 'Cancelled', color: '#e74c3c' },
+            refunded: { text: 'Refunded', color: '#bdc3c7' }
         };
 
         return statusMap[status] || { text: status, color: '#7f8c8d' };

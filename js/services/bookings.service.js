@@ -232,7 +232,6 @@ const BookingsService = {
                 .insert({
                     user_id: user.id,
                     service_type_id: bookingData.serviceTypeId,
-                    service_type: serviceType.name, // Fallback text
                     vehicle_info: {
                         make: bookingData.vehicleInfo.make || '',
                         model: bookingData.vehicleInfo.model || '',
@@ -292,7 +291,7 @@ const BookingsService = {
                 .from('workshop_bookings')
                 .select(`
                     *,
-                    service:service_types(id, name, description, base_price, icon)
+                    service_types(id, name, description, base_price, icon)
                 `, { count: 'exact' })
                 .eq('user_id', user.id)
                 .order('scheduled_date', { ascending: false });

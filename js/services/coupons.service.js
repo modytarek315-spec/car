@@ -286,7 +286,7 @@ const CouponsService = {
             // Get current count
             const { data: coupon, error: getError } = await client
                 .from('coupons')
-                .select('used_count')
+                .select('uses_count')
                 .eq('id', couponId)
                 .single();
 
@@ -295,7 +295,7 @@ const CouponsService = {
             // Increment count
             const { error: updateError } = await client
                 .from('coupons')
-                .update({ used_count: (coupon.used_count || 0) + 1 })
+                .update({ uses_count: (coupon.uses_count || 0) + 1 })
                 .eq('id', couponId);
 
             if (updateError) throw updateError;

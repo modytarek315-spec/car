@@ -44,8 +44,110 @@ const CartService = {
         try {
             localStorage.setItem(this.STORAGE_KEY, JSON.stringify(cart));
             this.updateCartUI();
+            // Sync to Supabase in background
+            this.syncToSupabase(cart);
         } catch (error) {
             console.error('Error saving cart:', error);
+        }
+    },
+
+    /**
+     * Sync local cart with Supabase authenticated user cart
+     */
+    async syncToSupabase(cart) {
+        try {
+            const client = window.CarHouseSupabase?.getClient();
+            const user = await window.CarHouseSupabase?.getCurrentUser();
+            if (!client || !user) return; // Only sync if logged in
+
+            // Get or create cart for user
+            let { data: userCart, error: cartError } = await client
+                .from('carts')
+                .select('id')
+                .eq('user_id', user.id)
+                .single();
+
+            if (!userCart && cartError?.code === 'PGRST116') {
+                const { data: newCart, error: createError } = await client
+                    .from('carts')
+                    .insert({ user_id: user.id })
+                    .select('id')
+                    .single();
+                if (createError) throw createError;
+                userCart = newCart;
+            } else if (cartError && cartError.code !== 'PGRST116') {
+                throw cartError;
+            }
+
+            if (!userCart) return;
+            const cartId = userCart.id;
+
+            // Clear existing cart items
+            await client.from('cart_items').delete().eq('cart_id', cartId);
+
+            // Insert new items if cart is not empty
+            if (cart && cart.length > 0) {
+                const cartItemsToInsert = cart.map(item => ({
+                    cart_id: cartId,
+                    product_id: item.productId,
+                    quantity: item.quantity
+                }));
+                await client.from('cart_items').insert(cartItemsToInsert);
+            }
+        } catch (error) {
+            console.error('Error syncing cart to Supabase:', error);
+        }
+    },
+
+    /**
+     * Load cart from Supabase on login
+     */
+    async loadFromSupabase() {
+        try {
+            const client = window.CarHouseSupabase?.getClient();
+            const user = await window.CarHouseSupabase?.getCurrentUser();
+            if (!client || !user) return;
+
+            const { data: userCart, error: cartError } = await client
+                .from('carts')
+                .select(`
+                    id,
+                    cart_items (
+                        id,
+                        quantity,
+                        product_id,
+                        products (
+                            id,
+                            name,
+                            title,
+                            price,
+                            brand,
+                            images:product_images(url)
+                        )
+                    )
+                `)
+                .eq('user_id', user.id)
+                .single();
+
+            if (cartError && cartError.code !== 'PGRST116') throw cartError;
+
+            if (userCart && userCart.cart_items && userCart.cart_items.length > 0) {
+                const localCart = userCart.cart_items.map(item => ({
+                    id: `cart_${item.id}`,
+                    productId: item.product_id,
+                    quantity: item.quantity,
+                    name: item.products?.name || item.products?.title,
+                    price: item.products?.price,
+                    brand: item.products?.brand,
+                    image: item.products?.images?.[0]?.url,
+                    addedAt: new Date().toISOString()
+                }));
+
+                localStorage.setItem(this.STORAGE_KEY, JSON.stringify(localCart));
+                this.updateCartUI();
+            }
+        } catch (error) {
+            console.error('Error loading cart from Supabase:', error);
         }
     },
 

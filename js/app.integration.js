@@ -93,6 +93,11 @@ const AppIntegration = {
                 if (window.FavoritesService) {
                     await window.FavoritesService.syncWithSupabase();
                 }
+
+                // Sync cart from remote if possible
+                if (window.CartService && typeof window.CartService.loadFromSupabase === 'function') {
+                    await window.CartService.loadFromSupabase();
+                }
             }
         } catch (error) {
             console.error('Session restore error:', error);
@@ -547,6 +552,11 @@ const AppIntegration = {
             if (result.success) {
                 // Show success toast notification
                 this.showToast('Login successful! Welcome back!', '#27ae60', { type: 'success' });
+                
+                // Sync cart from remote if possible
+                if (window.CartService && typeof window.CartService.loadFromSupabase === 'function') {
+                    await window.CartService.loadFromSupabase();
+                }
 
                 // Show Overlay if exists (Login Page)
                 const overlay = document.getElementById('login-success-overlay');
@@ -817,9 +827,12 @@ const AppIntegration = {
             const result = await window.AuthService.logout();
             if (result.success) {
                 this.showToast('Logged out successfully');
-                // Clear favorites
+                // Clear favorites and cart
                 if (window.FavoritesService) {
                     window.FavoritesService.clearFavorites();
+                }
+                if (window.CartService) {
+                    window.CartService.clearCart();
                 }
                 // Redirect to home
                 window.location.href = window.getPagePath('index');
